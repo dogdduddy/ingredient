@@ -83,10 +83,9 @@ class MainActivity : AppCompatActivity() {
                         for (document in documents) {
                             Log.d("MainTest : ", document.toString())
                             // 레시피 검색해서 나온 이름, 재료, 시간 저장
-                            // note 객체처럼 만들어서 처리하려 했찌만 문서마다 필드의 종류가 달라서 안됨
-                            var int_str: String = ""
-                            Log.d(TAG, "testData"+document.get("ingredients").toString())
-                            // 레시피명을 필드의 name에 저장한 형태
+                            var int_str: String = document.get("ingredients").toString()
+                            // 재료들을 포함하는 리스트
+                            int_str = int_str.substring(1 .. int_str.length-2)
                             recipeList.add(
                                 arrayOf(
                                     document.get("name").toString(),
@@ -95,9 +94,7 @@ class MainActivity : AppCompatActivity() {
                                 )
                             )
                         }
-                        // 원래는 반복문 밖에서 구현했지만. DB를 다 읽고 실행되는게 아니라 도중에 실행되서
-                        // 원하는 데이터가 전부 들어오지 않을 때가 잇다.
-                        // 현재는 불필요하게 많이 호출하게 되겠지만 그래도 데이터가 잘 나온다.
+
                         adapter = SearchAdapter(recipeList, applicationContext, database)
                         binding.FindrecyclerView.layoutManager = LinearLayoutManager(applicationContext)
                         binding.FindrecyclerView.itemAnimator = DefaultItemAnimator()
