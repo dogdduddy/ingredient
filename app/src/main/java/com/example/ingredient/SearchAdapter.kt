@@ -39,7 +39,7 @@ class SearchAdapter (
             }
             holder!!.title.text = recipe[0].toString()
             holder.content.text = "재료 : " + recipe[1]
-            holder.time.text = recipe[3].toString()
+            holder.time.text = recipe[2].toString()
             holder.bind(recipe)
 
             //holder.edit.setOnClickListener { updateNote(recipe) }

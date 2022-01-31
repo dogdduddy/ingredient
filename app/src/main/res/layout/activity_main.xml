@@ -5,6 +5,27 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/testBtn"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"/>
+
+    <Button
+        android:id="@+id/searchBtn"
+        android:layout_width="40dp"
+        android:layout_height="30dp"
+        android:layout_marginBottom="13dp"
+        android:background="#00000000"
+        android:drawableBottom="@drawable/search"
+        app:layout_constraintBottom_toBottomOf="@+id/findwindow"
+        app:layout_constraintEnd_toEndOf="@+id/findwindow"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/findwindow"
+        app:layout_constraintTop_toTopOf="@+id/findwindow"
+        app:layout_constraintVertical_bias="1.0"
+        tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
 
     <EditText
         android:id="@+id/findwindow"
@@ -20,20 +41,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/button"
-        android:layout_width="40dp"
-        android:layout_height="30dp"
-        android:layout_marginBottom="13dp"
-        android:background="#00000000"
-        android:drawableBottom="@drawable/search"
-        app:layout_constraintBottom_toBottomOf="@+id/findwindow"
-        app:layout_constraintEnd_toEndOf="@+id/findwindow"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="@+id/findwindow"
-        app:layout_constraintTop_toTopOf="@+id/findwindow"
-        app:layout_constraintVertical_bias="1.0"
-        tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:padding="40dp"
