@@ -100,39 +100,41 @@ class MainActivity : AppCompatActivity() {
                             setOnCloseIconClickListener {
                                 binding.chipGroup.removeView(this)
                                 strList.remove(text)
+                                SearchQuery(database, strList)
                             } // X버튼 누르면 chip 없어지게 하기
                         })
                     }
                 }
                 if (check) {
-                    val refs = database.collection("users")
-                    // 검색 통해 나온 레시피명을 담는 리스트
-                    val recipeList = mutableListOf<Array<Any>>()
-                    refs.whereArrayContainsAny("ingredients", strList).get()
-                        .addOnSuccessListener { documents ->
-                            for (document in documents) {
-                                Log.d("MainTest : ", document.toString())
-                                // 레시피 검색해서 나온 이름, 재료, 시간 저장
-                                var int_str: String = document.get("ingredients").toString()
-                                // 재료들을 포함하는 리스트
-                                int_str = int_str.substring(1..int_str.length - 2)
-                                recipeList.add(
-                                    arrayOf(
-                                        document.get("name").toString(),
-                                        int_str,
-                                        document.get("time").toString()
-                                    )
-                                )
-                            }
-
-                            adapter = SearchAdapter(recipeList, applicationContext, database)
-                            binding.FindrecyclerView.layoutManager =
-                                LinearLayoutManager(applicationContext)
-                            binding.FindrecyclerView.itemAnimator = DefaultItemAnimator()
-                            binding.FindrecyclerView.adapter = adapter
-                        }
+                    SearchQuery(database, strList)
                 }
             }
         }
+    }
+    fun SearchQuery(database:FirebaseFirestore, strList:MutableList<String>):Unit {
+        val refs = database.collection("users")
+        // 검색 통해 나온 레시피명을 담는 리스트
+        val recipeList = mutableListOf<Array<Any>>()
+        refs.whereArrayContainsAny("ingredients", strList).get()
+            .addOnSuccessListener { documents ->
+                for (document in documents) {
+                    Log.d("MainTest : ", document.toString())
+                    // 레시피 검색해서 나온 이름, 재료, 시간 저장
+                    var int_str: String = document.get("ingredients").toString()
+                    // 재료들을 포함하는 리스트
+                    int_str = int_str.substring(1..int_str.length - 2)
+                    recipeList.add(
+                        arrayOf(
+                            document.get("name").toString(),
+                            int_str,
+                            document.get("time").toString()
+                        )
+                    )
+                }
+                adapter = SearchAdapter(recipeList, applicationContext, database)
+                binding.FindrecyclerView.layoutManager = LinearLayoutManager(applicationContext)
+                binding.FindrecyclerView.itemAnimator = DefaultItemAnimator()
+                binding.FindrecyclerView.adapter = adapter
+            }
     }
 }
