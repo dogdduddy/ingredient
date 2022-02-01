@@ -10,6 +10,7 @@ import android.view.inputmethod.EditorInfo
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.ingredient.databinding.ActivityMainBinding
+import com.google.android.material.chip.Chip
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -19,6 +20,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var adapter: SearchAdapter
     private lateinit var database: FirebaseFirestore
     private lateinit var binding: ActivityMainBinding
+    private var strList = mutableListOf<String>()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -78,38 +80,58 @@ class MainActivity : AppCompatActivity() {
             // 검색창에 입력한 재료들 리스트화
             var str = binding.findwindow.text.toString().split(",")
             if (str.size > 0) {
-                var strList = mutableListOf<String>()
+                var check = true
                 // 검색한 재료의 좌우 빈칸 제거 ex) " 감자" -> "감자"
                 for (element in str) {
-                    strList.add(element.trim())
-                }
-
-                val refs = database.collection("users")
-                // 검색 통해 나온 레시피명을 담는 리스트
-                val recipeList = mutableListOf<Array<Any>>()
-
-                refs.whereArrayContainsAny("ingredients", strList).get()
-                    .addOnSuccessListener { documents ->
-                        for (document in documents) {
-                            Log.d("MainTest : ", document.toString())
-                            // 레시피 검색해서 나온 이름, 재료, 시간 저장
-                            var int_str: String = document.get("ingredients").toString()
-                            // 재료들을 포함하는 리스트
-                            int_str = int_str.substring(1 .. int_str.length-2)
-                            recipeList.add(
-                                arrayOf(
-                                    document.get("name").toString(),
-                                    int_str,
-                                    document.get("time").toString()
-                                )
-                            )
+                    check = true
+                    for (i in 0 until strList.size) {
+                        if (strList[i] == element) {
+                            check = false
+                            break
                         }
-
-                        adapter = SearchAdapter(recipeList, applicationContext, database)
-                        binding.FindrecyclerView.layoutManager = LinearLayoutManager(applicationContext)
-                        binding.FindrecyclerView.itemAnimator = DefaultItemAnimator()
-                        binding.FindrecyclerView.adapter = adapter
                     }
+                    // 검색 재료 중복 체크
+                    if (check && !element.isNullOrEmpty()) {
+                        strList.add(element.trim())
+                        // chip 생성
+                        binding.chipGroup.addView(Chip(this).apply {
+                            text = element.trim() // chip 텍스트 설정
+                            isCloseIconVisible = true // chip에서 X 버튼 보이게 하기
+                            setOnCloseIconClickListener {
+                                binding.chipGroup.removeView(this)
+                                strList.remove(text)
+                            } // X버튼 누르면 chip 없어지게 하기
+                        })
+                    }
+                }
+                if (check) {
+                    val refs = database.collection("users")
+                    // 검색 통해 나온 레시피명을 담는 리스트
+                    val recipeList = mutableListOf<Array<Any>>()
+                    refs.whereArrayContainsAny("ingredients", strList).get()
+                        .addOnSuccessListener { documents ->
+                            for (document in documents) {
+                                Log.d("MainTest : ", document.toString())
+                                // 레시피 검색해서 나온 이름, 재료, 시간 저장
+                                var int_str: String = document.get("ingredients").toString()
+                                // 재료들을 포함하는 리스트
+                                int_str = int_str.substring(1..int_str.length - 2)
+                                recipeList.add(
+                                    arrayOf(
+                                        document.get("name").toString(),
+                                        int_str,
+                                        document.get("time").toString()
+                                    )
+                                )
+                            }
+
+                            adapter = SearchAdapter(recipeList, applicationContext, database)
+                            binding.FindrecyclerView.layoutManager =
+                                LinearLayoutManager(applicationContext)
+                            binding.FindrecyclerView.itemAnimator = DefaultItemAnimator()
+                            binding.FindrecyclerView.adapter = adapter
+                        }
+                }
             }
         }
     }
