@@ -102,11 +102,7 @@ class MainActivity : AppCompatActivity() {
                                 binding.chipGroup.removeView(this)
                                 strList.remove(text)
                                 // chip 삭제 반영
-                                if (strList.isNullOrEmpty()) {
-                                    for (i in 0 until recipeList.size) {
-                                        adapter.nullItem(i)
-                                    }
-                                }
+                                if (strList.isNullOrEmpty()) for (i in 0 until recipeList.size) adapter.nullItem(i)
                                 else SearchQuery(database, strList)
                             }
                         })
