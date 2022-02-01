@@ -78,6 +78,7 @@ class MainActivity : AppCompatActivity() {
             var str = binding.findwindow.text.toString().split(",")
             binding.findwindow.setText("")
 
+
             if (str.size > 0) {
                 var check = true
                 // 검색한 재료의 좌우 빈칸 제거 ex) " 감자" -> "감자"
