@@ -36,6 +36,8 @@
         android:gravity="center"
         android:hint="Search"
         android:maxLines="1"
+        android:inputType="text"
+        android:imeOptions="actionSearch"
         android:privateImeOptions="defaultInputmode=korean"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

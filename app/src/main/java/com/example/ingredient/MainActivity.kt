@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.text.Layout
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.inputmethod.EditorInfo
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.ingredient.databinding.ActivityMainBinding
@@ -61,6 +62,15 @@ class MainActivity : AppCompatActivity() {
             Log.d(TAG,"TestBtn click!")
             val intent = Intent(this,TestActivity::class.java)
             startActivity(intent)
+        }
+        // 엔터키로 검색 실행 기능
+        binding.findwindow.setOnEditorActionListener { v, actionId, event ->
+            var handled = false
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                binding.searchBtn.performClick()
+                handled = true
+            }
+            handled
         }
         binding.searchBtn.setOnClickListener {
             Log.d(TAG,"Click searchBtn")
