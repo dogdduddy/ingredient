@@ -76,6 +76,7 @@ class SearchAdapter (
 
             }
         }
+        // 마지막 chip 삭제했을 때는 값이 없으므로 쿼리가 불가능 => recyclerview 아이템 직접 삭제
         fun nullItem(position: Int) {
             recipeList.removeAt((position))
             notifyItemRemoved(position)

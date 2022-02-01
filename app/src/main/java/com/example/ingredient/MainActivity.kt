@@ -61,7 +61,6 @@ class MainActivity : AppCompatActivity() {
 
         */
         binding.testBtn.setOnClickListener {
-            Log.d(TAG,"TestBtn click!")
             val intent = Intent(this,TestActivity::class.java)
             startActivity(intent)
         }
@@ -75,10 +74,10 @@ class MainActivity : AppCompatActivity() {
             handled
         }
         binding.searchBtn.setOnClickListener {
-            Log.d(TAG,"Click searchBtn")
-
             // 검색창에 입력한 재료들 리스트화
             var str = binding.findwindow.text.toString().split(",")
+            binding.findwindow.setText("")
+
             if (str.size > 0) {
                 var check = true
                 // 검색한 재료의 좌우 빈칸 제거 ex) " 감자" -> "감자"
