@@ -21,7 +21,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var database: FirebaseFirestore
     private lateinit var binding: ActivityMainBinding
     private var strList = mutableListOf<String>()
-
+    private var recipeList = mutableListOf<Array<Any>>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -91,7 +91,8 @@ class MainActivity : AppCompatActivity() {
                         }
                     }
                     // 검색 재료 중복 체크
-                    if (check && !element.isNullOrEmpty()) {
+                    if (element.isNullOrEmpty()) check = false
+                    if(check) {
                         strList.add(element.trim())
                         // chip 생성
                         binding.chipGroup.addView(Chip(this).apply {
@@ -100,7 +101,12 @@ class MainActivity : AppCompatActivity() {
                             setOnCloseIconClickListener {
                                 binding.chipGroup.removeView(this)
                                 strList.remove(text)
-                                SearchQuery(database, strList)
+                                if (strList.isNullOrEmpty()) {
+                                    for (i in 0 until recipeList.size) {
+                                        adapter.nullItem(i)
+                                    }
+                                }
+                                else SearchQuery(database, strList)
                             } // X버튼 누르면 chip 없어지게 하기
                         })
                     }
@@ -114,7 +120,7 @@ class MainActivity : AppCompatActivity() {
     fun SearchQuery(database:FirebaseFirestore, strList:MutableList<String>):Unit {
         val refs = database.collection("users")
         // 검색 통해 나온 레시피명을 담는 리스트
-        val recipeList = mutableListOf<Array<Any>>()
+        recipeList = mutableListOf<Array<Any>>()
         refs.whereArrayContainsAny("ingredients", strList).get()
             .addOnSuccessListener { documents ->
                 for (document in documents) {
@@ -131,10 +137,13 @@ class MainActivity : AppCompatActivity() {
                         )
                     )
                 }
-                adapter = SearchAdapter(recipeList, applicationContext, database)
-                binding.FindrecyclerView.layoutManager = LinearLayoutManager(applicationContext)
-                binding.FindrecyclerView.itemAnimator = DefaultItemAnimator()
-                binding.FindrecyclerView.adapter = adapter
+                adapterConnect(recipeList)
             }
+    }
+    fun adapterConnect(recipeList: MutableList<Array<Any>>) {
+        adapter = SearchAdapter(recipeList, applicationContext, database)
+        binding.FindrecyclerView.layoutManager = LinearLayoutManager(applicationContext)
+        binding.FindrecyclerView.itemAnimator = DefaultItemAnimator()
+        binding.FindrecyclerView.adapter = adapter
     }
 }

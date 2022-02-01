@@ -88,4 +88,9 @@ class SearchAdapter (
                 //delete = view.findViewById(R.id.ivDelete)
             }
         }
+        fun nullItem(position: Int) {
+            recipeList.removeAt((position))
+            notifyItemRemoved(position)
+            notifyDataSetChanged()
+        }
     }
