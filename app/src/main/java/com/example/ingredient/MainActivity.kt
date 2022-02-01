@@ -17,9 +17,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.ingredient.databinding.ActivityMainBinding
 import com.google.android.material.chip.Chip
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
-import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -38,13 +35,21 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         database = FirebaseFirestore.getInstance()
         
         replaceFragment(searchFragment) // 시작화면은 search 화면으로
+        binding.menuBottom.setOnItemSelectedListener { id ->
+            when (id) {
+                R.id.search -> replaceFragment(searchFragment)
+                R.id.expiration_date -> replaceFragment(expirationdateFragment)
+                R.id.tips -> replaceFragment(tipsFragment)
+                R.id.food_book -> replaceFragment(foodbookFragment)
+            }
 
+        }
+        /*
         menu_bottom.setOnItemSelectedListener() { id ->
             when (id) {
                 R.id.search -> replaceFragment(searchFragment)
@@ -53,6 +58,8 @@ class MainActivity : AppCompatActivity() {
                 R.id.food_book -> replaceFragment(foodbookFragment)
             }
         }
+
+         */
 
         /* 파이어베이스 입출력 예
         // Add Data Struct
@@ -174,4 +181,5 @@ class MainActivity : AppCompatActivity() {
             transection.replace(R.id.fragment_container, fragment)
             transection.commit()
         }
+    }
 }
