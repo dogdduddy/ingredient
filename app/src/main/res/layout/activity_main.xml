@@ -27,6 +27,22 @@
         app:layout_constraintVertical_bias="1.0"
         tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
 
+    <com.ismaeldivita.chipnavigation.ChipNavigationBar
+        android:id="@+id/menu_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:background="#fff"
+        android:elevation="16dp"
+        android:gravity="center"
+        android:padding="8dp"
+        app:cnb_menuResource="@menu/menu"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+    <FrameLayout
+        android:id="@+id/fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/menu_bottom"
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

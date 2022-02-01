@@ -3,6 +3,16 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/hyeon/Android project/ingredient/app/src/main/res/drawable-v24/ic_home.xml" value="0.1" />
+        <entry key="..\:/Users/hyeon/Android project/ingredient/app/src/main/res/drawable-v24/ic_love.xml" value="0.1" />
+        <entry key="..\:/Users/hyeon/Android project/ingredient/app/src/main/res/drawable-v24/ic_profile.xml" value="0.1" />
+        <entry key="..\:/Users/hyeon/Android project/ingredient/app/src/main/res/drawable-v24/ic_search.xml" value="0.1" />
+        <entry key="..\:/Users/hyeon/Android project/ingredient/app/src/main/res/layout/activity_main.xml" value="0.10643115942028986" />
+        <entry key="..\:/Users/hyeon/Android project/ingredient/app/src/main/res/layout/fragment_expiration_date.xml" value="0.10643115942028986" />
+        <entry key="..\:/Users/hyeon/Android project/ingredient/app/src/main/res/layout/fragment_food_book.xml" value="0.10643115942028986" />
+        <entry key="..\:/Users/hyeon/Android project/ingredient/app/src/main/res/layout/fragment_search.xml" value="0.10643115942028986" />
+        <entry key="..\:/Users/hyeon/Android project/ingredient/app/src/main/res/layout/fragment_tips.xml" value="0.10643115942028986" />
+        <entry key="..\:/Users/hyeon/Android project/ingredient/app/src/main/res/menu/menu.xml" value="0.1" />
         <entry key="app/src/main/res/drawable-v24/search.xml" value="0.1755" />
         <entry key="app/src/main/res/drawable-v24/searchbar.xml" value="0.1755" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.25317028985507245" />

@@ -5,6 +5,11 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Layout
 import android.util.Log
+import androidx.fragment.app.Fragment
+import com.example.ingredient.fragment.ExpirationDate
+import com.example.ingredient.fragment.FoodBook
+import com.example.ingredient.fragment.Search
+import com.example.ingredient.fragment.Tips
 import android.view.LayoutInflater
 import android.view.inputmethod.EditorInfo
 import androidx.recyclerview.widget.DefaultItemAnimator
@@ -14,8 +19,16 @@ import com.google.android.material.chip.Chip
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
+
+    private val searchFragment = Search()
+    private val expirationdateFragment = ExpirationDate()
+    private val tipsFragment = Tips()
+    private val foodbookFragment = FoodBook()
+
+
     private val TAG = "MainActivity"
     private lateinit var adapter: SearchAdapter
     private lateinit var database: FirebaseFirestore
@@ -25,9 +38,21 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         database = FirebaseFirestore.getInstance()
+        
+        replaceFragment(searchFragment) // 시작화면은 search 화면으로
+
+        menu_bottom.setOnItemSelectedListener() { id ->
+            when (id) {
+                R.id.search -> replaceFragment(searchFragment)
+                R.id.expiration_date -> replaceFragment(expirationdateFragment)
+                R.id.tips -> replaceFragment(tipsFragment)
+                R.id.food_book -> replaceFragment(foodbookFragment)
+            }
+        }
 
         /* 파이어베이스 입출력 예
         // Add Data Struct
@@ -57,9 +82,8 @@ class MainActivity : AppCompatActivity() {
             .addOnFailureListener { exception ->
                 Log.w(TAG, "Error getting documents.", exception)
             }
-
-
         */
+    
         binding.testBtn.setOnClickListener {
             val intent = Intent(this,TestActivity::class.java)
             startActivity(intent)
@@ -144,4 +168,10 @@ class MainActivity : AppCompatActivity() {
         binding.FindrecyclerView.itemAnimator = DefaultItemAnimator()
         binding.FindrecyclerView.adapter = adapter
     }
+    private fun replaceFragment(fragment: Fragment) {
+        if (fragment != null) {
+            val transection = supportFragmentManager.beginTransaction()
+            transection.replace(R.id.fragment_container, fragment)
+            transection.commit()
+        }
 }
