@@ -101,17 +101,19 @@ class MainActivity : AppCompatActivity() {
                             setOnCloseIconClickListener {
                                 binding.chipGroup.removeView(this)
                                 strList.remove(text)
+                                // chip 삭제 반영
                                 if (strList.isNullOrEmpty()) {
                                     for (i in 0 until recipeList.size) {
                                         adapter.nullItem(i)
                                     }
                                 }
                                 else SearchQuery(database, strList)
-                            } // X버튼 누르면 chip 없어지게 하기
+                            }
                         })
                     }
                 }
                 if (check) {
+                    // null, 중복 없다면 쿼리 실행
                     SearchQuery(database, strList)
                 }
             }
