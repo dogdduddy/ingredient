@@ -2,6 +2,7 @@ package com.example.ingredient
 
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,9 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.FirebaseFirestore
 
 class SearchAdapter (
-    private val recipeList: MutableList<Array<Any>>,
-    private val context: Context,
-    private val firestoreDB: FirebaseFirestore)
+    private val recipeList: MutableList<Array<Any>>)
     : RecyclerView.Adapter<SearchAdapter.ViewHolder>()
     {
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -24,7 +23,7 @@ class SearchAdapter (
 
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
             val recipe = recipeList[position]
-
+            Log.d("Data Test : ","$position, $recipe")
             when (position % 5) {
                 0 -> holder.food.setImageResource(R.drawable.buckwheat)
                 1 -> holder.food.setImageResource(R.drawable.bibim)
