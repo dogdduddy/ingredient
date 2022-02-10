@@ -5,11 +5,43 @@
     android:layout_height="match_parent"
     tools:context=".fragment.Search">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
         android:id="@+id/search_text"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:text="검색" />
+    <Button
+        android:id="@+id/searchBtn"
+        android:layout_width="40dp"
+        android:layout_height="30dp"
+        android:layout_marginBottom="13dp"
+        android:background="#00000000"
+        android:drawableBottom="@drawable/search"
+        tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
+    <EditText
+        android:text=""
+        android:id="@+id/findwindow"
+        android:layout_width="250dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="140dp"
+        android:background="@drawable/searchbar"
+        android:gravity="center"
+        android:hint="Search"
+        android:maxLines="1"
+        android:inputType="text"
+        android:imeOptions="actionSearch"
+        android:privateImeOptions="defaultInputmode=korean" />
 
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/chip_group"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:padding="40dp"
+        android:id="@+id/FindrecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp" />
 </FrameLayout>
