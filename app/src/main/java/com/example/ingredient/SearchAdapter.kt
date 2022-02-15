@@ -9,15 +9,18 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.ingredient.fragment.PurchaseConfirmationDialogFragment
 import com.google.firebase.firestore.FirebaseFirestore
 
 class SearchAdapter (
     private val recipeList: MutableList<Array<Any>>)
     : RecyclerView.Adapter<SearchAdapter.ViewHolder>()
     {
+        private var context:Context? = null
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
             val view =
                 LayoutInflater.from(parent!!.context).inflate(R.layout.item_recipe, parent, false)
+            context = view.context
             return ViewHolder(view)
         }
 
@@ -46,7 +49,9 @@ class SearchAdapter (
             internal var content: TextView
             internal var time: TextView
             internal var food: ImageView
-
+            init {
+                var context = context
+            }
             fun bind(item: Array<Any>) {
                 /* 바인딩 된 아이템을 클릭했을 때의 이벤트
                 itemView.setOnClickListener {
@@ -76,9 +81,9 @@ class SearchAdapter (
             }
         }
         // 마지막 chip 삭제했을 때는 값이 없으므로 쿼리가 불가능 => recyclerview 아이템 직접 삭제
-        fun nullItem(position: Int) {
-            recipeList.removeAt((position))
-            notifyItemRemoved(position)
+        fun nullItem() {
+            recipeList.removeAt((0))
+            notifyItemRemoved(0)
             notifyDataSetChanged()
         }
     }

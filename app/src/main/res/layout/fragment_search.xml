@@ -6,11 +6,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragment.Search">
 
-    <TextView
-        android:id="@+id/search_text"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="검색" />
     <EditText
         android:text=""
         android:id="@+id/findwindow"

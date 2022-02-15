@@ -6,8 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-
-
     <com.ismaeldivita.chipnavigation.ChipNavigationBar
         android:id="@+id/menu_bottom"
         android:layout_width="match_parent"
