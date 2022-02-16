@@ -34,6 +34,9 @@ class SearchAdapter (
                 3 -> holder.food.setImageResource(R.drawable.salad)
                 4 -> holder.food.setImageResource(R.drawable.steak)
             }
+            holder.itemView.setOnClickListener {
+                itemCLickListener.onClick(it, position)
+            }
             holder!!.title.text = recipe[0].toString()
             holder.content.text = "재료 : " + recipe[1]
             holder.time.text = recipe[2].toString()
@@ -53,8 +56,12 @@ class SearchAdapter (
                 var context = context
             }
             fun bind(item: Array<Any>) {
-                /* 바인딩 된 아이템을 클릭했을 때의 이벤트
+                //바인딩 된 아이템을 클릭했을 때의 이벤트
                 itemView.setOnClickListener {
+                    /*
+                    PurchaseConfirmationDialogFragment().show(
+                        childFragmentManager, PurchaseConfirmationDialogFragment.TAG)
+
                     Intent(context, ContentActivity::class.java).apply {
                         addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                         // 받아온 값을 다시 List 형태로 변경
@@ -67,9 +74,10 @@ class SearchAdapter (
                         putExtra("time", item[3].toString())
 
                     }.run { context.startActivity(this) }
+
+                     */
                 }
 
-                 */
             }
 
             init {
@@ -86,4 +94,11 @@ class SearchAdapter (
             notifyItemRemoved(0)
             notifyDataSetChanged()
         }
+        interface OnItemClickListener {
+            fun onClick(view:View, position: Int)
+        }
+        fun setItemClickListener(onItemClickListener: OnItemClickListener) {
+            this.itemCLickListener = onItemClickListener
+        }
+        private lateinit var itemCLickListener:OnItemClickListener
     }

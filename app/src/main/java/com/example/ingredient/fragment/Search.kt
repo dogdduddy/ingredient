@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.get
 import androidx.core.view.marginTop
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -127,8 +128,15 @@ class Search : Fragment() {
                 adapterConnect(recipeList)
             }
     }
-    fun adapterConnect(recipeList: MutableList<Array<Any>>) {
+    private fun adapterConnect(recipeList: MutableList<Array<Any>>){
         adapter = SearchAdapter(recipeList)
+        adapter.setItemClickListener(object: SearchAdapter.OnItemClickListener{
+            override fun onClick(view: View, position: Int) {
+                Log.d("Fragment","Test Click")
+                PurchaseConfirmationDialogFragment().show(
+                    childFragmentManager, PurchaseConfirmationDialogFragment.TAG)
+            }
+        })
         binding.FindrecyclerView.layoutManager = LinearLayoutManager(activity, RecyclerView.VERTICAL, false)
         binding.FindrecyclerView.itemAnimator = DefaultItemAnimator()
         binding.FindrecyclerView.adapter = adapter
