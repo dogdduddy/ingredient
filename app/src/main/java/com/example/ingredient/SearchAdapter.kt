@@ -57,26 +57,25 @@ class SearchAdapter (
             }
             fun bind(item: Array<Any>) {
                 //바인딩 된 아이템을 클릭했을 때의 이벤트
-                itemView.setOnClickListener {
-                    /*
-                    PurchaseConfirmationDialogFragment().show(
-                        childFragmentManager, PurchaseConfirmationDialogFragment.TAG)
+                /*
+               itemView.setOnClickListener {
 
-                    Intent(context, ContentActivity::class.java).apply {
-                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                        // 받아온 값을 다시 List 형태로 변경
-                        val cook = item[2] as List<String>
+                   PurchaseConfirmationDialogFragment().show(
+                       childFragmentManager, PurchaseConfirmationDialogFragment.TAG)
 
-                        putExtra("id", item[0].toString())
-                        putExtra("content", item[1].toString())
-                        // Extra로 넘기기 위해 Array 타입으로 변경
-                        putExtra("cook", cook.toTypedArray())
-                        putExtra("time", item[3].toString())
+                   Intent(context, ContentActivity::class.java).apply {
+                       addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                       // 받아온 값을 다시 List 형태로 변경
+                       val cook = item[2] as List<String>
 
-                    }.run { context.startActivity(this) }
+                       putExtra("id", item[0].toString())
+                       putExtra("content", item[1].toString())
+                       // Extra로 넘기기 위해 Array 타입으로 변경
+                       putExtra("cook", cook.toTypedArray())
+                       putExtra("time", item[3].toString())
 
-                     */
-                }
+                   }.run { context.startActivity(this) }
+                }*/
 
             }
 

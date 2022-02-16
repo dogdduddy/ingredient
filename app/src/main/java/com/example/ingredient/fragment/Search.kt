@@ -128,6 +128,11 @@ class Search : Fragment() {
                 adapterConnect(recipeList)
             }
     }
+    // Adapter에서 setItemClickListener interface 생성
+    // interface에 onClick 메서드 생성
+    // interface 타입의 변수를 갖고 있는 setItemClickListener 메서드 생성
+    // fragment에서 setItemClickListener 메서드를 실행 후 onClick 메서드를 재정의
+
     private fun adapterConnect(recipeList: MutableList<Array<Any>>){
         adapter = SearchAdapter(recipeList)
         adapter.setItemClickListener(object: SearchAdapter.OnItemClickListener{
