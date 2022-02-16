@@ -7,6 +7,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.get
+import androidx.core.view.marginTop
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -21,9 +24,12 @@ class Search : Fragment() {
     private lateinit var database: FirebaseFirestore
     private var strList = mutableListOf<String>()
     private var recipeList = mutableListOf<Array<Any>>()
-
     private var _binding : FragmentSearchBinding? = null
     private val binding get()  = _binding!!
+
+    private val layoutParams = ConstraintLayout.LayoutParams(250, 48)
+    private val up = 40
+    private val down = 140
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -56,7 +62,6 @@ class Search : Fragment() {
             var str = binding.findwindow.text.toString().split(",")
             binding.findwindow.setText("")
 
-
             if (str.size > 0) {
                 var check = true
                 // 검색한 재료의 좌우 빈칸 제거 ex) " 감자" -> "감자"
@@ -80,13 +85,19 @@ class Search : Fragment() {
                                 binding.chipGroup.removeView(this)
                                 strList.remove(text)
                                 // chip 삭제 반영
-                                if (strList.isNullOrEmpty()) for (i in 0 until recipeList.size) adapter.nullItem(i)
+                                if (strList.isNullOrEmpty()) {
+                                    for (i in 0 until recipeList.size) adapter.nullItem()
+                                    // 동적 버튼 / 검색어 없을시 서치바 위치가 내려가도록
+                                    //setSearchBarMargin(down)
+                                }
                                 else SearchQuery(database, strList)
                             }
                         })
                     }
                 }
                 if (check) {
+                    // 동적 버튼 / 검색시 서치바 위치가 올라r가도록
+                    //setSearchBarMargin(up)
                     // null, 중복 없다면 쿼리 실행
                     SearchQuery(database, strList)
                 }
@@ -94,10 +105,6 @@ class Search : Fragment() {
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        _binding = null
-    }
     fun SearchQuery(database:FirebaseFirestore, strList:MutableList<String>):Unit {
         val refs = database.collection("users")
         // 검색 통해 나온 레시피명을 담는 리스트
@@ -121,10 +128,33 @@ class Search : Fragment() {
                 adapterConnect(recipeList)
             }
     }
-    fun adapterConnect(recipeList: MutableList<Array<Any>>) {
+    // Adapter에서 setItemClickListener interface 생성
+    // interface에 onClick 메서드 생성
+    // interface 타입의 변수를 갖고 있는 setItemClickListener 메서드 생성
+    // fragment에서 setItemClickListener 메서드를 실행 후 onClick 메서드를 재정의
+
+    private fun adapterConnect(recipeList: MutableList<Array<Any>>){
         adapter = SearchAdapter(recipeList)
+        adapter.setItemClickListener(object: SearchAdapter.OnItemClickListener{
+            override fun onClick(view: View, position: Int) {
+                Log.d("Fragment","Test Click")
+                PurchaseConfirmationDialogFragment().show(
+                    childFragmentManager, PurchaseConfirmationDialogFragment.TAG)
+            }
+        })
         binding.FindrecyclerView.layoutManager = LinearLayoutManager(activity, RecyclerView.VERTICAL, false)
         binding.FindrecyclerView.itemAnimator = DefaultItemAnimator()
         binding.FindrecyclerView.adapter = adapter
+    }
+
+    fun setSearchBarMargin(locate:Int){
+        // 동적 버튼 / 검색시 서치바 위치가 올라가도록
+        layoutParams.setMargins(0, locate,0,0)
+        binding.findwindow.layoutParams = layoutParams
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 }
