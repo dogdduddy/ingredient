@@ -40,7 +40,6 @@ class SearchAdapter (
             holder!!.title.text = recipe[0].toString()
             holder.content.text = "재료 : " + recipe[1]
             holder.time.text = recipe[2].toString()
-            holder.bind(recipe)
         }
 
         override fun getItemCount(): Int {
@@ -55,30 +54,6 @@ class SearchAdapter (
             init {
                 var context = context
             }
-            fun bind(item: Array<Any>) {
-                //바인딩 된 아이템을 클릭했을 때의 이벤트
-                /*
-               itemView.setOnClickListener {
-
-                   PurchaseConfirmationDialogFragment().show(
-                       childFragmentManager, PurchaseConfirmationDialogFragment.TAG)
-
-                   Intent(context, ContentActivity::class.java).apply {
-                       addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                       // 받아온 값을 다시 List 형태로 변경
-                       val cook = item[2] as List<String>
-
-                       putExtra("id", item[0].toString())
-                       putExtra("content", item[1].toString())
-                       // Extra로 넘기기 위해 Array 타입으로 변경
-                       putExtra("cook", cook.toTypedArray())
-                       putExtra("time", item[3].toString())
-
-                   }.run { context.startActivity(this) }
-                }*/
-
-            }
-
             init {
                 title = view.findViewById(R.id.findTitle)
                 content = view.findViewById(R.id.findContent)
