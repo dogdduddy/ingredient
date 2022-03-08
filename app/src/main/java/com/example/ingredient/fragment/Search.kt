@@ -114,6 +114,7 @@ class Search : Fragment() {
                 for (document in documents) {
                     Log.d("MainTest : ", document.toString())
                     // 레시피 검색해서 나온 이름, 재료, 시간 저장
+
                     var int_str: String = document.get("ingredients").toString()
                     // 재료들을 포함하는 리스트
                     int_str = int_str.substring(1..int_str.length - 2)
@@ -135,6 +136,8 @@ class Search : Fragment() {
 
     private fun adapterConnect(recipeList: MutableList<Array<Any>>){
         adapter = SearchAdapter(recipeList)
+
+        // Fragment
         adapter.setItemClickListener(object: SearchAdapter.OnItemClickListener{
             override fun onClick(view: View, position: Int) {
                 Log.d("Fragment","Test Click")
@@ -142,6 +145,7 @@ class Search : Fragment() {
                     childFragmentManager, PurchaseConfirmationDialogFragment.TAG)
             }
         })
+
         binding.FindrecyclerView.layoutManager = LinearLayoutManager(activity, RecyclerView.VERTICAL, false)
         binding.FindrecyclerView.itemAnimator = DefaultItemAnimator()
         binding.FindrecyclerView.adapter = adapter
