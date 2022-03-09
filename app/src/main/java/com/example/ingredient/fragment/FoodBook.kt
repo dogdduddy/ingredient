@@ -52,7 +52,6 @@ class FoodBook : Fragment() {
         }
 
         binding.searchBtn.setOnClickListener {
-            // 검색창에 입력한 재료들 리스트화
             var str = binding.findwindow.text.toString()
             binding.findwindow.setText("")
             if (!str.isNullOrBlank()) {
@@ -65,8 +64,12 @@ class FoodBook : Fragment() {
         val refs = database.collection("users")
         // 검색 통해 나온 레시피명을 담는 리스트
         recipeList = mutableListOf<Array<Any>>()
-        //str = "김치"
-        refs.whereEqualTo("name", str).get()
+        //whereGreaterThan : 쿼리에 입력된 값을 초과하는 데이터만 검색
+        //whereLessThan : 쿼리에 입력된 값의 미만 데이터만 겁색
+        //문제 : 앞에서부터 짤라서 검색함 ex) 김치 => 김치볶음밥 / 밥 => 없음
+        refs.whereGreaterThan("name", str)
+            .whereLessThan("name", "$str\uf8ff")
+            .get()
             .addOnSuccessListener { documents ->
                 for (document in documents) {
                     Log.d("MainTest : ", document.toString())
