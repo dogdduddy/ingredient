@@ -140,8 +140,7 @@ class Search : Fragment() {
         // Fragment
         adapter.setItemClickListener(object: SearchAdapter.OnItemClickListener{
             override fun onClick(view: View, position: Int) {
-                Log.d("Fragment","Test Click")
-                PurchaseConfirmationDialogFragment().show(
+                PurchaseConfirmationDialogFragment(recipeList[position][0].toString()).  show(
                     childFragmentManager, PurchaseConfirmationDialogFragment.TAG)
             }
         })

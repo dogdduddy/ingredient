@@ -5,10 +5,10 @@ import android.app.Dialog
 import android.os.Bundle
 import com.example.ingredient.R
 
-class PurchaseConfirmationDialogFragment : androidx.fragment.app.DialogFragment() {
+class PurchaseConfirmationDialogFragment(var msg:String) : androidx.fragment.app.DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog =
         AlertDialog.Builder(requireContext())
-            .setMessage(getString(R.string.order_confirmation))
+            .setMessage(msg)
             .setPositiveButton(getString(R.string.ok)) { _,_ -> }
             .create()
 
