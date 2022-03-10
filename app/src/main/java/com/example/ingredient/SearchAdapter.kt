@@ -12,8 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.ingredient.fragment.PurchaseConfirmationDialogFragment
 import com.google.firebase.firestore.FirebaseFirestore
 
-class SearchAdapter (
-    private val recipeList: MutableList<Array<Any>>)
+class SearchAdapter (private val recipeList: MutableList<Array<Any>>)
     : RecyclerView.Adapter<SearchAdapter.ViewHolder>()
     {
         private var context:Context? = null
@@ -68,6 +67,7 @@ class SearchAdapter (
             notifyItemRemoved(0)
             notifyDataSetChanged()
         }
+        // Adapter
         interface OnItemClickListener {
             fun onClick(view:View, position: Int)
         }
