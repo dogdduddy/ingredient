@@ -64,20 +64,16 @@ class FoodBook : Fragment() {
         val refs = database.collection("users")
         // 검색 통해 나온 레시피명을 담는 리스트
         recipeList = mutableListOf<Array<Any>>()
-        //whereGreaterThan : 쿼리에 입력된 값을 초과하는 데이터만 검색
-        //whereLessThan : 쿼리에 입력된 값의 미만 데이터만 겁색
-        //문제 : 앞에서부터 짤라서 검색함 ex) 김치 => 김치볶음밥 / 밥 => 없음
+
         refs.whereGreaterThan("name", str)
             .whereLessThan("name", "$str\uf8ff")
             .get()
             .addOnSuccessListener { documents ->
                 for (document in documents) {
-                    Log.d("MainTest : ", document.toString())
-                    // 레시피 검색해서 나온 이름, 재료, 시간 저장
-
                     var int_str: String = document.get("ingredients").toString()
                     // 재료들을 포함하는 리스트
-                    int_str = int_str.substring(1..int_str.length - 2)
+                    int_str = int_str.slice(1..int_str.lastIndex-1)
+                    // 레시피 검색해서 나온 이름, 재료, 시간 저장
                     recipeList.add(
                         arrayOf(
                             document.get("name").toString(),
@@ -89,10 +85,6 @@ class FoodBook : Fragment() {
                 adapterConnect(recipeList)
             }
     }
-    // Adapter에서 setItemClickListener interface 생성
-    // interface에 onClick 메서드 생성
-    // interface 타입의 변수를 갖고 있는 setItemClickListener 메서드 생성
-    // fragment에서 setItemClickListener 메서드를 실행 후 onClick 메서드를 재정의
 
     private fun adapterConnect(recipeList: MutableList<Array<Any>>){
         adapter = SearchAdapter(recipeList)
