@@ -120,12 +120,15 @@ class FoodBook : Fragment() {
         adapter = SearchAdapter(recipeList)
 
         // Fragment
+
         adapter.setItemClickListener(object: SearchAdapter.OnItemClickListener{
             override fun onClick(view: View, position: Int) {
                 PurchaseConfirmationDialogFragment(recipeList[position][0].toString()).show(
                     childFragmentManager, PurchaseConfirmationDialogFragment.TAG)
             }
         })
+
+
 
         binding.FindrecyclerView.layoutManager = LinearLayoutManager(activity, RecyclerView.VERTICAL, false)
         binding.FindrecyclerView.itemAnimator = DefaultItemAnimator()

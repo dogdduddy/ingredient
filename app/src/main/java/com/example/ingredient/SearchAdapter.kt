@@ -33,9 +33,12 @@ class SearchAdapter (private val recipeList: MutableList<Array<Any>>)
                 3 -> holder.food.setImageResource(R.drawable.salad)
                 4 -> holder.food.setImageResource(R.drawable.steak)
             }
+
             holder.itemView.setOnClickListener {
                 itemCLickListener.onClick(it, position)
             }
+
+
             holder!!.title.text = recipe[0].toString()
             holder.content.text = "재료 : " + recipe[1]
             holder.time.text = recipe[2].toString()
@@ -71,6 +74,7 @@ class SearchAdapter (private val recipeList: MutableList<Array<Any>>)
         interface OnItemClickListener {
             fun onClick(view:View, position: Int)
         }
+
         fun setItemClickListener(onItemClickListener: OnItemClickListener) {
             this.itemCLickListener = onItemClickListener
         }
