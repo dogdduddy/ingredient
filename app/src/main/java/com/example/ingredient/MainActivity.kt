@@ -23,7 +23,6 @@ class MainActivity : AppCompatActivity() {
     private val tipsFragment = Tips()
     private val foodbookFragment = FoodBook()
 
-
     private val TAG = "MainActivity"
     private lateinit var binding: ActivityMainBinding
 
@@ -40,10 +39,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.tips -> replaceFragment(tipsFragment)
                 R.id.food_book -> replaceFragment(foodbookFragment)
             }
-
         }
-
-
     }
 
     private fun replaceFragment(fragment: Fragment) {
