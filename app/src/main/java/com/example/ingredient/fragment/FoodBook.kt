@@ -36,7 +36,6 @@ class FoodBook : Fragment() {
         database = FirebaseFirestore.getInstance()
         _binding = FragmentFoodBookBinding.inflate(layoutInflater, container, false)
 
-        // save Test. 2023.03.15. 다른 프래그먼트를 누르고 온 후에도 "김치"라는 검색이 유지 되도록 만드는 중
         Log.d("null test",binding.findwindow.text.toString())
 
         return binding.root
@@ -50,6 +49,7 @@ class FoodBook : Fragment() {
     override fun onStart() {
         super.onStart()
 
+        // 22.03.15  다른 프래그먼트로 전환 후 복귀해도 검색 쿼리 유지되는 기능
         if(binding.findwindow.text.toString().isNullOrBlank())  SearchQuery(database)
         else SearchQuery(database, binding.findwindow.text.toString())
 
