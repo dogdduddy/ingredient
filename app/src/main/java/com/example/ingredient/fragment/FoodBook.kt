@@ -20,11 +20,14 @@ import com.google.firebase.firestore.FirebaseFirestore
 class FoodBook : Fragment() {
     private lateinit var adapter: SearchAdapter
     private lateinit var database: FirebaseFirestore
-    private var strList = mutableListOf<String>()
     private var recipeList = mutableListOf<Array<Any>>()
     private var _binding : FragmentFoodBookBinding? = null
     private val binding get()  = _binding!!
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+    }
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -32,6 +35,10 @@ class FoodBook : Fragment() {
     ): View? {
         database = FirebaseFirestore.getInstance()
         _binding = FragmentFoodBookBinding.inflate(layoutInflater, container, false)
+
+        // save Test. 2023.03.15. 다른 프래그먼트를 누르고 온 후에도 "김치"라는 검색이 유지 되도록 만드는 중
+        Log.d("null test",binding.findwindow.text.toString())
+
         return binding.root
     }
 
@@ -42,7 +49,9 @@ class FoodBook : Fragment() {
 
     override fun onStart() {
         super.onStart()
-        SearchQuery(database)
+
+        if(binding.findwindow.text.toString().isNullOrBlank())  SearchQuery(database)
+        else SearchQuery(database, binding.findwindow.text.toString())
 
         // 엔터키로 검색 실행 기능
         binding.findwindow.setOnEditorActionListener { v, actionId, event ->
@@ -56,7 +65,6 @@ class FoodBook : Fragment() {
 
         binding.searchBtn.setOnClickListener {
             var str = binding.findwindow.text.toString()
-            binding.findwindow.setText("")
             if (!str.isNullOrBlank()) {
                 SearchQuery(database, str)
             }
@@ -120,15 +128,12 @@ class FoodBook : Fragment() {
         adapter = SearchAdapter(recipeList)
 
         // Fragment
-
         adapter.setItemClickListener(object: SearchAdapter.OnItemClickListener{
             override fun onClick(view: View, position: Int) {
                 PurchaseConfirmationDialogFragment(recipeList[position][0].toString()).show(
                     childFragmentManager, PurchaseConfirmationDialogFragment.TAG)
             }
         })
-
-
 
         binding.FindrecyclerView.layoutManager = LinearLayoutManager(activity, RecyclerView.VERTICAL, false)
         binding.FindrecyclerView.itemAnimator = DefaultItemAnimator()
