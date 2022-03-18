@@ -20,13 +20,18 @@ import com.google.firebase.firestore.FirebaseFirestore
 class FoodBook : Fragment() {
     private lateinit var adapter: SearchAdapter
     private lateinit var database: FirebaseFirestore
-    private var recipeList = mutableListOf<Array<Any>>()
+    private var recipeList = mutableListOf<Array<String>>()
     private var _binding : FragmentFoodBookBinding? = null
     private val binding get()  = _binding!!
+    private val KEY_DATA = "KEY_DATA"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        if (savedInstanceState != null) {
+            var data = savedInstanceState.getStringArrayList(KEY_DATA)
+            //recipeList = data
+        }
     }
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -48,10 +53,11 @@ class FoodBook : Fragment() {
 
     override fun onStart() {
         super.onStart()
-
+        /*
         // 22.03.15  다른 프래그먼트로 전환 후 복귀해도 검색 쿼리 유지되는 기능
         if(binding.findwindow.text.toString().isNullOrBlank())  SearchQuery(database)
         else SearchQuery(database, binding.findwindow.text.toString())
+         */
 
         // 엔터키로 검색 실행 기능
         binding.findwindow.setOnEditorActionListener { v, actionId, event ->
@@ -72,12 +78,20 @@ class FoodBook : Fragment() {
                 SearchQuery(database)
             }
         }
+
     }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        var data:String = "test"
+        //outState.putStringArray()
+    }
+
     // 단순쿼리문 (전체 출력)
     fun SearchQuery(database: FirebaseFirestore):Unit {
         val refs = database.collection("users")
         // 검색 통해 나온 레시피명을 담는 리스트
-        recipeList = mutableListOf<Array<Any>>()
+        recipeList = mutableListOf<Array<String>>()
 
         refs.get()
             .addOnSuccessListener { documents ->
@@ -99,7 +113,7 @@ class FoodBook : Fragment() {
     fun SearchQuery(database: FirebaseFirestore, str:String):Unit {
         val refs = database.collection("users")
         // 검색 통해 나온 레시피명을 담는 리스트
-        recipeList = mutableListOf<Array<Any>>()
+        recipeList = mutableListOf<Array<String>>()
 
         refs.whereGreaterThan("name", str)
             .whereLessThan("name", "$str\uf8ff")
@@ -119,7 +133,7 @@ class FoodBook : Fragment() {
             }
     }
 
-    private fun adapterConnect(recipeList: MutableList<Array<Any>>){
+    private fun adapterConnect(recipeList: MutableList<Array<String>>){
         adapter = SearchAdapter(recipeList)
 
         // Fragment
