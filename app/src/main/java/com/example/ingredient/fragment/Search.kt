@@ -7,13 +7,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.view.get
-import androidx.core.view.marginTop
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.ingredient.R
 import com.example.ingredient.SearchAdapter
 import com.example.ingredient.databinding.FragmentSearchBinding
 import com.google.android.material.chip.Chip
@@ -27,6 +25,7 @@ class Search : Fragment() {
     private var _binding : FragmentSearchBinding? = null
     private val binding get()  = _binding!!
 
+    // 구글과 같은 동적 애니메이션 위한 코드
     private val layoutParams = ConstraintLayout.LayoutParams(250, 48)
     private val up = 40
     private val down = 140
@@ -45,6 +44,7 @@ class Search : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         adapterConnect(recipeList)
     }
+
     override fun onStart() {
         super.onStart()
         // 엔터키로 검색 실행 기능
@@ -128,7 +128,9 @@ class Search : Fragment() {
                 }
                 adapterConnect(recipeList)
             }
+
     }
+
     // Adapter에서 setItemClickListener interface 생성
     // interface에 onClick 메서드 생성
     // interface 타입의 변수를 갖고 있는 setItemClickListener 메서드 생성
@@ -158,6 +160,7 @@ class Search : Fragment() {
 
     override fun onDestroy() {
         super.onDestroy()
+        Toast.makeText(context, "Destroy",Toast.LENGTH_LONG).show()
         _binding = null
     }
 }

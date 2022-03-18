@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import androidx.core.os.bundleOf
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -27,11 +28,14 @@ class FoodBook : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+/*
         if (savedInstanceState != null) {
-            var data = savedInstanceState.getStringArrayList(KEY_DATA)
-            //recipeList = data
+            var data = savedInstanceState.getBundle("Key")
+            recipeList = data
+
         }
+
+ */
     }
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -81,11 +85,6 @@ class FoodBook : Fragment() {
 
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        var data:String = "test"
-        //outState.putStringArray()
-    }
 
     // 단순쿼리문 (전체 출력)
     fun SearchQuery(database: FirebaseFirestore):Unit {
@@ -153,3 +152,4 @@ class FoodBook : Fragment() {
         _binding = null
     }
 }
+
