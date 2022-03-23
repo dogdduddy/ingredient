@@ -20,6 +20,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 class Search : Fragment() {
     private lateinit var adapter: SearchAdapter
     private lateinit var database: FirebaseFirestore
+
     private var strList = mutableListOf<String>()
     private var recipeList = mutableListOf<Array<String>>()
     private var _binding : FragmentSearchBinding? = null
@@ -42,6 +43,7 @@ class Search : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        Toast.makeText(context, "onViewCreated : "+recipeList,Toast.LENGTH_LONG).show()
         adapterConnect(recipeList)
     }
 
@@ -162,5 +164,10 @@ class Search : Fragment() {
         super.onDestroy()
         Toast.makeText(context, "Destroy",Toast.LENGTH_LONG).show()
         _binding = null
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        Toast.makeText(context, "Detach",Toast.LENGTH_LONG).show()
     }
 }
