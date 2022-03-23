@@ -1,5 +1,6 @@
 package com.example.ingredient
 
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -10,6 +11,9 @@ import com.example.ingredient.fragment.FoodBook
 import com.example.ingredient.fragment.Search
 import com.example.ingredient.fragment.Tips
 import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
+import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.commit
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -29,13 +33,15 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
         /* Fragmnet 구현 방식의 차이
         현재는 Fragment 클래스를 변수에 저장 / 아래 방식은 띄워질 때 호출하는 방식
-        val transection = supportFragmentManager
+        val  = supportFragmentManager
         transection.commit {
             add(R.id.fragment_container,Search(),"Search")
         }
         */
+
         replaceFragment(searchFragment) // 시작화면은 search 화면으로
         binding.menuBottom.setOnItemSelectedListener { id ->
             when (id) {

@@ -1,5 +1,7 @@
 package com.example.ingredient.fragment
 
+import android.content.Context
+import android.content.Context.INPUT_METHOD_SERVICE
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -9,6 +11,7 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -16,6 +19,7 @@ import com.example.ingredient.SearchAdapter
 import com.example.ingredient.databinding.FragmentSearchBinding
 import com.google.android.material.chip.Chip
 import com.google.firebase.firestore.FirebaseFirestore
+import android.view.inputmethod.InputMethodManager as InputMethodManager
 
 class Search : Fragment() {
     private lateinit var adapter: SearchAdapter
@@ -25,6 +29,7 @@ class Search : Fragment() {
     private var recipeList = mutableListOf<Array<String>>()
     private var _binding : FragmentSearchBinding? = null
     private val binding get()  = _binding!!
+    private var imm:InputMethodManager? = null
 
     // 구글과 같은 동적 애니메이션 위한 코드
     private val layoutParams = ConstraintLayout.LayoutParams(250, 48)
@@ -49,13 +54,16 @@ class Search : Fragment() {
 
     override fun onStart() {
         super.onStart()
-        // 엔터키로 검색 실행 기능
+        // 키보드 자판 돋보기로 검색 실행 기능
         binding.findwindow.setOnEditorActionListener { v, actionId, event ->
             var handled = false
+            // 검색 후 키보드 내리기
+            imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 binding.searchBtn.performClick()
                 handled = true
             }
+            imm?.hideSoftInputFromWindow(binding.findwindow.windowToken,0)
             handled
         }
 
@@ -63,6 +71,8 @@ class Search : Fragment() {
             // 검색창에 입력한 재료들 리스트화
             var str = binding.findwindow.text.toString().split(",")
             binding.findwindow.setText("")
+            imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
+            imm?.hideSoftInputFromWindow(binding.findwindow.windowToken,0)
 
             if (str.size > 0) {
                 var check = true
