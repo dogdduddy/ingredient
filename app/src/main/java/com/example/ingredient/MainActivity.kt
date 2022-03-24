@@ -1,30 +1,18 @@
 package com.example.ingredient
 
-import android.content.Context
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import com.example.ingredient.fragment.ExpirationDate
 import com.example.ingredient.fragment.FoodBook
 import com.example.ingredient.fragment.Search
-import com.example.ingredient.fragment.Tips
-import android.view.inputmethod.EditorInfo
-import android.view.inputmethod.InputMethodManager
-import androidx.core.content.ContextCompat
-import androidx.core.content.ContextCompat.getSystemService
-import androidx.fragment.app.commit
-import androidx.recyclerview.widget.DefaultItemAnimator
-import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.ingredient.fragment.Note
 import com.example.ingredient.databinding.ActivityMainBinding
-import com.google.android.material.chip.Chip
-import com.google.firebase.firestore.FirebaseFirestore
 
 class MainActivity : AppCompatActivity() {
     private val searchFragment = Search()
     private val expirationdateFragment = ExpirationDate()
-    private val tipsFragment = Tips()
+    private val tipsFragment = Note()
     private val foodbookFragment = FoodBook()
     private val TAG = "MainActivity"
     private lateinit var binding: ActivityMainBinding

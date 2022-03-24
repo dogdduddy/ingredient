@@ -57,13 +57,10 @@ class Search : Fragment() {
         // 키보드 자판 돋보기로 검색 실행 기능
         binding.findwindow.setOnEditorActionListener { v, actionId, event ->
             var handled = false
-            // 검색 후 키보드 내리기
-            imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 binding.searchBtn.performClick()
                 handled = true
             }
-            imm?.hideSoftInputFromWindow(binding.findwindow.windowToken,0)
             handled
         }
 
@@ -71,6 +68,7 @@ class Search : Fragment() {
             // 검색창에 입력한 재료들 리스트화
             var str = binding.findwindow.text.toString().split(",")
             binding.findwindow.setText("")
+            // 검색 후 키보드 내리기
             imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
             imm?.hideSoftInputFromWindow(binding.findwindow.windowToken,0)
 
@@ -140,7 +138,6 @@ class Search : Fragment() {
                 }
                 adapterConnect(recipeList)
             }
-
     }
 
     // Adapter에서 setItemClickListener interface 생성

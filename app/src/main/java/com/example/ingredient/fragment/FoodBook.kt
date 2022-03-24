@@ -1,5 +1,6 @@
 package com.example.ingredient.fragment
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -7,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import androidx.core.os.bundleOf
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -25,6 +27,7 @@ class FoodBook : Fragment() {
     private var _binding : FragmentFoodBookBinding? = null
     private val binding get()  = _binding!!
     private val KEY_DATA = "KEY_DATA"
+    private var imm:InputMethodManager? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -74,6 +77,10 @@ class FoodBook : Fragment() {
         }
 
         binding.searchBtn.setOnClickListener {
+            // 검색 후 키보드 내리기
+            imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
+            imm?.hideSoftInputFromWindow(binding.findwindow.windowToken,0)
+
             var str = binding.findwindow.text.toString()
             if (!str.isNullOrBlank()) {
                 SearchQuery(database, str)
