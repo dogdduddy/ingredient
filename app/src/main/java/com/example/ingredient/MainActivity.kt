@@ -58,17 +58,16 @@ class MainActivity : AppCompatActivity() {
                     transection.beginTransaction().replace(R.id.fragment_container, FoodBook()).
                     commitAllowingStateLoss()
                  */
-                /* Navigation : 프래그먼트 객체를 변수에 저장하고, 필요시 호출 => State 유지
+                // Navigation : 프래그먼트 객체를 변수에 저장하고, 필요시 호출 => State 유지
                 R.id.search -> replaceFragment(searchFragment)
                 R.id.expiration_date -> replaceFragment(expirationdateFragment)
                 R.id.tips -> replaceFragment(tipsFragment)
                 R.id.food_book -> replaceFragment(foodbookFragment)
 
-                 */
             }
         }
     }
-/*  Navigation : 프래그먼트 객체를 변수에 저장하고, 필요시 호출 => State 유지
+//  Navigation : 프래그먼트 객체를 변수에 저장하고, 필요시 호출 => State 유지
     private fun replaceFragment(fragment: Fragment) {
         if (fragment != null) {
             val transection = supportFragmentManager.beginTransaction()
@@ -76,6 +75,4 @@ class MainActivity : AppCompatActivity() {
             transection.commit()
         }
     }
-
- */
 }
