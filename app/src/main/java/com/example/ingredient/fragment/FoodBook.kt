@@ -1,5 +1,6 @@
 package com.example.ingredient.fragment
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -7,6 +8,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
+import androidx.core.os.bundleOf
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -20,11 +23,23 @@ import com.google.firebase.firestore.FirebaseFirestore
 class FoodBook : Fragment() {
     private lateinit var adapter: SearchAdapter
     private lateinit var database: FirebaseFirestore
-    private var strList = mutableListOf<String>()
-    private var recipeList = mutableListOf<Array<Any>>()
+    private var recipeList = mutableListOf<Array<String>>()
     private var _binding : FragmentFoodBookBinding? = null
     private val binding get()  = _binding!!
+    private val KEY_DATA = "KEY_DATA"
+    private var imm:InputMethodManager? = null
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+/*
+        if (savedInstanceState != null) {
+            var data = savedInstanceState.getBundle("Key")
+            recipeList = data
+
+        }
+
+ */
+    }
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -32,6 +47,9 @@ class FoodBook : Fragment() {
     ): View? {
         database = FirebaseFirestore.getInstance()
         _binding = FragmentFoodBookBinding.inflate(layoutInflater, container, false)
+
+        Log.d("null test",binding.findwindow.text.toString())
+
         return binding.root
     }
 
@@ -42,7 +60,11 @@ class FoodBook : Fragment() {
 
     override fun onStart() {
         super.onStart()
-        SearchQuery(database)
+        /*
+        // 22.03.15  다른 프래그먼트로 전환 후 복귀해도 검색 쿼리 유지되는 기능
+        if(binding.findwindow.text.toString().isNullOrBlank())  SearchQuery(database)
+        else SearchQuery(database, binding.findwindow.text.toString())
+         */
 
         // 엔터키로 검색 실행 기능
         binding.findwindow.setOnEditorActionListener { v, actionId, event ->
@@ -55,8 +77,11 @@ class FoodBook : Fragment() {
         }
 
         binding.searchBtn.setOnClickListener {
+            // 검색 후 키보드 내리기
+            imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
+            imm?.hideSoftInputFromWindow(binding.findwindow.windowToken,0)
+
             var str = binding.findwindow.text.toString()
-            binding.findwindow.setText("")
             if (!str.isNullOrBlank()) {
                 SearchQuery(database, str)
             }
@@ -64,24 +89,25 @@ class FoodBook : Fragment() {
                 SearchQuery(database)
             }
         }
+
     }
-    // Default 쿼리문 (전체 출력)
+
+
+    // 단순쿼리문 (전체 출력)
     fun SearchQuery(database: FirebaseFirestore):Unit {
         val refs = database.collection("users")
         // 검색 통해 나온 레시피명을 담는 리스트
-        recipeList = mutableListOf<Array<Any>>()
+        recipeList = mutableListOf<Array<String>>()
 
         refs.get()
             .addOnSuccessListener { documents ->
                 for (document in documents) {
-                    var int_str: String = document.get("ingredients").toString()
-                    // 재료들을 포함하는 리스트
-                    int_str = int_str.slice(1..int_str.lastIndex-1)
                     // 레시피 검색해서 나온 이름, 재료, 시간 저장
                     recipeList.add(
                         arrayOf(
                             document.get("name").toString(),
-                            int_str,
+                            // ["김치", 밥, "대파"] 와 같은 형태로 출력 됨. "[" 와 "]"를 제거하기 위한 코드
+                            document.get("ingredients").toString().drop(1).dropLast(1),
                             document.get("time").toString()
                         )
                     )
@@ -89,25 +115,22 @@ class FoodBook : Fragment() {
                 adapterConnect(recipeList)
             }
     }
-
+    // 단순쿼리문 (검색 키워드에 속한 결과만 출력)
     fun SearchQuery(database: FirebaseFirestore, str:String):Unit {
         val refs = database.collection("users")
         // 검색 통해 나온 레시피명을 담는 리스트
-        recipeList = mutableListOf<Array<Any>>()
+        recipeList = mutableListOf<Array<String>>()
 
         refs.whereGreaterThan("name", str)
             .whereLessThan("name", "$str\uf8ff")
             .get()
             .addOnSuccessListener { documents ->
                 for (document in documents) {
-                    var int_str: String = document.get("ingredients").toString()
-                    // 재료들을 포함하는 리스트
-                    int_str = int_str.slice(1..int_str.lastIndex-1)
                     // 레시피 검색해서 나온 이름, 재료, 시간 저장
                     recipeList.add(
                         arrayOf(
                             document.get("name").toString(),
-                            int_str,
+                            document.get("ingredients").toString().drop(1).dropLast(1),
                             document.get("time").toString()
                         )
                     )
@@ -116,19 +139,16 @@ class FoodBook : Fragment() {
             }
     }
 
-    private fun adapterConnect(recipeList: MutableList<Array<Any>>){
+    private fun adapterConnect(recipeList: MutableList<Array<String>>){
         adapter = SearchAdapter(recipeList)
 
         // Fragment
-
         adapter.setItemClickListener(object: SearchAdapter.OnItemClickListener{
             override fun onClick(view: View, position: Int) {
                 PurchaseConfirmationDialogFragment(recipeList[position][0].toString()).show(
                     childFragmentManager, PurchaseConfirmationDialogFragment.TAG)
             }
         })
-
-
 
         binding.FindrecyclerView.layoutManager = LinearLayoutManager(activity, RecyclerView.VERTICAL, false)
         binding.FindrecyclerView.itemAnimator = DefaultItemAnimator()
@@ -139,3 +159,4 @@ class FoodBook : Fragment() {
         _binding = null
     }
 }
+

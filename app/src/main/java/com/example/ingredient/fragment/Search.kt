@@ -1,5 +1,7 @@
 package com.example.ingredient.fragment
 
+import android.content.Context
+import android.content.Context.INPUT_METHOD_SERVICE
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -7,26 +9,29 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.view.get
-import androidx.core.view.marginTop
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.ingredient.R
 import com.example.ingredient.SearchAdapter
 import com.example.ingredient.databinding.FragmentSearchBinding
 import com.google.android.material.chip.Chip
 import com.google.firebase.firestore.FirebaseFirestore
+import android.view.inputmethod.InputMethodManager as InputMethodManager
 
 class Search : Fragment() {
     private lateinit var adapter: SearchAdapter
     private lateinit var database: FirebaseFirestore
+
     private var strList = mutableListOf<String>()
-    private var recipeList = mutableListOf<Array<Any>>()
+    private var recipeList = mutableListOf<Array<String>>()
     private var _binding : FragmentSearchBinding? = null
     private val binding get()  = _binding!!
+    private var imm:InputMethodManager? = null
 
+    // 구글과 같은 동적 애니메이션 위한 코드
     private val layoutParams = ConstraintLayout.LayoutParams(250, 48)
     private val up = 40
     private val down = 140
@@ -43,11 +48,13 @@ class Search : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        Toast.makeText(context, "onViewCreated : "+recipeList,Toast.LENGTH_LONG).show()
         adapterConnect(recipeList)
     }
+
     override fun onStart() {
         super.onStart()
-        // 엔터키로 검색 실행 기능
+        // 키보드 자판 돋보기로 검색 실행 기능
         binding.findwindow.setOnEditorActionListener { v, actionId, event ->
             var handled = false
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
@@ -61,6 +68,9 @@ class Search : Fragment() {
             // 검색창에 입력한 재료들 리스트화
             var str = binding.findwindow.text.toString().split(",")
             binding.findwindow.setText("")
+            // 검색 후 키보드 내리기
+            imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
+            imm?.hideSoftInputFromWindow(binding.findwindow.windowToken,0)
 
             if (str.size > 0) {
                 var check = true
@@ -108,7 +118,7 @@ class Search : Fragment() {
     fun SearchQuery(database:FirebaseFirestore, strList:MutableList<String>):Unit {
         val refs = database.collection("users")
         // 검색 통해 나온 레시피명을 담는 리스트
-        recipeList = mutableListOf<Array<Any>>()
+        recipeList = mutableListOf<Array<String>>()
         refs.whereArrayContainsAny("ingredients", strList).get()
             .addOnSuccessListener { documents ->
                 for (document in documents) {
@@ -129,12 +139,13 @@ class Search : Fragment() {
                 adapterConnect(recipeList)
             }
     }
+
     // Adapter에서 setItemClickListener interface 생성
     // interface에 onClick 메서드 생성
     // interface 타입의 변수를 갖고 있는 setItemClickListener 메서드 생성
     // fragment에서 setItemClickListener 메서드를 실행 후 onClick 메서드를 재정의
 
-    private fun adapterConnect(recipeList: MutableList<Array<Any>>){
+    private fun adapterConnect(recipeList: MutableList<Array<String>>){
         adapter = SearchAdapter(recipeList)
 
         // Fragment
@@ -158,6 +169,12 @@ class Search : Fragment() {
 
     override fun onDestroy() {
         super.onDestroy()
+        Toast.makeText(context, "Destroy",Toast.LENGTH_LONG).show()
         _binding = null
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        Toast.makeText(context, "Detach",Toast.LENGTH_LONG).show()
     }
 }
