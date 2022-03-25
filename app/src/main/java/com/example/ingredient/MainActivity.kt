@@ -1,7 +1,10 @@
 package com.example.ingredient
 
+import android.graphics.Rect
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.MotionEvent
+import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
 import com.example.ingredient.fragment.ExpirationDate
 import com.example.ingredient.fragment.FoodBook
@@ -62,5 +65,23 @@ class MainActivity : AppCompatActivity() {
             transection.replace(R.id.fragment_container, fragment)
             transection.commit()
         }
+    }
+
+    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
+        var focusView = currentFocus
+        if(focusView != null) {
+            val rect = Rect()
+            focusView.getGlobalVisibleRect(rect)
+            var x = ev!!.x.toInt()
+            var y = ev!!.y.toInt()
+            if (!rect.contains(x, y)) {
+                var imm:InputMethodManager =
+                    getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+                if (imm != null)
+                    imm.hideSoftInputFromWindow(focusView.getWindowToken(), 0);
+                focusView.clearFocus();
+            }
+        }
+        return super.dispatchTouchEvent(ev);
     }
 }

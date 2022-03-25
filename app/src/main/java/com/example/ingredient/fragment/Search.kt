@@ -43,6 +43,7 @@ class Search : Fragment() {
     ): View? {
         database = FirebaseFirestore.getInstance()
         _binding = FragmentSearchBinding.inflate(layoutInflater, container, false)
+
         return binding.root
     }
 
@@ -50,11 +51,13 @@ class Search : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         Toast.makeText(context, "onViewCreated : "+recipeList,Toast.LENGTH_LONG).show()
         adapterConnect(recipeList)
+
     }
 
     override fun onStart() {
         super.onStart()
         // 키보드 자판 돋보기로 검색 실행 기능
+
         binding.findwindow.setOnEditorActionListener { v, actionId, event ->
             var handled = false
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
@@ -68,9 +71,7 @@ class Search : Fragment() {
             // 검색창에 입력한 재료들 리스트화
             var str = binding.findwindow.text.toString().split(",")
             binding.findwindow.setText("")
-            // 검색 후 키보드 내리기
-            imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
-            imm?.hideSoftInputFromWindow(binding.findwindow.windowToken,0)
+            hideKeyboard()
 
             if (str.size > 0) {
                 var check = true
@@ -166,15 +167,11 @@ class Search : Fragment() {
         layoutParams.setMargins(0, locate,0,0)
         binding.findwindow.layoutParams = layoutParams
     }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        Toast.makeText(context, "Destroy",Toast.LENGTH_LONG).show()
-        _binding = null
+    fun hideKeyboard() {
+        // 검색 후 키보드 내리기
+        imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
+        imm?.hideSoftInputFromWindow(binding.findwindow.windowToken,0)
     }
 
-    override fun onDetach() {
-        super.onDetach()
-        Toast.makeText(context, "Detach",Toast.LENGTH_LONG).show()
-    }
+
 }

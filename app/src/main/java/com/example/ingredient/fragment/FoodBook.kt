@@ -24,10 +24,10 @@ class FoodBook : Fragment() {
     private lateinit var adapter: SearchAdapter
     private lateinit var database: FirebaseFirestore
     private var recipeList = mutableListOf<Array<String>>()
-    private var _binding : FragmentFoodBookBinding? = null
-    private val binding get()  = _binding!!
+    private var _binding: FragmentFoodBookBinding? = null
+    private val binding get() = _binding!!
     private val KEY_DATA = "KEY_DATA"
-    private var imm:InputMethodManager? = null
+    private var imm: InputMethodManager? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,6 +40,7 @@ class FoodBook : Fragment() {
 
  */
     }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -47,9 +48,7 @@ class FoodBook : Fragment() {
     ): View? {
         database = FirebaseFirestore.getInstance()
         _binding = FragmentFoodBookBinding.inflate(layoutInflater, container, false)
-
-        Log.d("null test",binding.findwindow.text.toString())
-
+        Log.d("null test", binding.findwindow.text.toString())
         return binding.root
     }
 
@@ -79,13 +78,12 @@ class FoodBook : Fragment() {
         binding.searchBtn.setOnClickListener {
             // 검색 후 키보드 내리기
             imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
-            imm?.hideSoftInputFromWindow(binding.findwindow.windowToken,0)
+            imm?.hideSoftInputFromWindow(binding.findwindow.windowToken, 0)
 
             var str = binding.findwindow.text.toString()
             if (!str.isNullOrBlank()) {
                 SearchQuery(database, str)
-            }
-            else {
+            } else {
                 SearchQuery(database)
             }
         }
@@ -94,7 +92,7 @@ class FoodBook : Fragment() {
 
 
     // 단순쿼리문 (전체 출력)
-    fun SearchQuery(database: FirebaseFirestore):Unit {
+    fun SearchQuery(database: FirebaseFirestore): Unit {
         val refs = database.collection("users")
         // 검색 통해 나온 레시피명을 담는 리스트
         recipeList = mutableListOf<Array<String>>()
@@ -115,8 +113,9 @@ class FoodBook : Fragment() {
                 adapterConnect(recipeList)
             }
     }
+
     // 단순쿼리문 (검색 키워드에 속한 결과만 출력)
-    fun SearchQuery(database: FirebaseFirestore, str:String):Unit {
+    fun SearchQuery(database: FirebaseFirestore, str: String): Unit {
         val refs = database.collection("users")
         // 검색 통해 나온 레시피명을 담는 리스트
         recipeList = mutableListOf<Array<String>>()
@@ -139,24 +138,21 @@ class FoodBook : Fragment() {
             }
     }
 
-    private fun adapterConnect(recipeList: MutableList<Array<String>>){
+    private fun adapterConnect(recipeList: MutableList<Array<String>>) {
         adapter = SearchAdapter(recipeList)
 
         // Fragment
-        adapter.setItemClickListener(object: SearchAdapter.OnItemClickListener{
+        adapter.setItemClickListener(object : SearchAdapter.OnItemClickListener {
             override fun onClick(view: View, position: Int) {
                 PurchaseConfirmationDialogFragment(recipeList[position][0].toString()).show(
-                    childFragmentManager, PurchaseConfirmationDialogFragment.TAG)
+                    childFragmentManager, PurchaseConfirmationDialogFragment.TAG
+                )
             }
         })
-
-        binding.FindrecyclerView.layoutManager = LinearLayoutManager(activity, RecyclerView.VERTICAL, false)
+        binding.FindrecyclerView.layoutManager =
+            LinearLayoutManager(activity, RecyclerView.VERTICAL, false)
         binding.FindrecyclerView.itemAnimator = DefaultItemAnimator()
         binding.FindrecyclerView.adapter = adapter
-    }
-    override fun onDestroy() {
-        super.onDestroy()
-        _binding = null
     }
 }
 
