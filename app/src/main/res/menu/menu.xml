@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cnb_unselectedColor="#666666">
+
+    <item
+        android:id="@+id/search"
+        android:icon="@drawable/ic_home"
+        android:title="search"
+        app:cnb_iconColor="@color/search" />
+
+    <item
+        android:id="@+id/expiration_date"
+        android:icon="@drawable/ic_love"
+        android:title="expiration_date"
+        app:cnb_iconColor="@color/expiration_date" />
+    <item
+        android:id="@+id/tips"
+        android:icon="@drawable/ic_search"
+        android:title="tips"
+        app:cnb_iconColor="@color/tips" />
+    <item
+        android:id="@+id/food_book"
+        android:icon="@drawable/ic_profile"
+        android:title="food_book"
+        app:cnb_iconColor="@color/food_book" />
+
+</menu>

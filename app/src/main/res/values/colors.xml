@@ -7,4 +7,9 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <color name="search">#5B37B7</color>
+    <color name="expiration_date">#C9379D</color>
+    <color name="tips">#E6A919</color>
+    <color name="food_book">#1194AA</color>
 </resources>
