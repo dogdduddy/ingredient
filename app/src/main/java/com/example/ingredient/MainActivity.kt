@@ -1,5 +1,6 @@
 package com.example.ingredient
 
+import android.app.Activity
 import android.graphics.Rect
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
