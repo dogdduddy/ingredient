@@ -29,12 +29,13 @@ class Note : Fragment() {
         super.onStart()
         val notePad = binding.notePad
 
+        // 첫 시작시 상태  => 모든 줄을 클릭할 수 있도록 구현하기 위한 꼼수
+        //                  => 아래의 기능을 구현하면 필요 없어질 과정
         var a = ""
         for(i in 0..10) {
             a=a.plus("$i\n")
         }
         notePad.setText(a)
-        notePad.setSelection(notePad.selectionStart)
 
         // 1) 노트패드 크기 고정
         // 2) 노트패드 위치만큼 y에서 차감 => 원래는 절대좌표로 122인데 margin top 122이면 값 0으로

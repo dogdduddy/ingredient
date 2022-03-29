@@ -126,13 +126,13 @@ class Search : Fragment() {
                     Log.d("MainTest : ", document.toString())
                     // 레시피 검색해서 나온 이름, 재료, 시간 저장
 
-                    var int_str: String = document.get("ingredients").toString()
+                    var ing_str: String = document.get("ingredients").toString()
                     // 재료들을 포함하는 리스트
-                    int_str = int_str.substring(1..int_str.length - 2)
+                    ing_str = ing_str.substring(1..ing_str.length - 2)
                     recipeList.add(
                         arrayOf(
                             document.get("name").toString(),
-                            int_str,
+                            ing_str,
                             document.get("time").toString()
                         )
                     )
