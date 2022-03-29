@@ -1,5 +1,6 @@
 package com.example.ingredient.fragment
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.view.*
@@ -23,6 +24,7 @@ class Note : Fragment() {
         return binding.root
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onStart() {
         super.onStart()
         val notePad = binding.notePad
@@ -45,33 +47,6 @@ class Note : Fragment() {
             Log.d("NotePad Touch22 : ",event.rawY.toString())
             false
         }
-/*
-        notePad.setOnKeyListener { v, keyCode, event ->
-            when(keyCode) {
-                KeyEvent.KEYCODE_DEL -> {
-                    KeyEvent.KEYCODE_DPAD_UP
-                    return@setOnKeyListener true
-                }
-                else -> return@setOnKeyListener false
-            }
-            false
-        }
-
- */
-
-        /*
-        notePad.setOnTouchListener { v, event ->
-            when(event.action) {
-                MotionEvent.ACTION_DOWN -> {
-                    v.offsetLeftAndRight((event.x + v.scrollX).toInt())
-                    v.offsetTopAndBottom((event.y + v.scrollY).toInt())
-                }
-            }
-            false
-        }
-
-         */
-
     }
 
 }
