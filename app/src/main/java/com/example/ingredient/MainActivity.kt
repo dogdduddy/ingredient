@@ -16,10 +16,12 @@ import com.example.ingredient.fragment.Note
 import com.example.ingredient.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var searchFragment: Search
-    private lateinit var expirationdateFragment:ExpirationDate
-    private lateinit var noteFragment: Note
-    private lateinit var foodbookFragment: FoodBook
+    // Room DB 생성 및 프래그먼트 초기화
+    val db = ExpirationDateDatabase.getInstance(this)
+    private val searchFragment = Search.newInstance(db!!)
+    private val expirationdateFragment = ExpirationDate.newInstance(db!!)
+    private val noteFragment = Note.newInstance(db!!)
+    private val foodbookFragment = FoodBook.newInstance(db!!)
 
     private val TAG = "MainActivity"
     private lateinit var binding: ActivityMainBinding
@@ -29,19 +31,12 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Room DB 생성
-        val db = ExpirationDateDatabase.getInstance(this)
-        searchFragment = Search.newInstance(db!!)
-        expirationdateFragment = ExpirationDate.newInstance(db!!)
-        noteFragment = Note.newInstance(db!!)
-        foodbookFragment = FoodBook.newInstance(db!!)
-
         // 초기 화면을 Search 프래그먼트로 설정
         val transection = supportFragmentManager
         transection.beginTransaction().
             add(R.id.fragment_container,Search(),"Search").commit()
 
-        // 하단바를 클릭해서 화면(프래그먼트) 전환
+        // 하단바를 통해 화면(프래그먼트) 전환
         binding.menuBottom.setOnItemSelectedListener { id ->
             when (id) {
                 // Navigation : 프래그먼트 객체를 변수에 저장하고, 필요시 호출 => State 유지
@@ -53,7 +48,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
-//  Navigation : 프래그먼트 객체를 변수에 저장하고, 필요시 호출 => State 유지
+    // 프래그먼트 전환 메서드. State는 프래그먼트를 객체로 갖고 있기에, 뷰 단에서 저장과 복구 진행함.
     private fun replaceFragment(fragment: Fragment) {
         if (fragment != null) {
             val transection = supportFragmentManager.beginTransaction()
