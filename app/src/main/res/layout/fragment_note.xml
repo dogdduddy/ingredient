@@ -12,4 +12,17 @@
         android:layout_height="match_parent"
         android:text="재료보관팁" />
 
+    <EditText
+        android:id="@+id/notePad"
+        android:gravity="top"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="30dp"
+        android:inputType="textMultiLine"
+        android:maxLines="25"
+        android:lines="25"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp" />
+
+
 </FrameLayout>
