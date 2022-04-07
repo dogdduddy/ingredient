@@ -17,11 +17,10 @@ import com.example.ingredient.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
     // Room DB 생성 및 프래그먼트 초기화
-    val db = ExpirationDateDatabase.getInstance(this)
-    private val searchFragment = Search.newInstance(db!!)
-    private val expirationdateFragment = ExpirationDate.newInstance(db!!)
-    private val noteFragment = Note.newInstance(db!!)
-    private val foodbookFragment = FoodBook.newInstance(db!!)
+    private lateinit var searchFragment:Search
+    private lateinit var foodbookFragment:FoodBook
+    private lateinit var expirationdateFragment:ExpirationDate
+    private lateinit var noteFragment:Note
 
     private val TAG = "MainActivity"
     private lateinit var binding: ActivityMainBinding
@@ -30,6 +29,12 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        val db = ExpirationDateDatabase.getInstance(applicationContext)
+        searchFragment = Search.newInstance(db!!)
+        expirationdateFragment = ExpirationDate.newInstance(db!!)
+        noteFragment = Note.newInstance(db!!)
+        foodbookFragment = FoodBook.newInstance(db!!)
 
         // 초기 화면을 Search 프래그먼트로 설정
         val transection = supportFragmentManager

@@ -125,9 +125,7 @@ class Search : Fragment() {
         refs.whereArrayContainsAny("ingredients", strList).get()
             .addOnSuccessListener { documents ->
                 for (document in documents) {
-                    Log.d("MainTest : ", document.toString())
                     // 레시피 검색해서 나온 이름, 재료, 시간 저장
-
                     var ing_str: String = document.get("ingredients").toString()
                     // 재료들을 포함하는 리스트
                     ing_str = ing_str.substring(1..ing_str.length - 2)
@@ -174,6 +172,7 @@ class Search : Fragment() {
         imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
         imm?.hideSoftInputFromWindow(binding.findwindow.windowToken,0)
     }
+
     companion object {
         fun newInstance(db: ExpirationDateDatabase) =
             Search().apply {
