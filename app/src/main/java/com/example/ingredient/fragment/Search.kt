@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ingredient.SearchAdapter
+import com.example.ingredient.database.ExpirationDateDatabase
 import com.example.ingredient.databinding.FragmentSearchBinding
 import com.google.android.material.chip.Chip
 import com.google.firebase.firestore.FirebaseFirestore
@@ -24,6 +25,7 @@ import android.view.inputmethod.InputMethodManager as InputMethodManager
 class Search : Fragment() {
     private lateinit var adapter: SearchAdapter
     private lateinit var database: FirebaseFirestore
+    private lateinit var db:ExpirationDateDatabase
 
     private var strList = mutableListOf<String>()
     private var recipeList = mutableListOf<Array<String>>()
@@ -172,6 +174,11 @@ class Search : Fragment() {
         imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
         imm?.hideSoftInputFromWindow(binding.findwindow.windowToken,0)
     }
-
+    companion object {
+        fun newInstance(db: ExpirationDateDatabase) =
+            Search().apply {
+                this.db = db
+            }
+    }
 
 }
