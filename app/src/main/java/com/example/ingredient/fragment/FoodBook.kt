@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ingredient.R
 import com.example.ingredient.SearchAdapter
+import com.example.ingredient.database.ExpirationDateDatabase
 import com.example.ingredient.databinding.FragmentFoodBookBinding
 import com.example.ingredient.databinding.FragmentSearchBinding
 import com.google.android.material.chip.Chip
@@ -23,6 +24,8 @@ import com.google.firebase.firestore.FirebaseFirestore
 class FoodBook : Fragment() {
     private lateinit var adapter: SearchAdapter
     private lateinit var database: FirebaseFirestore
+    private lateinit var db: ExpirationDateDatabase
+
     private var recipeList = mutableListOf<Array<String>>()
     private var _binding: FragmentFoodBookBinding? = null
     private val binding get() = _binding!!
@@ -153,6 +156,12 @@ class FoodBook : Fragment() {
             LinearLayoutManager(activity, RecyclerView.VERTICAL, false)
         binding.FindrecyclerView.itemAnimator = DefaultItemAnimator()
         binding.FindrecyclerView.adapter = adapter
+    }
+    companion object {
+        fun newInstance(db: ExpirationDateDatabase) =
+            FoodBook().apply {
+                this.db = db
+            }
     }
 }
 
