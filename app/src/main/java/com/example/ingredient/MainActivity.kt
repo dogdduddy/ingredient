@@ -16,7 +16,6 @@ import com.example.ingredient.fragment.Note
 import com.example.ingredient.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
-    // Room DB 생성 및 프래그먼트 초기화
     private lateinit var searchFragment:Search
     private lateinit var foodbookFragment:FoodBook
     private lateinit var expirationdateFragment:ExpirationDate
@@ -30,6 +29,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // Room DB 생성 및 프래그먼트 초기화
         val db = ExpirationDateDatabase.getInstance(applicationContext)
         searchFragment = Search.newInstance(db!!)
         expirationdateFragment = ExpirationDate.newInstance(db!!)

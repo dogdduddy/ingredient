@@ -29,10 +29,8 @@ class ExpirationDate : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentExpirationDateBinding.inflate(layoutInflater, container, false)
-
         binding.btnTest.setOnClickListener {
             var text = binding.editTest.text.toString()
-
             CoroutineScope(Dispatchers.IO)
                 .launch {
                     var newExpiration = com.example.ingredient.database.ExpirationDateData(text, "slice", "2022-04-09","2022-04-09")
