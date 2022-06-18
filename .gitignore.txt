@@ -1,0 +1,2 @@
+KakaoLoginServer/node_modules
+KakaoLoginServer/service_account_key.json
