@@ -13,4 +13,11 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="order_confirmation">Test Massage</string>
     <string name="ok">PopUp</string>
+    <string name="my_web_client_id">221860815641-i4o5mf7hnmn8pq2mpg04v9o1j5vrsl2t.apps.googleusercontent.com</string>
+    <string name="facebook_app_id">1140811626775729</string>
+    <string name="fb_login_protocol_scheme">fb1234</string>
+    <string name="facebook_client_token">9d699c96830d7477d72462827072308f</string>
+    <!--Hot Spot <string name="ipconfig">192.168.43.111</string> -->
+    <string name="ipconfig">172.30.1.22</string>
+    <string name="kakao_app_key">c9c6e9e916846abf0a1042a3a9f8ceec</string>
 </resources>
