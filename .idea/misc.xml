@@ -5,6 +5,8 @@
       <map>
         <entry key="app/src/main/res/drawable-v24/search.xml" value="0.1755" />
         <entry key="app/src/main/res/drawable-v24/searchbar.xml" value="0.1755" />
+        <entry key="app/src/main/res/layout-w1240dp/activity_login.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_login.xml" value="0.14402173913043478" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_main2.xml" value="0.1828774062816616" />
         <entry key="app/src/main/res/layout/activity_test.xml" value="0.18958333333333333" />

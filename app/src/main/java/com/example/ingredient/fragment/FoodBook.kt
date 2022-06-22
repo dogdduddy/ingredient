@@ -9,16 +9,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
-import androidx.core.os.bundleOf
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.ingredient.R
 import com.example.ingredient.SearchAdapter
 import com.example.ingredient.database.ExpirationDateDatabase
 import com.example.ingredient.databinding.FragmentFoodBookBinding
-import com.example.ingredient.databinding.FragmentSearchBinding
-import com.google.android.material.chip.Chip
 import com.google.firebase.firestore.FirebaseFirestore
 
 class FoodBook : Fragment() {

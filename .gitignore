@@ -13,3 +13,6 @@
 .externalNativeBuild
 .cxx
 local.properties
+KakaoLoginServer/node_modules/
+KakaoLoginServer/service_account_key.json
+app/google-services.json

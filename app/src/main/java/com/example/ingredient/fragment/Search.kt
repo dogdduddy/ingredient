@@ -77,22 +77,25 @@ class Search : Fragment() {
 
             if (str.size > 0) {
                 var check = true
-                // 검색한 재료의 좌우 빈칸 제거 ex) " 감자" -> "감자"
                 for (element in str) {
-                    check = true
-                    for (i in 0 until strList.size) {
-                        if (strList[i] == element) {
-                            check = false
-                            break
-                        }
-                    }
                     // 검색 재료 중복 체크
-                    if (element.isNullOrEmpty()) check = false
+                    fun checkDuplicate(element: String): Boolean {
+                        for (listData in strList) {
+                            if (listData == element.trim()) {
+                                return false
+                            }
+                        }
+                        if (element.isNullOrEmpty())
+                            return false
+                        return true
+                    }
+                    check = checkDuplicate(element)
+
                     if(check) {
-                        strList.add(element.trim())
+                        strList.add(element)
                         // chip 생성
                         binding.chipGroup.addView(Chip(context).apply {
-                            text = element.trim() // chip 텍스트 설정
+                            text = element // chip 텍스트 설정
                             isCloseIconVisible = true // chip에서 X 버튼 보이게 하기
                             setOnCloseIconClickListener {
                                 binding.chipGroup.removeView(this)
@@ -122,12 +125,11 @@ class Search : Fragment() {
         val refs = database.collection("users")
         // 검색 통해 나온 레시피명을 담는 리스트
         recipeList = mutableListOf<Array<String>>()
+
         refs.whereArrayContainsAny("ingredients", strList).get()
             .addOnSuccessListener { documents ->
                 for (document in documents) {
-                    Log.d("MainTest : ", document.toString())
                     // 레시피 검색해서 나온 이름, 재료, 시간 저장
-
                     var ing_str: String = document.get("ingredients").toString()
                     // 재료들을 포함하는 리스트
                     ing_str = ing_str.substring(1..ing_str.length - 2)
@@ -174,6 +176,7 @@ class Search : Fragment() {
         imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
         imm?.hideSoftInputFromWindow(binding.findwindow.windowToken,0)
     }
+
     companion object {
         fun newInstance(db: ExpirationDateDatabase) =
             Search().apply {
