@@ -4,7 +4,8 @@ plugins {
     id 'kotlin-kapt'
     //id 'kotlin-android-extensions' // findviewbyid를 사용 안함
 }
-
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
 android {
     compileSdk 31
 
@@ -21,6 +22,14 @@ android {
         viewBinding = true
     }
     buildTypes {
+        debug {
+            resValue("string", "my_web_client_id", properties['WebClientID'])
+            resValue("string", "facebook_app_id", properties['FaceBookAppID'])
+            resValue("string", "fb_login_protocol_scheme", properties['FaceBookSchema'])
+            resValue("string", "facebook_client_token", properties['FacebookClientToken'])
+            resValue("string", "ipconfig", properties['Ipconfig'])
+            resValue("string", "kakao_app_key", properties['KakaoAppKey'])
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
