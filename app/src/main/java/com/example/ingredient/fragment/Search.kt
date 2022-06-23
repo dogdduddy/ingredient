@@ -71,21 +71,18 @@ class Search : Fragment() {
 
         binding.searchBtn.setOnClickListener {
             // 검색창에 입력한 재료들 리스트화
-            var str = binding.findwindow.text.toString().split(",")
+            var inputData = binding.findwindow.text.toString().split(",")
             binding.findwindow.setText("")
             hideKeyboard()
 
-            if (str.size > 0) {
+            if (inputData.size > 0) {
                 var check = true
-                for (element in str) {
-                    // 검색 재료 중복 체크
-                    fun checkDuplicate(element: String): Boolean {
-                        return !strList.any { it == element.trim()}
-                    }
+                for (element in inputData) {
                     check = checkDuplicate(element)
 
                     if(check) {
-                        strList.add(element)
+                        // Chip 앞쪽에 추가
+                        strList.add(0,element)
                         // chip 생성
                         binding.chipGroup.addView(Chip(context).apply {
                             text = element // chip 텍스트 설정
@@ -101,7 +98,7 @@ class Search : Fragment() {
                                 }
                                 else SearchQuery(database, strList)
                             }
-                        })
+                        }, 0)
                     }
                 }
                 if (check) {
@@ -159,15 +156,19 @@ class Search : Fragment() {
         binding.FindrecyclerView.adapter = adapter
     }
 
+    // 동적 버튼 / 검색시 서치바 위치가 올라가도록
     fun setSearchBarMargin(locate:Int){
-        // 동적 버튼 / 검색시 서치바 위치가 올라가도록
         layoutParams.setMargins(0, locate,0,0)
         binding.findwindow.layoutParams = layoutParams
     }
+    // 검색 후 키보드 내리기
     fun hideKeyboard() {
-        // 검색 후 키보드 내리기
         imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
         imm?.hideSoftInputFromWindow(binding.findwindow.windowToken,0)
+    }
+    // 검색 재료 중복 체크
+    fun checkDuplicate(element: String): Boolean {
+        return !strList.any { it == element.trim()}
     }
 
     companion object {
