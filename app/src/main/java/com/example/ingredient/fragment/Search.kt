@@ -80,14 +80,7 @@ class Search : Fragment() {
                 for (element in str) {
                     // 검색 재료 중복 체크
                     fun checkDuplicate(element: String): Boolean {
-                        for (listData in strList) {
-                            if (listData == element.trim()) {
-                                return false
-                            }
-                        }
-                        if (element.isNullOrEmpty())
-                            return false
-                        return true
+                        return !strList.any { it == element.trim()}
                     }
                     check = checkDuplicate(element)
 

@@ -29,7 +29,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Room DB 생성 및 프래그먼트 초기화
+        // Room DB 생성 및 프래그먼트 초기화 => 분리 필요
         val db = ExpirationDateDatabase.getInstance(applicationContext)
         searchFragment = Search.newInstance(db!!)
         expirationdateFragment = ExpirationDate.newInstance(db!!)
@@ -62,6 +62,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    // 키보드 팝업 이외의 공간 누르면, 키보드 내려가는 기능
     override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
         var focusView = currentFocus
         if(focusView != null) {
