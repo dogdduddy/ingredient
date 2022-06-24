@@ -73,20 +73,19 @@ class Search : Fragment() {
             // 검색창에 입력한 재료들 리스트화
             var inputData = binding.findwindow.text.toString().split(",")
             binding.findwindow.setText("")
-            hideKeyboard()
+            // 키보드 내리기
+            // hideKeyboard()
 
             if (inputData.size > 0) {
-                var check = true
-                for (element in inputData) {
-                    check = checkDuplicate(element)
-
-                    if(check) {
+                inputData.forEach { element ->
+                    if(checkDuplicate(element)) {
                         // Chip 앞쪽에 추가
                         strList.add(0,element)
-                        // chip 생성
+                        // chip 생성(왼쪽에 추가) 바꾸려면 인덱스 번호를 제거 하거나, 조정
                         binding.chipGroup.addView(Chip(context).apply {
                             text = element // chip 텍스트 설정
                             isCloseIconVisible = true // chip에서 X 버튼 보이게 하기
+                            //Chip X 클릭 이벤트
                             setOnCloseIconClickListener {
                                 binding.chipGroup.removeView(this)
                                 strList.remove(text)
@@ -99,13 +98,8 @@ class Search : Fragment() {
                                 else SearchQuery(database, strList)
                             }
                         }, 0)
+                        SearchQuery(database, strList)
                     }
-                }
-                if (check) {
-                    // 동적 버튼 / 검색시 서치바 위치가 올라r가도록
-                    //setSearchBarMargin(up)
-                    // null, 중복 없다면 쿼리 실행
-                    SearchQuery(database, strList)
                 }
             }
         }
