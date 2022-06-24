@@ -71,13 +71,12 @@ class Search : Fragment() {
 
         binding.searchBtn.setOnClickListener {
             // 검색창에 입력한 재료들 리스트화
-            var inputData = binding.findwindow.text.toString().split(",")
+            var inputData = binding.findwindow.text.toString()
             binding.findwindow.setText("")
-            // 키보드 내리기
-            // hideKeyboard()
-
-            if (inputData.size > 0) {
-                inputData.forEach { element ->
+            if(!inputData.isNullOrBlank()) {
+                // 키보드 내리기
+                // hideKeyboard()
+                inputData.split(",").forEach { element ->
                     if(checkDuplicate(element)) {
                         // Chip 앞쪽에 추가
                         strList.add(0,element)
