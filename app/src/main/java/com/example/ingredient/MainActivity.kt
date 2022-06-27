@@ -5,8 +5,11 @@ import android.app.Application
 import android.graphics.Rect
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.MotionEvent
+import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.RadioButton
 import androidx.fragment.app.Fragment
 import com.example.ingredient.database.ExpirationDateDatabase
 import com.example.ingredient.fragment.ExpirationDate

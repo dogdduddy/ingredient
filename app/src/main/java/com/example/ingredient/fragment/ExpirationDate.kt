@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.RadioButton
 import androidx.annotation.RequiresApi
 import com.example.ingredient.R
 import com.example.ingredient.database.ExpirationDateDao
@@ -45,6 +46,7 @@ class ExpirationDate : Fragment() {
         }
         return binding.root
     }
+
 
     companion object {
         fun newInstance(db: ExpirationDateDatabase) =
