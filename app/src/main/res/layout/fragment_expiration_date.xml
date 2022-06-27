@@ -29,6 +29,7 @@
         app:layout_constraintLeft_toRightOf="@+id/editTest"
         android:id="@+id/btnTest"/>
     <RadioGroup
+        android:id="@+id/radioGroup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -38,13 +39,21 @@
         <RadioButton android:id="@+id/radio_button1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Button1"
-            android:onClick="onRadioButtonClicked"/>
+            android:text="Button1"/>
         <RadioButton android:id="@+id/radio_button2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Button2"
-            android:onClick="onRadioButtonClicked"/>
+            android:text="Button2"/>
     </RadioGroup>
+    <Button
+        android:id="@+id/radioSelectButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Save"
+        app:layout_constraintTop_toBottomOf="@+id/radioGroup"
+        app:layout_constraintLeft_toLeftOf="parent"/>
+
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

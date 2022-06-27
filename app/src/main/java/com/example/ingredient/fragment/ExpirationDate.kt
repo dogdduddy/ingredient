@@ -30,6 +30,7 @@ class ExpirationDate : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentExpirationDateBinding.inflate(layoutInflater, container, false)
+
         binding.btnTest.setOnClickListener {
             var text = binding.editTest.text.toString()
             CoroutineScope(Dispatchers.IO)
@@ -43,6 +44,22 @@ class ExpirationDate : Fragment() {
                     exp = db?.expirationDateDao()?.getAll().toString()
                     Log.d("MainActivity", exp)
                 }
+        }
+        binding.radioGroup.setOnCheckedChangeListener { group, checkedId ->
+            when(checkedId) {
+                binding.radioButton1.id ->
+                    Log.d("RadioButton", "Button1 Clicked")
+                binding.radioButton2.id ->
+                    Log.d("RadioButton", "Button2 Clicked")
+            }
+        }
+        binding.radioSelectButton.setOnClickListener {
+            when(binding.radioGroup.checkedRadioButtonId) {
+                binding.radioButton1.id -> binding.editTest.setText("Button1")
+                binding.radioButton2.id -> binding.editTest.setText("Button2")
+            }
+
+
         }
         return binding.root
     }
