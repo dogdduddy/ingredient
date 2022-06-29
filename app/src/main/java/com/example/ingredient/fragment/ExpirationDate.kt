@@ -45,26 +45,17 @@ class ExpirationDate : Fragment() {
                     Log.d("MainActivity", exp)
                 }
         }
-        binding.radioGroup.setOnCheckedChangeListener { group, checkedId ->
-            when(checkedId) {
-                binding.radioButton1.id ->
-                    Log.d("RadioButton", "Button1 Clicked")
-                binding.radioButton2.id ->
-                    Log.d("RadioButton", "Button2 Clicked")
-            }
-        }
         binding.radioSelectButton.setOnClickListener {
+            // Intent로 Activity를 넘기면서, PutExtra에 해당 값을 저장
+            // 칼럼 : 재료 상태, 보관 방식
             when(binding.radioGroup.checkedRadioButtonId) {
+
                 binding.radioButton1.id -> binding.editTest.setText("Button1")
                 binding.radioButton2.id -> binding.editTest.setText("Button2")
             }
-
-
         }
         return binding.root
     }
-
-
     companion object {
         fun newInstance(db: ExpirationDateDatabase) =
             ExpirationDate().apply {
