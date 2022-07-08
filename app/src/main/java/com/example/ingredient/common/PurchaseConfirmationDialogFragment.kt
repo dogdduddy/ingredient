@@ -1,4 +1,4 @@
-package com.example.ingredient.fragment
+package com.example.ingredient.common
 
 import android.app.AlertDialog
 import android.app.Dialog
@@ -15,5 +15,4 @@ class PurchaseConfirmationDialogFragment(var msg:String) : androidx.fragment.app
     companion object {
         const val TAG = "PurchaseConfirmationDialog"
     }
-
 }

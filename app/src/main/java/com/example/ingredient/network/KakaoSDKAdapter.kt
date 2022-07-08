@@ -1,5 +1,6 @@
-package com.example.ingredient
+package com.example.ingredient.network
 
+import com.example.ingredient.network.App
 import com.kakao.auth.*
 
 class KakaoSDKAdapter(context: App) : KakaoAdapter(){

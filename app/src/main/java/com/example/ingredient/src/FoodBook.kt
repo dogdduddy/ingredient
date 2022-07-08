@@ -1,4 +1,4 @@
-package com.example.ingredient.fragment
+package com.example.ingredient.src
 
 import android.content.Context
 import android.os.Bundle
@@ -12,9 +12,10 @@ import android.view.inputmethod.InputMethodManager
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.ingredient.SearchAdapter
-import com.example.ingredient.database.ExpirationDateDatabase
+import com.example.ingredient.common.PurchaseConfirmationDialogFragment
+import com.example.ingredient.data.ExpirationDateDatabase
 import com.example.ingredient.databinding.FragmentFoodBookBinding
+import com.example.ingredient.src.search.SearchAdapter
 import com.google.firebase.firestore.FirebaseFirestore
 
 class FoodBook : Fragment() {

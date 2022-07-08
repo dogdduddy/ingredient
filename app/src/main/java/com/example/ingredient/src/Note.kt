@@ -1,16 +1,12 @@
-package com.example.ingredient.fragment
+package com.example.ingredient.src
 
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.view.*
-import android.view.KeyEvent.KEYCODE_BACK
 import androidx.fragment.app.Fragment
-import android.view.inputmethod.EditorInfo
-import com.example.ingredient.R
-import com.example.ingredient.database.ExpirationDateDatabase
+import com.example.ingredient.data.ExpirationDateDatabase
 import com.example.ingredient.databinding.FragmentNoteBinding
-import com.example.ingredient.databinding.FragmentSearchBinding
 
 class Note : Fragment() {
 

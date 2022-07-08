@@ -1,13 +1,9 @@
-package com.example.ingredient.database
+package com.example.ingredient.data
 
 import android.content.Context
-import android.util.Log
-import android.view.View
-import android.widget.RadioButton
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.example.ingredient.R
 
 @Database(entities = [ExpirationDateData::class], version = 2)
 abstract class ExpirationDateDatabase: RoomDatabase() {

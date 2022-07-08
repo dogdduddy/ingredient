@@ -1,9 +1,7 @@
-package com.example.ingredient.fragment
+package com.example.ingredient.src.search
 
 import android.content.Context
-import android.content.Context.INPUT_METHOD_SERVICE
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -11,13 +9,12 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.ingredient.SearchAdapter
-import com.example.ingredient.database.ExpirationDateDatabase
+import com.example.ingredient.data.ExpirationDateDatabase
 import com.example.ingredient.databinding.FragmentSearchBinding
+import com.example.ingredient.common.PurchaseConfirmationDialogFragment
 import com.google.android.material.chip.Chip
 import com.google.firebase.firestore.FirebaseFirestore
 import android.view.inputmethod.InputMethodManager as InputMethodManager
@@ -137,10 +134,11 @@ class Search : Fragment() {
         adapter = SearchAdapter(recipeList)
 
         // Fragment
-        adapter.setItemClickListener(object: SearchAdapter.OnItemClickListener{
+        adapter.setItemClickListener(object: SearchAdapter.OnItemClickListener {
             override fun onClick(view: View, position: Int) {
                 PurchaseConfirmationDialogFragment(recipeList[position][0].toString()).  show(
-                    childFragmentManager, PurchaseConfirmationDialogFragment.TAG)
+                    childFragmentManager, PurchaseConfirmationDialogFragment.TAG
+                )
             }
         })
 
