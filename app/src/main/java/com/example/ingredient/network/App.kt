@@ -1,4 +1,4 @@
-package com.example.ingredient
+package com.example.ingredient.network
 
 import android.app.Application
 import android.content.Context
@@ -26,7 +26,7 @@ class App:Application() {
         instance = null
     }
 
-    fun getAppContext() : App{
+    fun getAppContext() : App {
         checkNotNull(instance){
             "This Application does not inherit com.example.App"
         }
