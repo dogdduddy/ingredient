@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ingredient.R
-import com.example.ingredient.SearchAdapter
+import com.example.ingredient.src.search.SearchAdapter
 import com.example.ingredient.database.ExpirationDateDatabase
 import com.example.ingredient.databinding.FragmentFoodBookBinding
 import com.example.ingredient.databinding.FragmentSearchBinding
