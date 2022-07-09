@@ -29,7 +29,7 @@
 - [X] Chip 구현
 - [X] 음식 RecyclerView
 - [ ] Recyclerview Item Dialog
-### Exception Date <br>
+### ExpirationDate <br>
 - [X] 유통기한 재료 Room Dao
 - [ ] 재료 추가 CheckBox
 - [ ] 추가 재료 검색 RecyclerView
