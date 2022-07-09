@@ -11,19 +11,24 @@
         android:layout_height="wrap_content"
         android:id="@+id/facebookLoginBtn"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"/>
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
     <android.widget.Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/kakaoLoginBtn"
         android:background="@drawable/kakao_login_medium_narrow"
         app:layout_constraintTop_toBottomOf="@+id/facebookLoginBtn"
-        app:layout_constraintLeft_toLeftOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/googleLoginBtn"
+        android:text="Google Login"
         app:layout_constraintTop_toBottomOf="@+id/kakaoLoginBtn"
-        app:layout_constraintLeft_toLeftOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
