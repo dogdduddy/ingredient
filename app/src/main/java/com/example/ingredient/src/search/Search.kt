@@ -1,9 +1,7 @@
-package com.example.ingredient.fragment
+package com.example.ingredient.src.search
 
 import android.content.Context
-import android.content.Context.INPUT_METHOD_SERVICE
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -11,13 +9,12 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.ingredient.SearchAdapter
-import com.example.ingredient.database.ExpirationDateDatabase
+import com.example.ingredient.data.ExpirationDateDatabase
 import com.example.ingredient.databinding.FragmentSearchBinding
+import com.example.ingredient.common.PurchaseConfirmationDialogFragment
 import com.google.android.material.chip.Chip
 import com.google.firebase.firestore.FirebaseFirestore
 import android.view.inputmethod.InputMethodManager as InputMethodManager
@@ -71,25 +68,20 @@ class Search : Fragment() {
 
         binding.searchBtn.setOnClickListener {
             // 검색창에 입력한 재료들 리스트화
-            var str = binding.findwindow.text.toString().split(",")
+            var inputData = binding.findwindow.text.toString()
             binding.findwindow.setText("")
-            hideKeyboard()
-
-            if (str.size > 0) {
-                var check = true
-                for (element in str) {
-                    // 검색 재료 중복 체크
-                    fun checkDuplicate(element: String): Boolean {
-                        return !strList.any { it == element.trim()}
-                    }
-                    check = checkDuplicate(element)
-
-                    if(check) {
-                        strList.add(element)
-                        // chip 생성
+            if(!inputData.isNullOrBlank()) {
+                // 키보드 내리기
+                // hideKeyboard()
+                inputData.split(",").forEach { element ->
+                    if(checkDuplicate(element)) {
+                        // Chip 앞쪽에 추가
+                        strList.add(0,element)
+                        // chip 생성(왼쪽에 추가) 바꾸려면 인덱스 번호를 제거 하거나, 조정
                         binding.chipGroup.addView(Chip(context).apply {
                             text = element // chip 텍스트 설정
                             isCloseIconVisible = true // chip에서 X 버튼 보이게 하기
+                            //Chip X 클릭 이벤트
                             setOnCloseIconClickListener {
                                 binding.chipGroup.removeView(this)
                                 strList.remove(text)
@@ -101,14 +93,9 @@ class Search : Fragment() {
                                 }
                                 else SearchQuery(database, strList)
                             }
-                        })
+                        }, 0)
+                        SearchQuery(database, strList)
                     }
-                }
-                if (check) {
-                    // 동적 버튼 / 검색시 서치바 위치가 올라r가도록
-                    //setSearchBarMargin(up)
-                    // null, 중복 없다면 쿼리 실행
-                    SearchQuery(database, strList)
                 }
             }
         }
@@ -147,10 +134,11 @@ class Search : Fragment() {
         adapter = SearchAdapter(recipeList)
 
         // Fragment
-        adapter.setItemClickListener(object: SearchAdapter.OnItemClickListener{
+        adapter.setItemClickListener(object: SearchAdapter.OnItemClickListener {
             override fun onClick(view: View, position: Int) {
                 PurchaseConfirmationDialogFragment(recipeList[position][0].toString()).  show(
-                    childFragmentManager, PurchaseConfirmationDialogFragment.TAG)
+                    childFragmentManager, PurchaseConfirmationDialogFragment.TAG
+                )
             }
         })
 
@@ -159,15 +147,19 @@ class Search : Fragment() {
         binding.FindrecyclerView.adapter = adapter
     }
 
+    // 동적 버튼 / 검색시 서치바 위치가 올라가도록
     fun setSearchBarMargin(locate:Int){
-        // 동적 버튼 / 검색시 서치바 위치가 올라가도록
         layoutParams.setMargins(0, locate,0,0)
         binding.findwindow.layoutParams = layoutParams
     }
+    // 검색 후 키보드 내리기
     fun hideKeyboard() {
-        // 검색 후 키보드 내리기
         imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
         imm?.hideSoftInputFromWindow(binding.findwindow.windowToken,0)
+    }
+    // 검색 재료 중복 체크
+    fun checkDuplicate(element: String): Boolean {
+        return !strList.any { it == element.trim()}
     }
 
     companion object {

@@ -1,10 +1,9 @@
-package com.example.ingredient
+package com.example.ingredient.network
 
 import android.util.Log
 import android.widget.Toast
-import bolts.Bolts
+import com.example.ingredient.activity.LoginActivity
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.ktx.Firebase
 import com.kakao.auth.ISessionCallback
 import com.kakao.auth.Session
 import com.kakao.network.ErrorResult
@@ -36,7 +35,8 @@ class SessionCallback(val context : LoginActivity): ISessionCallback {
                             context.startMainActivity()
                         }
                         else {
-                            Toast.makeText(App.instance,"Failed to create a Firebase user.",
+                            Toast.makeText(
+                                App.instance,"Failed to create a Firebase user.",
                                 Toast.LENGTH_LONG).show()
                             if (task.exception != null) {
                                 Log.e(TAG, task.exception.toString())
