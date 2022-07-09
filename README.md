@@ -8,7 +8,7 @@
 
 ## Description
 보관 재료의 유통기한을 알려주고, 음식 검색을 도와줍니다.
-<img src="https://user-images.githubusercontent.com/32217176/178109737-49df1750-6694-427e-a1d6-d720fc7f8d9e.png" width="550" height="350">
+<p align="left"><img src="https://user-images.githubusercontent.com/32217176/178109737-49df1750-6694-427e-a1d6-d720fc7f8d9e.png" width="550" height="350"></p>
 ## Environment
 - Firesotre Database
 - Firebase Authentication
