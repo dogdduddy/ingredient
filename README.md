@@ -22,8 +22,18 @@
 ### Common <br>
 - [X] Firestore 연동
 - [X] Room DB 연동
+### Login <br>
+- [X] Social(google, facebook, kakao)
 ### Search <br>
 - [X] 재료 기반 검색
 - [X] Chip 구현
-### Exception Date<br>
-- [X] 
+- [X] 음식 RecyclerView
+- [ ] Recyclerview Item Dialog
+### Exception Date <br>
+- [X] 유통기한 재료 Room Dao
+- [ ] 재료 추가 CheckBox
+- [ ] 추가 재료 검색 RecyclerView
+### Option <br>
+- [ ] 개인정보 수정
+- [ ] 알림 설정
+- [ ] 폰트, 글씨크기 수정
