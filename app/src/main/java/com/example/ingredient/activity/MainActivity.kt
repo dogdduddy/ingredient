@@ -8,7 +8,7 @@ import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
 import com.example.ingredient.R
 import com.example.ingredient.data.ExpirationDateDatabase
-import com.example.ingredient.src.ExpirationDate
+import com.example.ingredient.src.expirationDate.ExpirationDate
 import com.example.ingredient.src.FoodBook
 import com.example.ingredient.src.search.Search
 import com.example.ingredient.src.Note
@@ -17,7 +17,7 @@ import com.example.ingredient.databinding.ActivityMainBinding
 class MainActivity : AppCompatActivity() {
     private lateinit var searchFragment: Search
     private lateinit var foodbookFragment:FoodBook
-    private lateinit var expirationdateFragment:ExpirationDate
+    private lateinit var expirationdateFragment: ExpirationDate
     private lateinit var noteFragment:Note
 
     private val TAG = "MainActivity"

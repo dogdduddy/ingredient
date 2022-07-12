@@ -1,5 +1,6 @@
-package com.example.ingredient.src
+package com.example.ingredient.src.expirationDate
 
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -27,6 +28,7 @@ class ExpirationDate : Fragment() {
     ): View? {
         _binding = FragmentExpirationDateBinding.inflate(layoutInflater, container, false)
 
+        /* Room Data
         binding.btnTest.setOnClickListener {
             var text = binding.editTest.text.toString()
             CoroutineScope(Dispatchers.IO)
@@ -40,6 +42,12 @@ class ExpirationDate : Fragment() {
                     exp = db?.expirationDateDao()?.getAll().toString()
                     Log.d("MainActivity", exp)
                 }
+        }
+
+         */
+        binding.btnTest.setOnClickListener {
+            var intent = Intent(activity, AddingredientsActivity::class.java)
+            startActivity(intent)
         }
         binding.radioSelectButton.setOnClickListener {
             // Intent로 Activity를 넘기면서, PutExtra에 해당 값을 저장

@@ -20,7 +20,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var expirationdateFragment:ExpirationDate
     private lateinit var noteFragment: Note
     private lateinit var foodbookFragment: FoodBook
-
     private val TAG = "MainActivity"
     private lateinit var binding: ActivityMainBinding
 
