@@ -20,9 +20,10 @@ class AddingredientsActivity : AppCompatActivity() {
         viewPager = findViewById(R.id.viewpager_add_ingredient)
         viewPager.adapter = AddIngredientListAdapter(this)
 
-        val tabLayout: TabLayout = findViewById(R.id.tab_layout)
-        TabLayoutMediator(tabLayout, viewPager) { tab, position ->
-            tab.text = "OBJECT ${(position + 1)}"
-        }
+        val tabTitles = listOf<String>("전체", "육류")
+
+        TabLayoutMediator(binding.tabLayout, viewPager, {tab, position ->
+            tab.text = tabTitles[position]
+        }).attach()
     }
 }
