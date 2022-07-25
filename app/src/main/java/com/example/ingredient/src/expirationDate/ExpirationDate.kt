@@ -3,7 +3,6 @@ package com.example.ingredient.src.expirationDate
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -11,9 +10,7 @@ import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import com.example.ingredient.data.ExpirationDateDatabase
 import com.example.ingredient.databinding.FragmentExpirationDateBinding
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import com.example.ingredient.src.expirationDate.add_ingredient.AddingredientsActivity
 
 class ExpirationDate : Fragment() {
     private lateinit var db:ExpirationDateDatabase
