@@ -7,7 +7,7 @@ import android.view.MotionEvent
 import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
 import com.example.ingredient.R
-import com.example.ingredient.data.ExpirationDateDatabase
+import com.example.ingredient.database.ExpirationDateDatabase
 import com.example.ingredient.src.expirationDate.ExpirationDate
 import com.example.ingredient.src.FoodBook
 import com.example.ingredient.src.search.Search

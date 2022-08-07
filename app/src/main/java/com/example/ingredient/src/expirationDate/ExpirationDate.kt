@@ -8,7 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
-import com.example.ingredient.data.ExpirationDateDatabase
+import com.example.ingredient.database.ExpirationDateDatabase
 import com.example.ingredient.databinding.FragmentExpirationDateBinding
 import com.example.ingredient.src.expirationDate.add_ingredient.AddingredientsActivity
 

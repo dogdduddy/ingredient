@@ -32,12 +32,6 @@ class AddIngredientListFragment : Fragment() {
         /*addingredientListAdapter = AddIngredientListAdapter(this)
         viewPager = view.findViewById(R.id.viewpager_add_ingredient)
         viewPager.adapter = addingredientListAdapter
-
          */
-
-        val tabLayout:TabLayout = view.findViewById(R.id.tab_layout)
-        TabLayoutMediator(tabLayout, viewPager) { tab, position ->
-            tab.text = "OBJECT ${(position + 1)}"
-        }.attach()
     }
 }
