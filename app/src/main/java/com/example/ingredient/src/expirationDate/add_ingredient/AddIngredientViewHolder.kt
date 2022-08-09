@@ -16,5 +16,6 @@ class AddIngredientViewHolder(val binding:ItemIngredientBinding)
             "chicken" -> binding.icIngredientIcon.setImageResource(R.drawable.ham)
             "fish" -> binding.icIngredientIcon.setImageResource(R.drawable.salad)
         }
+        binding.tvIngredientName.text = ingredient.ingredientName
     }
 }

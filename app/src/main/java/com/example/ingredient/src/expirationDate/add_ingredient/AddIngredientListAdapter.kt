@@ -2,11 +2,15 @@ package com.example.ingredient.src.expirationDate.add_ingredient
 
 import android.os.Parcel
 import android.os.Parcelable
+import android.util.Log
+import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.view.ViewParent
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.example.ingredient.databinding.ItemIngredientBinding
 import com.example.ingredient.databinding.ItemRecipeBinding
 import com.example.ingredient.src.expirationDate.add_ingredient.models.CategoryIngrediets
 import com.example.ingredient.src.expirationDate.add_ingredient.models.Ingredient
@@ -14,14 +18,21 @@ import com.example.ingredient.src.expirationDate.add_ingredient.models.Ingredien
 class AddIngredientListAdapter(val view:AddIngredientsActivity): RecyclerView.Adapter<AddIngredientViewHolder>() {
     private var ingredients = ArrayList<Ingredient>()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AddIngredientViewHolder {
-        TODO("Not yet implemented")
+        return AddIngredientViewHolder(
+            ItemIngredientBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
+        )
     }
 
     override fun onBindViewHolder(holder: AddIngredientViewHolder, position: Int) {
+        Log.d("AdapterData", ingredients.toString())
         holder.bindWithView(ingredients[position])
     }
 
-    override fun getItemCount() = 4
+    override fun getItemCount() = ingredients.size
 
     fun submitList(ingredients: ArrayList<Ingredient>?) {
         if(ingredients != null) {

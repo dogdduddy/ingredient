@@ -25,8 +25,8 @@ class AddIngredientsActivity : AppCompatActivity() {
         viewPager.adapter = ingredientViewPagerAdapter
 
         val carrot = Ingredient("carrot", 0,"Carrot")
-        val potato = Ingredient("potato", 0,"potato")
-        val chicken = Ingredient("chicken", 0,"chicken")
+        val potato = Ingredient("potato", 1,"potato")
+        val chicken = Ingredient("chicken", 2,"chicken")
         val fish = Ingredient("fish", 3,"fish")
 
         val all =  CategoryIngrediets(0, "전체", listOf(carrot, potato, chicken, fish))

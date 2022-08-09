@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.viewpager2.widget.ViewPager2
 import com.example.ingredient.R
 import com.example.ingredient.databinding.FragmentAddIngredientListBinding
@@ -36,9 +37,15 @@ class AddIngredientListFragment : Fragment() {
             ingredients = getParcelable("ingredients")!!
             Log.d("AddFragment", ingredients.toString())
         }
+        val ingredientRecyclerViewadApter = AddIngredientListAdapter(addingredientActivityView!!)
+        binding.rvIngredient.adapter = ingredientRecyclerViewadApter
 
-        val addingredientlistadapter = AddIngredientListAdapter(addingredientActivityView!!)
-        addingredientlistadapter.submitList(ArrayList(ingredients?.ingredientList))
+        binding.rvIngredient.apply {
+            adapter = ingredientRecyclerViewadApter
+            layoutManager = GridLayoutManager(context, 4)
+        }
+
+        ingredientRecyclerViewadApter.submitList(ArrayList(ingredients?.ingredientList))
     }
     override fun onAttach(context: Context) {
         super.onAttach(context)
