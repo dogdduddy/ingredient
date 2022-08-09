@@ -40,10 +40,15 @@ class AddIngredientListFragment : Fragment() {
         val ingredientRecyclerViewadApter = AddIngredientListAdapter(addingredientActivityView!!)
         binding.rvIngredient.adapter = ingredientRecyclerViewadApter
 
+        binding.rvIngredient.adapter = ingredientRecyclerViewadApter
+        binding.rvIngredient.layoutManager = GridLayoutManager(context, 4)
+        /*
         binding.rvIngredient.apply {
             adapter = ingredientRecyclerViewadApter
             layoutManager = GridLayoutManager(context, 4)
         }
+
+         */
 
         ingredientRecyclerViewadApter.submitList(ArrayList(ingredients?.ingredientList))
     }
