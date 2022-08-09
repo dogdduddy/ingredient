@@ -15,7 +15,7 @@
         android:theme="@style/Theme.MaterialComponents.Light.NoActionBar.Bridge"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".src.expirationDate.add_ingredient.AddingredientsActivity"
+            android:name=".src.expirationDate.add_ingredient.AddIngredientsActivity"
             android:exported="false" />
 
         <meta-data

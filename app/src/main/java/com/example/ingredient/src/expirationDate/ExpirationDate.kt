@@ -10,7 +10,7 @@ import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import com.example.ingredient.database.ExpirationDateDatabase
 import com.example.ingredient.databinding.FragmentExpirationDateBinding
-import com.example.ingredient.src.expirationDate.add_ingredient.AddingredientsActivity
+import com.example.ingredient.src.expirationDate.add_ingredient.AddIngredientsActivity
 
 class ExpirationDate : Fragment() {
     private lateinit var db:ExpirationDateDatabase
@@ -43,7 +43,7 @@ class ExpirationDate : Fragment() {
 
          */
         binding.btnTest.setOnClickListener {
-            var intent = Intent(activity, AddingredientsActivity::class.java)
+            var intent = Intent(activity, AddIngredientsActivity::class.java)
             startActivity(intent)
         }
         binding.radioSelectButton.setOnClickListener {

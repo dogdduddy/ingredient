@@ -1,37 +1,53 @@
 package com.example.ingredient.src.expirationDate.add_ingredient
 
+import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.viewpager2.widget.ViewPager2
 import com.example.ingredient.R
+import com.example.ingredient.databinding.FragmentAddIngredientListBinding
+import com.example.ingredient.src.expirationDate.add_ingredient.models.CategoryIngrediets
+import com.example.ingredient.src.expirationDate.add_ingredient.models.Ingredient
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 
 
 class AddIngredientListFragment : Fragment() {
-    private lateinit var addingredientListAdapter: AddIngredientListAdapter
-    private lateinit var viewPager: ViewPager2
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-        }
-    }
+    private var addingredientActivityView:AddIngredientsActivity? = null
+    private var _binding: FragmentAddIngredientListBinding? = null
+    private val binding get() = _binding!!
+    var ingredients: CategoryIngrediets? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_add_ingredient_list, container, false)
+        _binding = FragmentAddIngredientListBinding.inflate(layoutInflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        /*addingredientListAdapter = AddIngredientListAdapter(this)
-        viewPager = view.findViewById(R.id.viewpager_add_ingredient)
-        viewPager.adapter = addingredientListAdapter
-         */
+        super.onCreate(savedInstanceState)
+        arguments?.takeIf { it.containsKey("ingredients") }?.apply {
+            ingredients = getParcelable("ingredients")!!
+            Log.d("AddFragment", ingredients.toString())
+        }
+
+        val addingredientlistadapter = AddIngredientListAdapter(addingredientActivityView!!)
+        addingredientlistadapter.submitList(ArrayList(ingredients?.ingredientList))
+    }
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if(context is AddIngredientsActivity) {
+            addingredientActivityView = context
+        }
+    }
+    override fun onDetach() {
+        super.onDetach()
+        addingredientActivityView = null
     }
 }
