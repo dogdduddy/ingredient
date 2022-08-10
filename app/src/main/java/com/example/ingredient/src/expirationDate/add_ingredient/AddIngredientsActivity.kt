@@ -28,11 +28,12 @@ class AddIngredientsActivity : AppCompatActivity() {
         val potato = Ingredient("potato", 1,"potato")
         val chicken = Ingredient("chicken", 2,"chicken")
         val fish = Ingredient("fish", 3,"fish")
+        val shrimp = Ingredient("shrimp", 4, "shrimp")
 
-        val all =  CategoryIngrediets(0, "전체", listOf(carrot, potato, chicken, fish))
+        val all =  CategoryIngrediets(0, "전체", listOf(carrot, potato, chicken, shrimp, fish))
         val bag = CategoryIngrediets(1, "채소", listOf(carrot, potato))
         val meat = CategoryIngrediets(2, "육류", listOf(chicken))
-        val seafood = CategoryIngrediets(3, "해산물", listOf(fish))
+        val seafood = CategoryIngrediets(3, "해산물", listOf(fish, shrimp))
 
         val category = listOf(all, bag, meat, seafood)
 
