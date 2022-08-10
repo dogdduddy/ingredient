@@ -3,17 +3,14 @@ package com.example.ingredient.src.expirationDate
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
-import com.example.ingredient.data.ExpirationDateDatabase
+import com.example.ingredient.database.ExpirationDateDatabase
 import com.example.ingredient.databinding.FragmentExpirationDateBinding
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import com.example.ingredient.src.expirationDate.add_ingredient.AddIngredientsActivity
 
 class ExpirationDate : Fragment() {
     private lateinit var db:ExpirationDateDatabase
@@ -46,14 +43,13 @@ class ExpirationDate : Fragment() {
 
          */
         binding.btnTest.setOnClickListener {
-            var intent = Intent(activity, AddingredientsActivity::class.java)
+            var intent = Intent(activity, AddIngredientsActivity::class.java)
             startActivity(intent)
         }
         binding.radioSelectButton.setOnClickListener {
             // Intent로 Activity를 넘기면서, PutExtra에 해당 값을 저장
             // 칼럼 : 재료 상태, 보관 방식
             when(binding.radioGroup.checkedRadioButtonId) {
-
                 binding.radioButton1.id -> binding.editTest.setText("Button1")
                 binding.radioButton2.id -> binding.editTest.setText("Button2")
             }

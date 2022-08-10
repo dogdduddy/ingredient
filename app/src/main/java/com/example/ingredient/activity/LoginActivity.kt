@@ -104,6 +104,11 @@ class LoginActivity : AppCompatActivity() {
         googleBtnbtn.setOnClickListener {
             googleLogin()
         }
+
+        val signoutBtn = findViewById<Button>(R.id.signout)
+        signoutBtn.setOnClickListener {
+            signOut()
+        }
     }
 
     private fun kakaoLogin() {
@@ -124,20 +129,21 @@ class LoginActivity : AppCompatActivity() {
                 override fun onSuccess(result: LoginResult?) {
                     //페이스북 로그인 성공
                     handleFacebookAccessToken(result?.accessToken)
-                    toast("로그인 성공")
                     Log.d("FaceBookLogin", "Login Success")
-                    startMainActivity()
+                    toast("로그인 성공")
                 }
                 override fun onCancel() {
                     //페이스북 로그인 취소
-                    updateUI(null)
+                    toast("로그인 취소")
                     Log.d("FaceBookLogin", "Login Cancle")
+                    updateUI(null)
                 }
 
                 override fun onError(error: FacebookException?) {
                     //페이스북 로그인 실패
+                    toast("페이스북 로그인 실패")
+                    Log.d("FaceBookLogin", "Login Fail : $error")
                     updateUI(null)
-                    Log.d("FaceBookLogin", "Login Fail")
                 }
             })
     }
@@ -152,8 +158,7 @@ class LoginActivity : AppCompatActivity() {
                     if (task.isSuccessful) {
                         // Sign in success, update UI with the signed-in user's information
                         Log.d("MainActivity", "signInWithCredential:success")
-                        val user = auth.currentUser
-                        //updateUI(user)
+                        updateUI(task.result.user)
                     } else {
                         // If sign in fails, display a message to the user.
                         Log.w("MainActivity", "signInWithCredential:failure", task.exception)
@@ -171,7 +176,6 @@ class LoginActivity : AppCompatActivity() {
     }
 
     fun signOut() {
-        FirebaseAuth.getInstance().signOut()
         LoginManager.getInstance().logOut()
         UserManagement.getInstance().requestLogout(object : LogoutResponseCallback() {
             override fun onCompleteLogout() {
@@ -188,18 +192,24 @@ class LoginActivity : AppCompatActivity() {
     }
     // 자동 로그인
     private fun updateUI(user: FirebaseUser?) {
-        user!!.getIdToken(true)
-            .addOnCompleteListener(object : OnCompleteListener<GetTokenResult?> {
-                override fun onComplete(task: com.google.android.gms.tasks.Task<GetTokenResult?> ) {
-                    if (task.isSuccessful()) {
-                        val idToken = task.result!!.token
-                        Log.d(TAG, "아이디 토큰 = $idToken")
-                        val moveMain_intent = Intent(applicationContext, MainActivity::class.java)
-                        startActivity(moveMain_intent)
-                        finish()
+        if(user == null) {
+            toast("로그인에 실패했습니다.")
+        }
+        else {
+            user!!.getIdToken(true)
+                .addOnCompleteListener(object : OnCompleteListener<GetTokenResult?> {
+                    override fun onComplete(task: com.google.android.gms.tasks.Task<GetTokenResult?>) {
+                        if (task.isSuccessful()) {
+                            //val idToken = task.result!!.token
+                            //Log.d(TAG, "아이디 토큰 = $idToken")
+                            val moveMain_intent =
+                                Intent(applicationContext, MainActivity::class.java)
+                            startActivity(moveMain_intent)
+                            finish()
+                        }
                     }
-                }
-            })
+                })
+        }
     }
 
     fun toast(sentence:String) {
