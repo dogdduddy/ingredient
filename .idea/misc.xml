@@ -5,15 +5,22 @@
       <map>
         <entry key="app/src/main/res/drawable-v24/search.xml" value="0.1755" />
         <entry key="app/src/main/res/drawable-v24/searchbar.xml" value="0.1755" />
+        <entry key="app/src/main/res/layout/activity_addingredients.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.2375" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.25317028985507245" />
         <entry key="app/src/main/res/layout/activity_test.xml" value="0.18958333333333333" />
+        <entry key="app/src/main/res/layout/fragment_add_ingredient_list.xml" value="0.17350557244174267" />
+        <entry key="app/src/main/res/layout/fragment_addingredient_object.xml" value="0.17350557244174267" />
         <entry key="app/src/main/res/layout/fragment_dialog.xml" value="0.18333333333333332" />
         <entry key="app/src/main/res/layout/fragment_expiration_date.xml" value="0.11043566362715299" />
         <entry key="app/src/main/res/layout/fragment_food_book.xml" value="0.18333333333333332" />
         <entry key="app/src/main/res/layout/fragment_note.xml" value="0.29074074074074074" />
         <entry key="app/src/main/res/layout/fragment_search.xml" value="0.20643363728470113" />
+        <entry key="app/src/main/res/layout/frame1.xml" value="0.16018518518518518" />
+        <entry key="app/src/main/res/layout/frame2.xml" value="0.16018518518518518" />
+        <entry key="app/src/main/res/layout/item_ingredient.xml" value="0.3958333333333333" />
         <entry key="app/src/main/res/layout/item_recipe.xml" value="0.1828774062816616" />
+        <entry key="app/src/main/res/menu/menu.xml" value="0.16018518518518518" />
       </map>
     </option>
   </component>

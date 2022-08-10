@@ -73,6 +73,9 @@ dependencies {
     //Android Chip
     implementation 'com.github.ismaeldivita:chip-navigation-bar:1.4.0'
 
+    //ViewPager2
+    implementation "androidx.viewpager2:viewpager2:1.0.0"
+
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'androidx.appcompat:appcompat:1.4.0'
     implementation 'com.google.android.material:material:1.4.0'
