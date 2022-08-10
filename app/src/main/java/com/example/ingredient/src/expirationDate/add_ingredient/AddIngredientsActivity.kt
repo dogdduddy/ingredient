@@ -7,6 +7,7 @@ import com.example.ingredient.R
 import com.example.ingredient.databinding.ActivityAddingredientsBinding
 import com.example.ingredient.src.expirationDate.add_ingredient.models.CategoryIngrediets
 import com.example.ingredient.src.expirationDate.add_ingredient.models.Ingredient
+import com.google.android.material.chip.Chip
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 
@@ -37,7 +38,6 @@ class AddIngredientsActivity : AppCompatActivity() {
 
         val category = listOf(all, bag, meat, seafood)
 
-
         var ingredients = ArrayList<CategoryIngrediets>()
         var tablayerName = ArrayList<String>()
 
@@ -53,4 +53,16 @@ class AddIngredientsActivity : AppCompatActivity() {
 
         ingredientViewPagerAdapter.submitList(ingredients)
     }
+
+    fun addingredientClick(ingredient:String) {
+        // 추가된 재료 리사이클러뷰에 추가 후 notification  =>  submitlist
+        binding.pickingredientChip.addView(Chip(this).apply {
+            text = ingredient
+            isCloseIconVisible = true
+            setOnCloseIconClickListener {
+                binding.pickingredientChip.removeView(this)
+            }
+        }, 0)
+    }
+
 }

@@ -73,6 +73,7 @@ class Search : Fragment() {
             if(!inputData.isNullOrBlank()) {
                 // 키보드 내리기
                 // hideKeyboard()
+
                 inputData.split(",").forEach { element ->
                     if(checkDuplicate(element)) {
                         // Chip 앞쪽에 추가
