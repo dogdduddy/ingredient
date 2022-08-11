@@ -2,6 +2,9 @@ package com.example.ingredient.src.expirationDate.add_ingredient
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import android.widget.Toast
+import androidx.core.view.get
 import androidx.viewpager2.widget.ViewPager2
 import com.example.ingredient.R
 import com.example.ingredient.databinding.ActivityAddingredientsBinding
@@ -47,9 +50,9 @@ class AddIngredientsActivity : AppCompatActivity() {
             tablayerName.add(it.ingredientCategoryName)
         }
 
-        TabLayoutMediator(binding.tabLayout, viewPager, {tab, position ->
+        TabLayoutMediator(binding.tabLayout, viewPager) { tab, position ->
             tab.text = tablayerName[position]
-        }).attach()
+        }.attach()
 
         ingredientViewPagerAdapter.submitList(ingredients)
     }
@@ -63,6 +66,10 @@ class AddIngredientsActivity : AppCompatActivity() {
                 binding.pickingredientChip.removeView(this)
             }
         }, 0)
+        /* ChipGroup에서 Chip 얻기
+        Toast.makeText(this, (binding.pickingredientChip.getChildAt(0) as Chip).text.toString(), Toast.LENGTH_LONG).show()
+        Log.d("chiptest", (binding.pickingredientChip.getChildAt(0) as Chip).text.toString())
+         */
     }
 
 }
