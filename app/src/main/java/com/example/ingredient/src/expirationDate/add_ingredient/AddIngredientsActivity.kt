@@ -4,7 +4,9 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import androidx.core.view.contains
 import androidx.core.view.get
+import androidx.core.view.isEmpty
 import androidx.viewpager2.widget.ViewPager2
 import com.example.ingredient.R
 import com.example.ingredient.databinding.ActivityAddingredientsBinding
@@ -58,7 +60,9 @@ class AddIngredientsActivity : AppCompatActivity() {
     }
 
     fun addingredientClick(ingredient:String) {
+
         // 추가된 재료 리사이클러뷰에 추가 후 notification  =>  submitlist
+
         binding.pickingredientChip.addView(Chip(this).apply {
             text = ingredient
             isCloseIconVisible = true
@@ -66,7 +70,33 @@ class AddIngredientsActivity : AppCompatActivity() {
                 binding.pickingredientChip.removeView(this)
             }
         }, 0)
-        /* ChipGroup에서 Chip 얻기
+
+        /*
+        val chip1 = Chip(this).apply {
+            text = ingredient
+            isCloseIconVisible = true
+            setOnCloseIconClickListener {
+                binding.pickingredientChip.removeView(this)
+
+            }
+        }
+        binding.pickingredientChip.addView(chip1, 0)
+
+        Log.d("chiptest", binding.pickingredientChip.contains(chip1).toString())
+
+        var chip2: Chip = Chip(this)
+        var chip3 = chip1
+        chip3.text = "testText"
+        Log.d("chiptest", chip1.text.toString())
+
+        chip2.text = ingredient
+        Log.d("chiptest", binding.pickingredientChip.contains(chip2).toString())
+
+        chip2.text = "fish"
+        Log.d("chiptest", binding.pickingredientChip.contains(chip2).toString())
+
+
+             ChipGroup에서 Chip 얻기
         Toast.makeText(this, (binding.pickingredientChip.getChildAt(0) as Chip).text.toString(), Toast.LENGTH_LONG).show()
         Log.d("chiptest", (binding.pickingredientChip.getChildAt(0) as Chip).text.toString())
          */

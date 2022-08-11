@@ -7,7 +7,6 @@ import com.example.ingredient.src.expirationDate.add_ingredient.models.Ingredien
 
 class AddIngredientViewHolder(val binding:ItemIngredientBinding)
     :RecyclerView.ViewHolder(binding.root) {
-    val clickItemPosition = 0
 
     fun bindWithView(ingredient:Ingredient) {
         when (ingredient.ingredientIcon) {

@@ -17,6 +17,7 @@ import com.example.ingredient.src.expirationDate.add_ingredient.models.Ingredien
 
 class AddIngredientListAdapter(val view:AddIngredientsActivity): RecyclerView.Adapter<AddIngredientViewHolder>() {
     private var ingredients = ArrayList<Ingredient>()
+    private var clickableCheck = ArrayList<Boolean>()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AddIngredientViewHolder {
         return AddIngredientViewHolder(
             ItemIngredientBinding.inflate(
@@ -30,7 +31,10 @@ class AddIngredientListAdapter(val view:AddIngredientsActivity): RecyclerView.Ad
     override fun onBindViewHolder(holder: AddIngredientViewHolder, position: Int) {
         Log.d("AdapterData", ingredients.toString())
         holder.bindWithView(ingredients[position])
+        holder.itemView.isClickable = clickableCheck[position]
         holder.itemView.setOnClickListener {
+            holder.itemView.isClickable = false
+            clickableCheck[position] = false
             view.addingredientClick(ingredients[position].ingredientName)
         }
     }
@@ -40,8 +44,15 @@ class AddIngredientListAdapter(val view:AddIngredientsActivity): RecyclerView.Ad
     fun submitList(ingredients: ArrayList<Ingredient>?) {
         if(ingredients != null) {
             this.ingredients = ingredients
+            clickableCheck = ArrayList<Boolean>(ingredients.size)
+            (0 until ingredients.size).forEach {clickableCheck.add(true)}
         }
         notifyDataSetChanged()
+    }
+
+    fun changedData(position:Int) {
+        clickableCheck[position] = true
+        notifyItemChanged(position)
     }
 }
 
