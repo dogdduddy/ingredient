@@ -70,36 +70,6 @@ class AddIngredientsActivity : AppCompatActivity() {
                 binding.pickingredientChip.removeView(this)
             }
         }, 0)
-
-        /*
-        val chip1 = Chip(this).apply {
-            text = ingredient
-            isCloseIconVisible = true
-            setOnCloseIconClickListener {
-                binding.pickingredientChip.removeView(this)
-
-            }
-        }
-        binding.pickingredientChip.addView(chip1, 0)
-
-        Log.d("chiptest", binding.pickingredientChip.contains(chip1).toString())
-
-        var chip2: Chip = Chip(this)
-        var chip3 = chip1
-        chip3.text = "testText"
-        Log.d("chiptest", chip1.text.toString())
-
-        chip2.text = ingredient
-        Log.d("chiptest", binding.pickingredientChip.contains(chip2).toString())
-
-        chip2.text = "fish"
-        Log.d("chiptest", binding.pickingredientChip.contains(chip2).toString())
-
-
-             ChipGroup에서 Chip 얻기
-        Toast.makeText(this, (binding.pickingredientChip.getChildAt(0) as Chip).text.toString(), Toast.LENGTH_LONG).show()
-        Log.d("chiptest", (binding.pickingredientChip.getChildAt(0) as Chip).text.toString())
-         */
     }
 
 }
