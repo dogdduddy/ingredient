@@ -23,15 +23,13 @@ class AddIngredientsActivity : AppCompatActivity() {
     private lateinit var viewPager: ViewPager2
     private lateinit var ingredientViewPagerAdapter:AddIngredientViewPagerAdapter
     private var pickingredients = mutableListOf<String>()
+    private var ingredients = ArrayList<CategoryIngrediets>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAddingredientsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        viewPager = binding.viewpagerAddIngredient
-        ingredientViewPagerAdapter = AddIngredientViewPagerAdapter(this, this)
-        viewPager.adapter = ingredientViewPagerAdapter
 
         // 임시 재료 데이터
         val carrot = Ingredient("carrot", 0,"Carrot")
@@ -46,23 +44,12 @@ class AddIngredientsActivity : AppCompatActivity() {
         val meat = CategoryIngrediets(2, "육류", listOf(chicken))
         val seafood = CategoryIngrediets(3, "해산물", listOf(fish, shrimp))
 
-        // 임시 카테고리 데이터
+
         val category = listOf(all, bag, meat, seafood)
 
-        var ingredients = ArrayList<CategoryIngrediets>()
-        var tablayerName = ArrayList<String>()
-
-        // 재료 리스트를 적용 및 카테고리만 추출
-        ingredients.clear()
-        category.forEach {
-            ingredients.add(it)
-            tablayerName.add(it.ingredientCategoryName)
-        }
-
-        // 카테고리 적용
-        TabLayoutMediator(binding.tabLayout, viewPager) { tab, position ->
-            tab.text = tablayerName[position]
-        }.attach()
+        // 전체를 출력하기 위한 코드
+        // DB구성 후에는 DB로 "" 키워드를 가지고 검색해서 전체를 출력하도록 만들면 됨
+        ViewPagerInit(category)
 
         // 검색 기능 구현 중
         // 타자기 검색 버튼으로 검색 버튼 클릭 효과
@@ -77,23 +64,35 @@ class AddIngredientsActivity : AppCompatActivity() {
         // 검색 버튼
         binding.ingredientSearchBtn.setOnClickListener {
             var string = binding.ingredientSearch.text.toString()
-            Log.d("searchtet", string)
-            val AllList = ingredients[0].ingredientList
-            Log.d("searchtest", AllList.toString())
-            var searchTag = AllList!!.filter { it.ingredientName == string }
-            Log.d("searchtest", searchTag.toString())
-            var test = ArrayList<CategoryIngrediets>()
-            test.addAll(ingredients)
-            test[0].ingredientList = searchTag
-            Log.d("searchtest", test.toString())
-            ingredientViewPagerAdapter.submitList(test)
+
+            // 검색 키워드 string를 firebase로 넘겨서 검색을 진행하는 코드 삽입 or 실행하는 클래스로 넘기기
         }
-        ingredientViewPagerAdapter.submitList(ingredients)
     }
 
-    fun ViewPagerInit(ingredients: ArrayList<CategoryIngrediets>) {
+    // 검색의 결과를 받아서 출력하는 메서드
+    // 첫 시작은 onCreate에서 ""의 겸색 결과를 넘기도록 코드 삽입 예정 => 전체 출력
+    fun ViewPagerInit(response:List<CategoryIngrediets>) {
+        viewPager = binding.viewpagerAddIngredient
+        ingredientViewPagerAdapter = AddIngredientViewPagerAdapter(this, this)
+        viewPager.adapter = ingredientViewPagerAdapter
 
+        // 임시 카테고리 이름 데이터
+        var tablayerName = ArrayList<String>()
 
+        // 재료 리스트를 적용 및 카테고리만 추출
+        ingredients.clear()
+
+        response.forEach {
+            ingredients.add(it)
+            tablayerName.add(it.ingredientCategoryName)
+        }
+
+        // 카테고리 적용
+        TabLayoutMediator(binding.tabLayout, viewPager) { tab, position ->
+            tab.text = tablayerName[position]
+        }.attach()
+
+        ingredientViewPagerAdapter.submitList(ingredients)
     }
 
     fun addingredientClick(ingredient:String) {
