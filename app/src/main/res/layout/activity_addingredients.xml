@@ -9,6 +9,17 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+        <EditText
+            android:id="@+id/ingredient_search"
+            android:layout_width="match_parent"
+            android:layout_height="85dp"
+            android:text=""/>
+        <Button
+            android:id="@+id/ingredient_search_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"/>
+
         <com.google.android.material.chip.ChipGroup
             android:id="@+id/pickingredientChip"
             android:layout_width="match_parent"

@@ -12,7 +12,7 @@ data class CategoryIngrediets(
     @SerializedName("ingredientCayegoryName")
     val ingredientCategoryName: String,
     @SerializedName("ingredientList")
-    val ingredientList: List<Ingredient>?
+    var ingredientList: List<Ingredient>?
 ):Parcelable {
     override fun describeContents(): Int {
         TODO("Not yet implemented")
