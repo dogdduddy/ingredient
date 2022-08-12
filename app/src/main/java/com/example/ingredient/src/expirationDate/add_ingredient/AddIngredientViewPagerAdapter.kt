@@ -10,8 +10,8 @@ import com.example.ingredient.src.expirationDate.add_ingredient.models.CategoryI
 class AddIngredientViewPagerAdapter(fa:FragmentActivity, val view:AddIngredientsActivity):
 FragmentStateAdapter(fa){
     val TAG = "IngredientCategoryAdapter"
-
     private var ingredients = ArrayList<CategoryIngrediets>()
+
     override fun getItemCount(): Int = 4
 
     override fun createFragment(position: Int): Fragment {
@@ -22,8 +22,10 @@ FragmentStateAdapter(fa){
         addingredientListFragment.arguments = Bundle().apply {
             putParcelable("ingredients", ingredients[position])
         }
+        view.initAddingredientFragment(addingredientListFragment)
         return addingredientListFragment
     }
+
     fun submitList(ingredients: ArrayList<CategoryIngrediets>) {
         this.ingredients = ingredients
         notifyDataSetChanged()

@@ -21,6 +21,7 @@ class AddIngredientListFragment : Fragment() {
     private var addingredientActivityView:AddIngredientsActivity? = null
     private var _binding: FragmentAddIngredientListBinding? = null
     private val binding get() = _binding!!
+    private lateinit var ingredientRecyclerViewadApter:AddIngredientListAdapter
     var ingredients: CategoryIngrediets? = null
 
     override fun onCreateView(
@@ -37,7 +38,7 @@ class AddIngredientListFragment : Fragment() {
             ingredients = getParcelable("ingredients")!!
             Log.d("AddFragment", ingredients.toString())
         }
-        val ingredientRecyclerViewadApter = AddIngredientListAdapter(addingredientActivityView!!)
+        ingredientRecyclerViewadApter = AddIngredientListAdapter(addingredientActivityView!!)
         binding.rvIngredient.adapter = ingredientRecyclerViewadApter
 
         binding.rvIngredient.adapter = ingredientRecyclerViewadApter
@@ -54,5 +55,8 @@ class AddIngredientListFragment : Fragment() {
     override fun onDetach() {
         super.onDetach()
         addingredientActivityView = null
+    }
+    fun changedClickable(ingredientName:String, position:Int) {
+        ingredientRecyclerViewadApter.changedData(ingredientName, position)
     }
 }

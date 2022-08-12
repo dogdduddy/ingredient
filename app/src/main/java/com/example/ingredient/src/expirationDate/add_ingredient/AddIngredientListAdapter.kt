@@ -35,7 +35,7 @@ class AddIngredientListAdapter(val view:AddIngredientsActivity): RecyclerView.Ad
         holder.itemView.setOnClickListener {
             holder.itemView.isClickable = false
             clickableCheck[position] = false
-            view.addingredientClick(ingredients[position].ingredientName)
+            view.addingredientClick(ingredients[position].ingredientName, position)
         }
     }
 
@@ -50,7 +50,7 @@ class AddIngredientListAdapter(val view:AddIngredientsActivity): RecyclerView.Ad
         notifyDataSetChanged()
     }
 
-    fun changedData(position:Int) {
+    fun changedData(ingredientName:String, position:Int) {
         clickableCheck[position] = true
         notifyItemChanged(position)
     }

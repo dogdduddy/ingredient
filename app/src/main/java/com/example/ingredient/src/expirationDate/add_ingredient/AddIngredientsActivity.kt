@@ -7,6 +7,7 @@ import android.widget.Toast
 import androidx.core.view.contains
 import androidx.core.view.get
 import androidx.core.view.isEmpty
+import androidx.fragment.app.findFragment
 import androidx.viewpager2.widget.ViewPager2
 import com.example.ingredient.R
 import com.example.ingredient.databinding.ActivityAddingredientsBinding
@@ -20,6 +21,7 @@ class AddIngredientsActivity : AppCompatActivity() {
     private lateinit var binding:ActivityAddingredientsBinding
     private lateinit var viewPager: ViewPager2
     private lateinit var ingredientViewPagerAdapter:AddIngredientViewPagerAdapter
+    private lateinit var ingredientListFragment: AddIngredientListFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,17 +61,21 @@ class AddIngredientsActivity : AppCompatActivity() {
         ingredientViewPagerAdapter.submitList(ingredients)
     }
 
-    fun addingredientClick(ingredient:String) {
-
+    fun addingredientClick(ingredient:String, position:Int) {
         // 추가된 재료 리사이클러뷰에 추가 후 notification  =>  submitlist
-
         binding.pickingredientChip.addView(Chip(this).apply {
             text = ingredient
+            tag = position
             isCloseIconVisible = true
             setOnCloseIconClickListener {
                 binding.pickingredientChip.removeView(this)
+                val chip = (it as Chip)
+                ingredientListFragment.changedClickable(chip.text.toString(), chip.tag as Int)
             }
         }, 0)
+    }
+    fun initAddingredientFragment(ingredientListFragment:AddIngredientListFragment) {
+        this.ingredientListFragment = ingredientListFragment
     }
 
 }
