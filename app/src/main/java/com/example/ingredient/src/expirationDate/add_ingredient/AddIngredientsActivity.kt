@@ -21,7 +21,7 @@ class AddIngredientsActivity : AppCompatActivity() {
     private lateinit var binding:ActivityAddingredientsBinding
     private lateinit var viewPager: ViewPager2
     private lateinit var ingredientViewPagerAdapter:AddIngredientViewPagerAdapter
-    private lateinit var ingredientListFragment: AddIngredientListFragment
+    private var pickingredients = mutableListOf<String>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,21 +61,19 @@ class AddIngredientsActivity : AppCompatActivity() {
         ingredientViewPagerAdapter.submitList(ingredients)
     }
 
-    fun addingredientClick(ingredient:String, position:Int) {
-        // 추가된 재료 리사이클러뷰에 추가 후 notification  =>  submitlist
-        binding.pickingredientChip.addView(Chip(this).apply {
-            text = ingredient
-            tag = position
-            isCloseIconVisible = true
-            setOnCloseIconClickListener {
-                binding.pickingredientChip.removeView(this)
-                val chip = (it as Chip)
-                ingredientListFragment.changedClickable(chip.text.toString(), chip.tag as Int)
-            }
-        }, 0)
-    }
-    fun initAddingredientFragment(ingredientListFragment:AddIngredientListFragment) {
-        this.ingredientListFragment = ingredientListFragment
+    fun addingredientClick(ingredient:String) {
+        if(!pickingredients.contains(ingredient)) {
+            pickingredients.add(ingredient)
+            // 추가된 재료 리사이클러뷰에 추가 후 notification  =>  submitlist
+            binding.pickingredientChip.addView(Chip(this).apply {
+                text = ingredient
+                isCloseIconVisible = true
+                setOnCloseIconClickListener {
+                    pickingredients.remove(this.text)
+                    binding.pickingredientChip.removeView(this)
+                }
+            }, 0)
+        }
     }
 
 }

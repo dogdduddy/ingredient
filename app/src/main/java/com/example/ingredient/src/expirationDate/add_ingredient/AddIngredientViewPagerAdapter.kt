@@ -22,7 +22,6 @@ FragmentStateAdapter(fa){
         addingredientListFragment.arguments = Bundle().apply {
             putParcelable("ingredients", ingredients[position])
         }
-        view.initAddingredientFragment(addingredientListFragment)
         return addingredientListFragment
     }
 

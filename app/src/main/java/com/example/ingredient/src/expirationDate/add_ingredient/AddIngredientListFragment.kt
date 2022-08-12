@@ -56,7 +56,4 @@ class AddIngredientListFragment : Fragment() {
         super.onDetach()
         addingredientActivityView = null
     }
-    fun changedClickable(ingredientName:String, position:Int) {
-        ingredientRecyclerViewadApter.changedData(ingredientName, position)
-    }
 }
