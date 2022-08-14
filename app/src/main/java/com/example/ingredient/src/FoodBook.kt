@@ -81,15 +81,22 @@ class FoodBook : Fragment() {
             imm?.hideSoftInputFromWindow(binding.findwindow.windowToken, 0)
 
             var str = binding.findwindow.text.toString()
+            /*
             if (!str.isNullOrBlank()) {
                 SearchQuery(database, str)
+            } else {
+                SearchQuery(database)
+            }
+
+             */
+            if (!str.isNullOrBlank()) {
+                SearchFullTextQuery(database, str)
             } else {
                 SearchQuery(database)
             }
         }
 
     }
-
 
     // 단순쿼리문 (전체 출력)
     fun SearchQuery(database: FirebaseFirestore): Unit {
@@ -105,6 +112,29 @@ class FoodBook : Fragment() {
                         arrayOf(
                             document.get("name").toString(),
                             // ["김치", 밥, "대파"] 와 같은 형태로 출력 됨. "[" 와 "]"를 제거하기 위한 코드
+                            document.get("ingredients").toString().drop(1).dropLast(1),
+                            document.get("time").toString()
+                        )
+                    )
+                }
+                adapterConnect(recipeList)
+            }
+    }
+
+    // Full Text 형태로 검색해보기
+    fun SearchFullTextQuery(database: FirebaseFirestore, str: String): Unit {
+        val refs = database.collection("users")
+        // 검색 통해 나온 레시피명을 담는 리스트
+        recipeList = mutableListOf<Array<String>>()
+
+        refs.whereArrayContains("fulltext", str)
+            .get()
+            .addOnSuccessListener { documents ->
+                for (document in documents) {
+                    // 레시피 검색해서 나온 이름, 재료, 시간 저장
+                    recipeList.add(
+                        arrayOf(
+                            document.get("name").toString(),
                             document.get("ingredients").toString().drop(1).dropLast(1),
                             document.get("time").toString()
                         )
