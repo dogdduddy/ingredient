@@ -121,7 +121,7 @@ class FoodBook : Fragment() {
             }
     }
 
-    // Full Text 형태로 검색해보기
+    // Full Text 형태로 검색 구현
     fun SearchFullTextQuery(database: FirebaseFirestore, str: String): Unit {
         val refs = database.collection("users")
         // 검색 통해 나온 레시피명을 담는 리스트
@@ -130,6 +130,9 @@ class FoodBook : Fragment() {
         refs.whereArrayContains("fulltext", str)
             .get()
             .addOnSuccessListener { documents ->
+                Log.d("firebaseTest", documents.toString())
+                Log.d("firebaseTest", documents.documents.toString())
+
                 for (document in documents) {
                     // 레시피 검색해서 나온 이름, 재료, 시간 저장
                     recipeList.add(
