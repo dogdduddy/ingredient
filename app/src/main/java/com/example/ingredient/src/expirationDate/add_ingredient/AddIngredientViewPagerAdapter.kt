@@ -12,7 +12,7 @@ FragmentStateAdapter(fa){
     val TAG = "IngredientCategoryAdapter"
     private var ingredients = ArrayList<CategoryIngrediets>()
 
-    override fun getItemCount(): Int = 4
+    override fun getItemCount(): Int = ingredients.size
 
     override fun createFragment(position: Int): Fragment {
         Log.d(TAG, "IngredientCategoryAdapter - createFragment() : $position")

@@ -13,14 +13,18 @@ import androidx.viewpager2.widget.ViewPager2
 import com.example.ingredient.R
 import com.example.ingredient.databinding.ActivityAddingredientsBinding
 import com.example.ingredient.src.expirationDate.add_ingredient.models.CategoryIngrediets
+import com.example.ingredient.src.expirationDate.add_ingredient.models.CategoryIngredietsTest
 import com.example.ingredient.src.expirationDate.add_ingredient.models.Ingredient
+import com.example.ingredient.src.expirationDate.add_ingredient.models.Testmodel
 import com.google.android.material.chip.Chip
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import com.google.firebase.firestore.FirebaseFirestore
 
 class AddIngredientsActivity : AppCompatActivity() {
     private lateinit var binding:ActivityAddingredientsBinding
     private lateinit var viewPager: ViewPager2
+    private lateinit var database:FirebaseFirestore
     private lateinit var ingredientViewPagerAdapter:AddIngredientViewPagerAdapter
     private var pickingredients = mutableListOf<String>()
     private var ingredients = ArrayList<CategoryIngrediets>()
@@ -29,6 +33,8 @@ class AddIngredientsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityAddingredientsBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        database = FirebaseFirestore.getInstance()
 
 
         // 임시 재료 데이터
@@ -64,7 +70,7 @@ class AddIngredientsActivity : AppCompatActivity() {
         // 검색 버튼
         binding.ingredientSearchBtn.setOnClickListener {
             var string = binding.ingredientSearch.text.toString()
-
+            getIngredients(string)
             // 검색 키워드 string를 firebase로 넘겨서 검색을 진행하는 코드 삽입 or 실행하는 클래스로 넘기기
         }
     }
@@ -108,6 +114,24 @@ class AddIngredientsActivity : AppCompatActivity() {
                 }
             }, 0)
         }
+    }
+
+    // 현재 firestore와 model의 데이터 매칭이 제대로 안 되는 문제인듯
+    fun getIngredients(keyword: String) {
+        val refs = database.collection("Category")
+        // 검색 통해 나온 레시피명을 담는 리스트
+        var categoryList = mutableListOf<CategoryIngredietsTest>()
+        refs.whereNotEqualTo("categoryid", 2).get()
+            .addOnSuccessListener { documents ->
+                for (document in documents) {
+                    Log.d("firestoreTest", "1 : ${document}")
+                    var test:CategoryIngredietsTest = document.toObject(CategoryIngredietsTest::class.java)
+                    Log.d("firestoreTest", "2 : ${test}")
+                    categoryList.add(test)
+                }
+                Log.d("firestoreTest", "test : ${categoryList}")
+            }
+        //ViewPagerInit(categoryList)
     }
 
 }
