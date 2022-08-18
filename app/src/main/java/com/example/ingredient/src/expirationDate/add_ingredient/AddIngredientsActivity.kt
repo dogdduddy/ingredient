@@ -19,7 +19,10 @@ import com.example.ingredient.src.expirationDate.add_ingredient.models.Testmodel
 import com.google.android.material.chip.Chip
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.getField
+import java.lang.ref.Reference
 
 class AddIngredientsActivity : AppCompatActivity() {
     private lateinit var binding:ActivityAddingredientsBinding
@@ -116,7 +119,7 @@ class AddIngredientsActivity : AppCompatActivity() {
         }
     }
 
-    // 현재 firestore와 model의 데이터 매칭이 제대로 안 되는 문제인듯
+    // Firetore DocumentSnapshot -> Categoryingrediets
     fun getIngredients(keyword: String) {
         val refs = database.collection("Category")
         // 검색 통해 나온 레시피명을 담는 리스트
@@ -124,12 +127,28 @@ class AddIngredientsActivity : AppCompatActivity() {
         refs.whereNotEqualTo("categoryid", 2).get()
             .addOnSuccessListener { documents ->
                 for (document in documents) {
-                    Log.d("firestoreTest", "1 : ${document}")
+                    Log.d("firestoreTest", "Document : ${document}")
+
+
+                    var test = (document.data.get("ingredientlist") as List<Any>).get(0) as DocumentReference
+                    (document.get("ingredientlist") as List<Any>)
+                        .forEach{
+                            (it as DocumentReference)
+                                .get()
+                                .addOnSuccessListener { doc ->
+                                    Log.d("firestoreTest", "DocumentGet9-1 ${doc.get("ingredientname")}")
+                                }
+                        }
+                    /*
                     var test:CategoryIngredietsTest = document.toObject(CategoryIngredietsTest::class.java)
-                    Log.d("firestoreTest", "2 : ${test}")
+                    Log.d("firestoreTest", "Model : ${test}")
+                    Log.d("firestoreTest", "Reference : ${test.ingredientList}")
+
                     categoryList.add(test)
+
+                     */
                 }
-                Log.d("firestoreTest", "test : ${categoryList}")
+                Log.d("firestoreTest", "List : ${categoryList}")
             }
         //ViewPagerInit(categoryList)
     }
