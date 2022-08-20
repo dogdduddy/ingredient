@@ -17,7 +17,7 @@ data class CategoryIngredietsTest(
     @SerializedName("ingredientList")
     @get:PropertyName("ingredientlist")
     @set:PropertyName("ingredientlist")
-    var ingredientList: List<String>? = listOf()
+    var ingredientList: List<Ingredient> = listOf()
 ):Parcelable {
     override fun describeContents(): Int {
         TODO("Not yet implemented")
