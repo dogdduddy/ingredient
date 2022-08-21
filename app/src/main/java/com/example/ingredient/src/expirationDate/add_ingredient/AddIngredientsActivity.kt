@@ -14,9 +14,7 @@ import com.example.ingredient.src.expirationDate.add_ingredient.models.Testmodel
 import com.google.android.material.chip.Chip
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
-import com.google.firebase.firestore.DocumentReference
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.QueryDocumentSnapshot
+import com.google.firebase.firestore.*
 import com.google.firebase.firestore.ktx.getField
 import com.squareup.okhttp.Dispatcher
 import kotlinx.coroutines.*
@@ -57,7 +55,7 @@ class AddIngredientsActivity : AppCompatActivity() {
         // 전체를 출력하기 위한 코드
         // DB구성 후에는 DB로 "" 키워드를 가지고 검색해서 전체를 출력하도록 만들면 됨
         // ViewPagerInit(category)
-        getIngredientsInit("")
+        getIngredientsInit()
 
         // 검색 기능 구현 중
         // 타자기 검색 버튼으로 검색 버튼 클릭 효과
@@ -117,90 +115,52 @@ class AddIngredientsActivity : AppCompatActivity() {
             }, 0)
         }
     }
-/*
+
+    // 최신 08.22
+    // 1. 쿼리를 통한 결과(Category Document List)를 반복문으로 돌림
+    // 2. 각 카테고리의 ingredientList를 가져와 ingredientQuery 메서드 에서 재료리스트의 재료들을 ingredients collection에서 불러옴
+    // 3. categoryMerge 메서드 에서 해당 재료 리스트와 Category를 결합함
+    // categoryList는 공유 변수로 두고 이용함.
     fun getIngredientsInit() {
         val refs = database.collection("Category")
-        // 검색 통해 나온 레시피명을 담는 리스트
         var categoryList = mutableListOf<CategoryIngrediets>()
-                refs.get()
-                    .addOnSuccessListener { documents ->
-                        for (document in documents) {
-                            var temp = mutableListOf<Ingredient>()
-                            (document.get("ingredientlist") as List<Any>)
-                                .forEach {
-                                    var tt:Ingredient = Ingredient("",0,"")
-                                    (it as DocumentReference)
-                                        .get()
-                                        .addOnSuccessListener { doc ->
-                                            Log.d("firestoreD", "success : ${doc}")
-                                            tt = Ingredient(
-                                                    doc.get("ingredienticon").toString(),
-                                                    doc.get("ingredientidx").toString().toInt(),
-                                                    doc.get("ingredientname").toString()
-                                                )
-                                        }
+        fun categoryMerge(document:QueryDocumentSnapshot, doc:QuerySnapshot) {
+            var ingredientList = mutableListOf<Ingredient>()
+            doc.forEach {
+                ingredientList.add(
+                    Ingredient(
+                        it.get("ingredienticon").toString(),
+                        it.get("ingredientidx").toString().toInt(),
+                        it.get("ingredientname").toString()
+                    )
+                )
+            }
 
-                                }
-                            Log.d("firestoreD", "doc1 : ${temp}")
+            categoryList.add(CategoryIngrediets(
+                document.get("categoryid").toString().toInt(),
+                document.get("categoryname").toString(),
+                ingredientList as List<Ingredient>
+            ))
+            if(categoryList.size == 2) {
+                ViewPagerInit(categoryList)
+            }
+        }
+        fun ingredientQuery(document:QueryDocumentSnapshot, list:List<String>) {
+            database.collection("ingredients")
+                .whereIn("ingredientname", list)
+                .get()
+                .addOnSuccessListener {
+                    categoryMerge(document, it)
+                }
+        }
 
-
-                                Log.d("firestoreD", "doc2 : ${ingredientList}")
-                                categoryList.add(
-                                    CategoryIngrediets(
-                                        document.get("categoryid").toString().toInt(),
-                                        document.get("categoryname").toString(),
-                                        ingredientList as List<Ingredient>
-                                    )
-                                )
-                                Log.d("firestoreD", "Cat : ${categoryList}")
-
-                        }
-                    }
-            Log.d("firestoreD", "Init : ${categoryList}")
-            ViewPagerInit(categoryList as List<CategoryIngrediets>)
-
-    }
-
- */
-
-    fun getIngredientsInit(keyword: String) {
-        val refs = database.collection("Category")
         // 검색 통해 나온 레시피명을 담는 리스트
         refs.get()
             .addOnSuccessListener { documents ->
-                var categoryList = mutableListOf<CategoryIngrediets>()
                 for (document in documents) {
-                    Log.d("firestoreTest", "Document : ${document}")
-                    var ingredientList  = mutableListOf<Ingredient>()
-                    (document.get("ingredientlist") as List<Any>)
-                        .forEach{
-                            (it as DocumentReference)
-                                .get()
-                                .addOnSuccessListener { doc ->
-                                    Log.d("firestoreTest", "DocumentGet9-1 ${doc.get("ingredientname")}")
-                                    ingredientList.add(
-                                        Ingredient(
-                                            doc.get("ingredienticon").toString(),
-                                            doc.get("ingredientidx").toString().toInt(),
-                                            doc.get("ingredientname").toString()
-                                        )
-                                    )
-                                }
-                        }
-                    categoryList.add(
-                        CategoryIngrediets(
-                            document.get("categoryid").toString().toInt(),
-                            document.get("categoryname").toString(),
-                            ingredientList as List<Ingredient>
-                        )
-
-                    )
-
+                    ingredientQuery(document,(document.get("ingredientlist") as List<String>))
                 }
-                ViewPagerInit(categoryList)
-                Log.d("firestoreTest", "List : ${categoryList}")
             }
-        //ViewPagerInit(categoryList)
     }
 
 
@@ -213,7 +173,6 @@ class AddIngredientsActivity : AppCompatActivity() {
             .addOnSuccessListener { documents ->
                 for (document in documents) {
                     Log.d("firestoreTest", "Document : ${document}")
-                    var test = (document.data.get("ingredientlist") as List<Any>).get(0) as DocumentReference
                     (document.get("ingredientlist") as List<Any>)
                         .forEach{
                             (it as DocumentReference)
@@ -228,7 +187,6 @@ class AddIngredientsActivity : AppCompatActivity() {
                     Log.d("firestoreTest", "Reference : ${test.ingredientList}")
 
                     categoryList.add(test)
-
                      */
                 }
                 Log.d("firestoreTest", "List : ${categoryList}")
