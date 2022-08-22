@@ -53,6 +53,11 @@ class AddIngredientsActivity : AppCompatActivity() {
             getIngredients(string)
             // 검색 키워드 string를 firebase로 넘겨서 검색을 진행하는 코드 삽입 or 실행하는 클래스로 넘기기
         }
+
+        // 검색 취소 버튼
+        binding.ingredientSearchCancle.setOnClickListener {
+            getIngredientsInit()
+        }
     }
 
     // 검색의 결과를 받아서 출력하는 메서드
@@ -153,7 +158,7 @@ class AddIngredientsActivity : AppCompatActivity() {
         val refs = database.collection("ingredients")
         // 검색 통해 나온 레시피명을 담는 리스트
 
-        refs.whereEqualTo("ingredientname", keyword)
+        refs.whereArrayContains("ingredienttag", keyword)
             .get()
             .addOnSuccessListener { doc ->
                 var ingredientList = mutableListOf<Ingredient>()
@@ -168,8 +173,6 @@ class AddIngredientsActivity : AppCompatActivity() {
                         )
                     )
                 }
-                //ingredients[0].ingredientList = ingredientList
-                //ingredientViewPagerAdapter.submitList(ingredients)
 
                 var temt = arrayListOf<CategoryIngrediets>()
                 ingredients.forEachIndexed { i, v ->
