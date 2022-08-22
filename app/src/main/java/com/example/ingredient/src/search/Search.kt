@@ -56,7 +56,6 @@ class Search : Fragment() {
     override fun onStart() {
         super.onStart()
         // 키보드 자판 돋보기로 검색 실행 기능
-
         binding.findwindow.setOnEditorActionListener { v, actionId, event ->
             var handled = false
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
@@ -73,6 +72,7 @@ class Search : Fragment() {
             if(!inputData.isNullOrBlank()) {
                 // 키보드 내리기
                 // hideKeyboard()
+
                 inputData.split(",").forEach { element ->
                     if(checkDuplicate(element)) {
                         // Chip 앞쪽에 추가

@@ -39,6 +39,7 @@ class MainActivity : AppCompatActivity() {
         val transection = supportFragmentManager
         transection.beginTransaction().
             add(R.id.fragment_container, Search(),"Search").commit()
+        binding.menuBottom.setItemSelected(R.id.search)
 
         // 하단바를 통해 화면(프래그먼트) 전환
         binding.menuBottom.setOnItemSelectedListener { id ->
