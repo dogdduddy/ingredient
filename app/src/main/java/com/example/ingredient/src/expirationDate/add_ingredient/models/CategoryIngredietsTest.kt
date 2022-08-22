@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class CategoryIngrediets(
+data class CategoryIngredietsTest(
     @SerializedName("ingredientCategoryIdx")
     @get:PropertyName("categoryid")
     var ingredientCategoryIdx:Int = 0,
@@ -16,6 +16,7 @@ data class CategoryIngrediets(
     var ingredientCategoryName: String = "",
     @SerializedName("ingredientList")
     @get:PropertyName("ingredientlist")
+    @set:PropertyName("ingredientlist")
     var ingredientList: List<Ingredient> = listOf()
 ):Parcelable {
     override fun describeContents(): Int {
