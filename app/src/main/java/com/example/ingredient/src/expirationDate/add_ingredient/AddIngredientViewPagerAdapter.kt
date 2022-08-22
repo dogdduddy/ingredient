@@ -20,6 +20,7 @@ FragmentStateAdapter(fa){
 
         val addingredientListFragment = AddIngredientListFragment()
         addingredientListFragment.arguments = Bundle().apply {
+            Log.d("dataC", "${ingredients[position]}")
             putParcelable("ingredients", ingredients[position])
         }
         return addingredientListFragment
@@ -27,6 +28,7 @@ FragmentStateAdapter(fa){
 
     fun submitList(ingredients: ArrayList<CategoryIngrediets>) {
         this.ingredients = ingredients
+        Log.d("adapter", "${this.ingredients}")
         notifyDataSetChanged()
     }
 }
