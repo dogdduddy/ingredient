@@ -56,6 +56,7 @@ class AddIngredientsActivity : AppCompatActivity() {
 
         // 검색 취소 버튼
         binding.ingredientSearchCancle.setOnClickListener {
+            binding.ingredientSearch.setText("")
             getIngredientsInit()
         }
     }
@@ -157,7 +158,6 @@ class AddIngredientsActivity : AppCompatActivity() {
     fun getIngredients(keyword: String) {
         val refs = database.collection("ingredients")
         // 검색 통해 나온 레시피명을 담는 리스트
-        //refs.whereArrayContains("ingredienttag", keyword)
         refs.orderBy("ingredientname").startAt(keyword).endAt(keyword+ "\uf8ff")
             .get()
             .addOnSuccessListener { doc ->
