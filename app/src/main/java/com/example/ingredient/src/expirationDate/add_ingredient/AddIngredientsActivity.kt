@@ -157,14 +157,12 @@ class AddIngredientsActivity : AppCompatActivity() {
     fun getIngredients(keyword: String) {
         val refs = database.collection("ingredients")
         // 검색 통해 나온 레시피명을 담는 리스트
-
-        refs.whereArrayContains("ingredienttag", keyword)
+        //refs.whereArrayContains("ingredienttag", keyword)
+        refs.orderBy("ingredientname").startAt(keyword).endAt(keyword+ "\uf8ff")
             .get()
             .addOnSuccessListener { doc ->
                 var ingredientList = mutableListOf<Ingredient>()
-                Log.d("TTTT", "1 : ${doc}")
                 doc.forEach {
-                    Log.d("TTTT", "2 : ${it}")
                     ingredientList.add(
                         Ingredient(
                             it.get("ingredienticon").toString(),
@@ -173,7 +171,6 @@ class AddIngredientsActivity : AppCompatActivity() {
                         )
                     )
                 }
-
                 var temt = arrayListOf<CategoryIngrediets>()
                 ingredients.forEachIndexed { i, v ->
                     temt.add(
