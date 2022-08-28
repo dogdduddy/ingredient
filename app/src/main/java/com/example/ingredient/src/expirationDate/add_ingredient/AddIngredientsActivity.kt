@@ -5,20 +5,12 @@ import android.os.Bundle
 import android.util.Log
 import android.view.inputmethod.EditorInfo
 import androidx.viewpager2.widget.ViewPager2
-import com.example.ingredient.R
 import com.example.ingredient.databinding.ActivityAddingredientsBinding
 import com.example.ingredient.src.expirationDate.add_ingredient.models.CategoryIngrediets
-import com.example.ingredient.src.expirationDate.add_ingredient.models.CategoryIngredietsTest
 import com.example.ingredient.src.expirationDate.add_ingredient.models.Ingredient
-import com.example.ingredient.src.expirationDate.add_ingredient.models.Testmodel
 import com.google.android.material.chip.Chip
-import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.firestore.*
-import com.google.firebase.firestore.ktx.getField
-import com.squareup.okhttp.Dispatcher
-import kotlinx.coroutines.*
-import java.lang.ref.Reference
 
 class AddIngredientsActivity : AppCompatActivity() {
     private lateinit var binding:ActivityAddingredientsBinding
