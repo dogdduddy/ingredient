@@ -4,7 +4,9 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.inputmethod.EditorInfo
+import androidx.core.net.toUri
 import androidx.viewpager2.widget.ViewPager2
+import com.bumptech.glide.Glide
 import com.example.ingredient.databinding.ActivityAddingredientsBinding
 import com.example.ingredient.src.expirationDate.add_ingredient.models.CategoryIngrediets
 import com.example.ingredient.src.expirationDate.add_ingredient.models.Ingredient
@@ -29,9 +31,9 @@ class AddIngredientsActivity : AppCompatActivity() {
 
         database = FirebaseFirestore.getInstance()
 
+        // Categoty 및 재료 리스트 초기화
+        getIngredientsInit()
 
-
-        ////////
         // 검색 기능 구현 중
         // 타자기 검색 버튼으로 검색 버튼 클릭 효과
         binding.ingredientSearch.setOnEditorActionListener { v, actionId, event ->

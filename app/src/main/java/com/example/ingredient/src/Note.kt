@@ -1,13 +1,11 @@
 package com.example.ingredient.src
 
 import android.annotation.SuppressLint
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
-import com.example.ingredient.activity.TestActivity
 import com.example.ingredient.database.ExpirationDateDatabase
 import com.example.ingredient.databinding.FragmentNoteBinding
 import com.google.firebase.ktx.Firebase
@@ -50,12 +48,16 @@ class Note : Fragment() {
             false
         }
         //// 이미지 로드 테스트
-        var storage = Firebase.storage("gs://ingredient-7f334.appspot.com/")
-        var testImage = storage.reference.child("/testimage.jpeg")
+        Firebase.storage("gs://ingredient-7f334.appspot.com").reference.child("testimage1.jpeg").downloadUrl
+            .addOnSuccessListener {
+                Log.d("URLTest : ","test : ${it}")
+                Glide.with(this)
+                    .load(it)
+                    .into(binding.imageTest)
+            }
 
         binding.testbtn2.setOnClickListener {
-            var intent = Intent(activity, TestActivity::class.java)
-            startActivity(intent)
+            Log.d("NotePad Touch1 : ","test")
         }
         ////
     }
