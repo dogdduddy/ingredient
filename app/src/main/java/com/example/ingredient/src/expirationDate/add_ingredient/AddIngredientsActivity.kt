@@ -11,6 +11,8 @@ import com.example.ingredient.src.expirationDate.add_ingredient.models.Ingredien
 import com.google.android.material.chip.Chip
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.firestore.*
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
 
 class AddIngredientsActivity : AppCompatActivity() {
     private lateinit var binding:ActivityAddingredientsBinding
@@ -27,8 +29,9 @@ class AddIngredientsActivity : AppCompatActivity() {
 
         database = FirebaseFirestore.getInstance()
 
-        getIngredientsInit()
 
+
+        ////////
         // 검색 기능 구현 중
         // 타자기 검색 버튼으로 검색 버튼 클릭 효과
         binding.ingredientSearch.setOnEditorActionListener { v, actionId, event ->
@@ -67,7 +70,6 @@ class AddIngredientsActivity : AppCompatActivity() {
         // 재료 리스트를 적용 및 카테고리만 추출
         ingredients.clear()
 
-        Log.d("TTTT", "4 : ${response}")
         response.forEach {
             ingredients.add(it)
             tablayerName.add(it.ingredientCategoryName)
