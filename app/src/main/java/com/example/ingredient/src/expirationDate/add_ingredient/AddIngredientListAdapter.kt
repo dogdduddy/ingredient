@@ -30,7 +30,7 @@ class AddIngredientListAdapter(val view:AddIngredientsActivity): RecyclerView.Ad
     override fun onBindViewHolder(holder: AddIngredientViewHolder, position: Int) {
         Log.d("AdapterData", ingredients.toString())
         holder.bindWithView(ingredients[position])
-        holder.itemView.setOnClickListener { view.addingredientClick(ingredients[position].ingredientName) }
+        holder.itemView.setOnClickListener { view.addingredientClick(ingredients[position]) }
     }
 
     override fun getItemCount() = ingredients.size

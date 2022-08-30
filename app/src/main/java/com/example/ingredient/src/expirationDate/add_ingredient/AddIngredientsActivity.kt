@@ -1,31 +1,28 @@
 package com.example.ingredient.src.expirationDate.add_ingredient
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.inputmethod.EditorInfo
+import androidx.core.net.toUri
 import androidx.viewpager2.widget.ViewPager2
-import com.example.ingredient.R
+import com.bumptech.glide.Glide
 import com.example.ingredient.databinding.ActivityAddingredientsBinding
 import com.example.ingredient.src.expirationDate.add_ingredient.models.CategoryIngrediets
-import com.example.ingredient.src.expirationDate.add_ingredient.models.CategoryIngredietsTest
 import com.example.ingredient.src.expirationDate.add_ingredient.models.Ingredient
-import com.example.ingredient.src.expirationDate.add_ingredient.models.Testmodel
 import com.google.android.material.chip.Chip
-import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.firestore.*
-import com.google.firebase.firestore.ktx.getField
-import com.squareup.okhttp.Dispatcher
-import kotlinx.coroutines.*
-import java.lang.ref.Reference
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
 
 class AddIngredientsActivity : AppCompatActivity() {
     private lateinit var binding:ActivityAddingredientsBinding
     private lateinit var viewPager: ViewPager2
     private lateinit var database:FirebaseFirestore
     private lateinit var ingredientViewPagerAdapter:AddIngredientViewPagerAdapter
-    private var pickingredients = mutableListOf<String>()
+    private var pickingredients = mutableListOf<Ingredient>()
     private var ingredients = ArrayList<CategoryIngrediets>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,6 +32,7 @@ class AddIngredientsActivity : AppCompatActivity() {
 
         database = FirebaseFirestore.getInstance()
 
+        // Categoty 및 재료 리스트 초기화
         getIngredientsInit()
 
         // 검색 기능 구현 중
@@ -59,6 +57,12 @@ class AddIngredientsActivity : AppCompatActivity() {
             binding.ingredientSearch.setText("")
             getIngredientsInit()
         }
+
+        // 선택 재료 넘기기 버튼
+        binding.pickingredientsave.setOnClickListener {
+            intent = Intent(this, IngredientStateActivity::class.java)
+            intent.putExtra("asd", "asd")
+        }
     }
 
     // 검색의 결과를 받아서 출력하는 메서드
@@ -75,7 +79,6 @@ class AddIngredientsActivity : AppCompatActivity() {
         // 재료 리스트를 적용 및 카테고리만 추출
         ingredients.clear()
 
-        Log.d("TTTT", "4 : ${response}")
         response.forEach {
             ingredients.add(it)
             tablayerName.add(it.ingredientCategoryName)
@@ -89,16 +92,24 @@ class AddIngredientsActivity : AppCompatActivity() {
         ingredientViewPagerAdapter.submitList(ingredients)
     }
 
-    fun addingredientClick(ingredient:String) {
+    fun addingredientClick(ingredient:Ingredient) {
         if(!pickingredients.contains(ingredient)) {
             pickingredients.add(ingredient)
             // 추가된 재료 리사이클러뷰에 추가 후 notification  =>  submitlist
             binding.pickingredientChip.addView(Chip(this).apply {
-                text = ingredient
+                text = ingredient.ingredientName
                 isCloseIconVisible = true
                 setOnCloseIconClickListener {
-                    pickingredients.remove(this.text)
+                    var ingredientNum:Int = 0
+                    run { pickingredients.forEachIndexed {
+                            i, v -> if(v.ingredientName == this.text) {
+                                ingredientNum = i
+                                return@run
+                            }
+                    }}
+                    pickingredients.removeAt(ingredientNum)
                     binding.pickingredientChip.removeView(this)
+                    Log.d("piingredients", "P : ${pickingredients}")
                 }
             }, 0)
         }

@@ -5,8 +5,11 @@ import android.os.Bundle
 import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
+import com.bumptech.glide.Glide
 import com.example.ingredient.database.ExpirationDateDatabase
 import com.example.ingredient.databinding.FragmentNoteBinding
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
 
 class Note : Fragment() {
 
@@ -44,6 +47,19 @@ class Note : Fragment() {
             Log.d("NotePad Touch22 : ",event.rawY.toString())
             false
         }
+        //// 이미지 로드 테스트
+        Firebase.storage("gs://ingredient-7f334.appspot.com").reference.child("testimage1.jpeg").downloadUrl
+            .addOnSuccessListener {
+                Log.d("URLTest : ","test : ${it}")
+                Glide.with(this)
+                    .load(it)
+                    .into(binding.imageTest)
+            }
+
+        binding.testbtn2.setOnClickListener {
+            Log.d("NotePad Touch1 : ","test")
+        }
+        ////
     }
     companion object {
         fun newInstance(db: ExpirationDateDatabase) =
