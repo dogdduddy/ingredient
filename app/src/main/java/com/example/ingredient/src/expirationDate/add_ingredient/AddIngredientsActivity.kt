@@ -1,5 +1,6 @@
 package com.example.ingredient.src.expirationDate.add_ingredient
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -21,7 +22,7 @@ class AddIngredientsActivity : AppCompatActivity() {
     private lateinit var viewPager: ViewPager2
     private lateinit var database:FirebaseFirestore
     private lateinit var ingredientViewPagerAdapter:AddIngredientViewPagerAdapter
-    private var pickingredients = mutableListOf<String>()
+    private var pickingredients = mutableListOf<Ingredient>()
     private var ingredients = ArrayList<CategoryIngrediets>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -56,6 +57,12 @@ class AddIngredientsActivity : AppCompatActivity() {
             binding.ingredientSearch.setText("")
             getIngredientsInit()
         }
+
+        // 선택 재료 넘기기 버튼
+        binding.pickingredientsave.setOnClickListener {
+            intent = Intent(this, IngredientStateActivity::class.java)
+            intent.putExtra("asd", "asd")
+        }
     }
 
     // 검색의 결과를 받아서 출력하는 메서드
@@ -85,16 +92,24 @@ class AddIngredientsActivity : AppCompatActivity() {
         ingredientViewPagerAdapter.submitList(ingredients)
     }
 
-    fun addingredientClick(ingredient:String) {
+    fun addingredientClick(ingredient:Ingredient) {
         if(!pickingredients.contains(ingredient)) {
             pickingredients.add(ingredient)
             // 추가된 재료 리사이클러뷰에 추가 후 notification  =>  submitlist
             binding.pickingredientChip.addView(Chip(this).apply {
-                text = ingredient
+                text = ingredient.ingredientName
                 isCloseIconVisible = true
                 setOnCloseIconClickListener {
-                    pickingredients.remove(this.text)
+                    var ingredientNum:Int = 0
+                    run { pickingredients.forEachIndexed {
+                            i, v -> if(v.ingredientName == this.text) {
+                                ingredientNum = i
+                                return@run
+                            }
+                    }}
+                    pickingredients.removeAt(ingredientNum)
                     binding.pickingredientChip.removeView(this)
+                    Log.d("piingredients", "P : ${pickingredients}")
                 }
             }, 0)
         }

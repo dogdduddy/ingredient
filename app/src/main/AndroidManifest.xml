@@ -15,6 +15,9 @@
         android:theme="@style/Theme.MaterialComponents.Light.NoActionBar.Bridge"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".IngredientStateActivity"
+            android:exported="false" />
+        <activity
             android:name=".activity.TestActivity"
             android:exported="true" />
         <activity

@@ -5,36 +5,34 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".src.expirationDate.add_ingredient.AddIngredientsActivity">
-    <EditText
-        android:id="@+id/ingredient_search"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
+    <LinearLayout
+        android:id="@+id/searchLinearlayout"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        android:imeOptions="actionSearch"
-        android:maxLines="1"
-        android:inputType="text"
-        android:privateImeOptions="defaultInputmode=korean"
-        android:layout_marginRight="50dp"
-        android:text=""/>
-    <Button
-        android:id="@+id/ingredient_search_btn"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="@+id/ingredient_search"
-        app:layout_constraintLeft_toRightOf="@+id/ingredient_search"
-        android:layout_gravity="right"/>
-    <Button
-        android:id="@+id/ingredient_search_cancle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="취소"
-        app:layout_constraintTop_toBottomOf="@+id/ingredient_search"
-        app:layout_constraintRight_toRightOf="parent"/>
+        android:orientation="horizontal">
+        <EditText
+            android:id="@+id/ingredient_search"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_weight="1"
+            android:imeOptions="actionSearch"
+            android:maxLines="1"
+            android:inputType="text"
+            android:privateImeOptions="defaultInputmode=korean"
+            android:text=""/>
+        <Button
+            android:id="@+id/ingredient_search_btn"
+            android:layout_weight="4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="검색"/>
+    </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_constraintTop_toBottomOf="@+id/ingredient_search"
+        app:layout_constraintTop_toBottomOf="@+id/searchLinearlayout"
         android:layout_marginTop="60dp"
         android:orientation="vertical">
         <com.google.android.material.chip.ChipGroup
@@ -43,21 +41,33 @@
             android:layout_height="wrap_content"
             style="@style/Widget.MaterialComponents.Chip.Entry"
             />
-
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tab_layout"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:tabMode="scrollable">
-            <com.google.android.material.tabs.TabItem
-                android:layout_width="wrap_content"
+            android:orientation="horizontal">
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tab_layout"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="전체"/>
-            <com.google.android.material.tabs.TabItem
-                android:layout_width="wrap_content"
+                android:layout_weight="1"
+                app:tabMode="scrollable">
+                <com.google.android.material.tabs.TabItem
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="전체"/>
+                <com.google.android.material.tabs.TabItem
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="육류"/>
+            </com.google.android.material.tabs.TabLayout>
+            <Button
+                android:id="@+id/ingredient_search_cancle"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="육류"/>
-        </com.google.android.material.tabs.TabLayout>
+                android:layout_weight="4"
+                android:text="취소"/>
+        </LinearLayout>
+
 
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/viewpager_add_ingredient"
@@ -67,4 +77,15 @@
             app:layout_constraintStart_toStartOf="parent"
             android:background="#AA0C2962" />
     </LinearLayout>
+    <Button
+        android:id="@+id/pickingredientsave"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="저장"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="7dp"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
