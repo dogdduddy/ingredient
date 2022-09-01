@@ -22,7 +22,9 @@ data class CategoryIngrediets(
         TODO("Not yet implemented")
     }
     override fun writeToParcel(dest: Parcel?, flags: Int) {
-        TODO("Not yet implemented")
+        dest!!.writeInt(ingredientCategoryIdx)
+        dest!!.writeString(ingredientCategoryName)
+        dest!!.writeList(ingredientList)
     }
 }
 
