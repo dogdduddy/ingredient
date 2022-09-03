@@ -32,7 +32,7 @@ class MainActivity : AppCompatActivity() {
         val db = ExpirationDateDatabase.getInstance(applicationContext)
         searchFragment = Search.newInstance(db!!)
         expirationdateFragment = ExpirationDate.newInstance(db!!)
-        noteFragment = Note.newInstance(db!!)
+        noteFragment = Note.newInstance()
         foodbookFragment = FoodBook.newInstance(db!!)
 
         // 초기 화면을 Search 프래그먼트로 설정
@@ -80,4 +80,5 @@ class MainActivity : AppCompatActivity() {
         }
         return super.dispatchTouchEvent(ev)
     }
+
 }

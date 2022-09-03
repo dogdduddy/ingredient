@@ -30,6 +30,7 @@ class Note : Fragment() {
     @SuppressLint("ClickableViewAccessibility")
     override fun onStart() {
         super.onStart()
+        /*
         val notePad = binding.notePad
 
         // 첫 시작시 상태  => 모든 줄을 클릭할 수 있도록 구현하기 위한 꼼수
@@ -48,6 +49,8 @@ class Note : Fragment() {
             Log.d("NotePad Touch22 : ",event.rawY.toString())
             false
         }
+
+         */
     }
     companion object {
         fun newInstance(db: ExpirationDateDatabase) =

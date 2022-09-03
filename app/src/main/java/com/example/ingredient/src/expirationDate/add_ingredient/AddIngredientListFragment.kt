@@ -17,12 +17,12 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 
 
-class AddIngredientListFragment : Fragment() {
+class AddIngredientListFragment(var ingredients: CategoryIngrediets) : Fragment() {
     private var addingredientActivityView:AddIngredientsActivity? = null
     private var _binding: FragmentAddIngredientListBinding? = null
     private val binding get() = _binding!!
     private lateinit var ingredientRecyclerViewadApter:AddIngredientListAdapter
-    var ingredients: CategoryIngrediets? = null
+    //var ingredients: CategoryIngrediets? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,10 +34,14 @@ class AddIngredientListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        /*
         arguments?.takeIf { it.containsKey("ingredients") }?.apply {
             ingredients = getParcelable("ingredients")!!
             Log.d("AddFragment", ingredients.toString())
         }
+
+         */
         ingredientRecyclerViewadApter = AddIngredientListAdapter(addingredientActivityView!!)
 
         binding.rvIngredient.apply {

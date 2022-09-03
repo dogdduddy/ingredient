@@ -7,12 +7,12 @@ import android.util.Log
 import android.view.inputmethod.EditorInfo
 import androidx.viewpager2.widget.ViewPager2
 import com.example.ingredient.databinding.ActivityAddingredientsBinding
+import com.example.ingredient.src.expirationDate.add_ingredient.ingredientstate.IngredientStateActivity
 import com.example.ingredient.src.expirationDate.add_ingredient.models.CategoryIngrediets
 import com.example.ingredient.src.expirationDate.add_ingredient.models.Ingredient
 import com.google.android.material.chip.Chip
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.firestore.*
-import kotlinx.android.parcel.Parceler
 
 class AddIngredientsActivity : AppCompatActivity() {
     private lateinit var binding:ActivityAddingredientsBinding

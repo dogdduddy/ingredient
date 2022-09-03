@@ -33,9 +33,8 @@ data class Ingredient(val ingredientIcon: String, val ingredientIdx: Int, val in
 }
  */
 
-
-
 // 참고 https://www.appsloveworld.com/kotlin/100/56/android-os-badparcelableexception-parcelable-protocol-requires-a-parcelable-crea
+
 @Parcelize
 data class Ingredient(val ingredientIcon: String, val ingredientIdx: Int, val ingredientName: String): Parcelable {
     constructor(src:Parcel): this(src.readString()!!, src.readInt(), src.readString()!!)

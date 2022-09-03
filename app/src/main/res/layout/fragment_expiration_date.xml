@@ -28,30 +28,12 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toRightOf="@+id/editTest"
         android:id="@+id/btnTest"/>
-    <RadioGroup
-        android:id="@+id/radioGroup"
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/expirationRecyclerview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintTop_toBottomOf="@+id/editTest"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent">
-        <RadioButton android:id="@+id/radio_button1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Button1"/>
-        <RadioButton android:id="@+id/radio_button2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Button2"/>
-    </RadioGroup>
-    <Button
-        android:id="@+id/radioSelectButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Save"
-        app:layout_constraintTop_toBottomOf="@+id/radioGroup"
-        app:layout_constraintLeft_toLeftOf="parent"/>
+        app:layout_constraintTop_toBottomOf="@+id/editTest"/>
 
 
 

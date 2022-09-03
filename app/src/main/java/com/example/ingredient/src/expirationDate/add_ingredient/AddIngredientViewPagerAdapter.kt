@@ -18,11 +18,14 @@ FragmentStateAdapter(fa){
         Log.d(TAG, "IngredientCategoryAdapter - createFragment() : $position")
         // 탭 설정
 
-        val addingredientListFragment = AddIngredientListFragment()
+        val addingredientListFragment = AddIngredientListFragment(ingredients[position])
+        /*
         addingredientListFragment.arguments = Bundle().apply {
             Log.d("dataC", "${ingredients[position]}")
             putParcelable("ingredients", ingredients[position])
         }
+
+         */
         return addingredientListFragment
     }
 
