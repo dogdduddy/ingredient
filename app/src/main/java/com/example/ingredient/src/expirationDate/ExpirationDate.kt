@@ -69,8 +69,7 @@ class ExpirationDate : Fragment() {
             .whereEqualTo("userid", auth.uid)
             .get()
             .addOnSuccessListener { documents ->
-                var documentID = documents.documents[0].id
-                updateData(documentID!!)
+                updateData(documents.documents[0].id!!)
             }
     }
 
