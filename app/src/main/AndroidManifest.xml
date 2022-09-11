@@ -63,6 +63,8 @@
             android:name=".activity.MainActivity"
             android:exported="true"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".src.expirationDate.add_ingredient.ingredientstate.IngredientStateActivity"
+            android:exported="true"/>
     </application>
-
 </manifest>

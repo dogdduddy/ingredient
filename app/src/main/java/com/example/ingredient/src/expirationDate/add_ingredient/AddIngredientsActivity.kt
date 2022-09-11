@@ -5,17 +5,14 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.inputmethod.EditorInfo
-import androidx.core.net.toUri
 import androidx.viewpager2.widget.ViewPager2
-import com.bumptech.glide.Glide
 import com.example.ingredient.databinding.ActivityAddingredientsBinding
+import com.example.ingredient.src.expirationDate.add_ingredient.ingredientstate.IngredientStateActivity
 import com.example.ingredient.src.expirationDate.add_ingredient.models.CategoryIngrediets
 import com.example.ingredient.src.expirationDate.add_ingredient.models.Ingredient
 import com.google.android.material.chip.Chip
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.firestore.*
-import com.google.firebase.ktx.Firebase
-import com.google.firebase.storage.ktx.storage
 
 class AddIngredientsActivity : AppCompatActivity() {
     private lateinit var binding:ActivityAddingredientsBinding
@@ -61,7 +58,8 @@ class AddIngredientsActivity : AppCompatActivity() {
         // 선택 재료 넘기기 버튼
         binding.pickingredientsave.setOnClickListener {
             intent = Intent(this, IngredientStateActivity::class.java)
-            intent.putExtra("asd", "asd")
+            intent.putParcelableArrayListExtra("ingredients", pickingredients as ArrayList<Ingredient>)
+            startActivity(intent)
         }
     }
 
