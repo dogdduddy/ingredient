@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.RadioGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.ingredient.R
@@ -26,6 +27,10 @@ class ExpirationDateAdapter():RecyclerView.Adapter<ExpirationDateAdapter.ViewHol
     override fun onBindViewHolder(holder: ExpirationDateAdapter.ViewHolder, position: Int) {
         holder.name.text = expirationDateIngredient[position].ingredient.ingredientName
         holder.day.text = "D-" + expirationDateIngredient[position].expirydate.toString()
+        holder.itemView.setOnLongClickListener {
+            Toast.makeText(this.context, "${holder.name.text}",Toast.LENGTH_LONG).show()
+            return@setOnLongClickListener true
+        }
 
         Glide.with(holder.itemView)
             .load(expirationDateIngredient[position].ingredient.ingredientIcon)
