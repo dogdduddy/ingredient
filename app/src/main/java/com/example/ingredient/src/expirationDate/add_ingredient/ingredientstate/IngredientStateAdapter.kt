@@ -61,9 +61,6 @@ class IngredientStateAdapter(val ingredients:ArrayList<Ingredient>, val activity
                     ExpiryDateIngredient(ingredients[position], 7, ingredientstatus, storagestatus))
             }
         }
-        // 이제 checkedId를 통해 어떤 선택을 했는지 알아내고
-        // 그 선택으로 ExpiryDateIngredient 모델을 만들고
-        // submit에 넘겨서 보내기
         Log.d("recyclerviewTest", "2 : ${ingredients[position].ingredientName}")
     }
     override fun getItemCount(): Int {

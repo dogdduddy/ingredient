@@ -22,7 +22,6 @@ import android.view.inputmethod.InputMethodManager as InputMethodManager
 class Search : Fragment() {
     private lateinit var adapter: SearchAdapter
     private lateinit var database: FirebaseFirestore
-    private lateinit var db:ExpirationDateDatabase
 
     private var strList = mutableListOf<String>()
     private var recipeList = mutableListOf<Array<String>>()
@@ -163,10 +162,8 @@ class Search : Fragment() {
     }
 
     companion object {
-        fun newInstance(db: ExpirationDateDatabase) =
-            Search().apply {
-                this.db = db
-            }
+        fun newInstance() =
+            Search()
     }
 
 }

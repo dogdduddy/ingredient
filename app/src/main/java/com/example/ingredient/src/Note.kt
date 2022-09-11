@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
+import com.example.ingredient.R
 import com.example.ingredient.database.ExpirationDateDatabase
 import com.example.ingredient.databinding.FragmentNoteBinding
 import com.example.ingredient.src.expirationDate.add_ingredient.models.ExpiryDateIngredient

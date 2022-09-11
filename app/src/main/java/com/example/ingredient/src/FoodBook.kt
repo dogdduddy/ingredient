@@ -188,10 +188,8 @@ class FoodBook : Fragment() {
         binding.FindrecyclerView.adapter = adapter
     }
     companion object {
-        fun newInstance(db: ExpirationDateDatabase) =
-            FoodBook().apply {
-                this.db = db
-            }
+        fun newInstance() =
+            FoodBook()
     }
 }
 

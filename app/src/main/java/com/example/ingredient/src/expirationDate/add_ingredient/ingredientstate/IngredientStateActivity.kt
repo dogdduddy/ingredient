@@ -14,6 +14,7 @@ import com.example.ingredient.activity.MainActivity
 import com.example.ingredient.databinding.ActivityIngredientStateBinding
 import com.example.ingredient.databinding.ActivityMainBinding
 import com.example.ingredient.src.expirationDate.ExpirationDate
+import com.example.ingredient.src.expirationDate.ExpirationDateAdapter
 import com.example.ingredient.src.expirationDate.add_ingredient.models.ExpiryDateIngredient
 import com.example.ingredient.src.expirationDate.add_ingredient.models.Ingredient
 import com.google.firebase.firestore.FirebaseFirestore
@@ -57,11 +58,10 @@ class IngredientStateActivity : AppCompatActivity() {
                             )
                             ExpiryList[i] = null
                             database.collection("Refrigerator")
-                                .document(it.documents.get(0).id)
+                                .document("h3bobl7GeyJZ0X4nw8ck")
                                 .collection("ingredients")
                                 .document()
                                 .set(hashData)
-
                         }
                     }
                 val intent = Intent(this, MainActivity::class.java)

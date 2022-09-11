@@ -35,13 +35,6 @@ class AddIngredientListFragment(var ingredients: CategoryIngrediets) : Fragment(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        /*
-        arguments?.takeIf { it.containsKey("ingredients") }?.apply {
-            ingredients = getParcelable("ingredients")!!
-            Log.d("AddFragment", ingredients.toString())
-        }
-
-         */
         ingredientRecyclerViewadApter = AddIngredientListAdapter(addingredientActivityView!!)
 
         binding.rvIngredient.apply {
