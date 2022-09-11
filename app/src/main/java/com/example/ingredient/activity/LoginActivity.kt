@@ -200,11 +200,9 @@ class LoginActivity : AppCompatActivity() {
                 .addOnCompleteListener(object : OnCompleteListener<GetTokenResult?> {
                     override fun onComplete(task: com.google.android.gms.tasks.Task<GetTokenResult?>) {
                         if (task.isSuccessful()) {
-                            //val idToken = task.result!!.token
                             Log.d("userTest", "user : ${user.uid}")
                             val moveMain_intent =
                                 Intent(applicationContext, MainActivity::class.java)
-                            //moveMain_intent.putExtra("userid", user.uid)
                             startActivity(moveMain_intent)
                             finish()
                         }

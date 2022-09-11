@@ -29,7 +29,6 @@ class ExpirationDate : Fragment() {
     private var _binding:FragmentExpirationDateBinding? = null
     private val binding get() = _binding!!
     private var expiryDates = ArrayList<ExpiryDateIngredient>()
-    //private var documentID:String? = null
     private lateinit var database: FirebaseFirestore
     private lateinit var expiryAdapter:ExpirationDateAdapter
 
@@ -46,7 +45,7 @@ class ExpirationDate : Fragment() {
         database = FirebaseFirestore.getInstance()
 
         // 임시 데이터 출력 메서드
-        test()
+        checkAuth()
 
         // Adapter 연결
         expiryAdapter = ExpirationDateAdapter()
@@ -63,7 +62,7 @@ class ExpirationDate : Fragment() {
     }
     // 데이터 출력을 위해 사용자 식별
     // 따로 구현해야 할것만 같지만 어려워서 auth를 사용하는 것으로 잠시 합의봄
-    fun test() {
+    fun checkAuth() {
         auth = FirebaseAuth.getInstance()
 
         database.collection("Refrigerator")
@@ -105,52 +104,17 @@ class ExpirationDate : Fragment() {
             }
     }
 
-/*
-fun updateData() {
-    database.collection("Refrigerator")
-        .document(documentID!!)
-        .collection("ingredients")
-        .get()
-        .addOnSuccessListener { documents ->
-            var temp = ArrayList<ExpiryDateIngredient>()
-            for (document in documents) {
-                temp.add(ExpiryDateIngredient(
-                    Ingredient(
-                        document.get("ingredienticon").toString(),
-                        document.get("ingredientidx").toString().toInt(),
-                        document.get("ingredientname").toString()
-                    ),
-                    document.get("expirydate").toString().toInt(),
-                    document.get("ingredientstatus").toString().toInt(),
-                    document.get("storagestatus").toString().toInt()
-                ))
-            }
-            DataUpdate(temp)
-        }
-}
-
- */
-
-fun ExpirationDateSubmit() {
-    test()
-    //updateData()
-}
-fun DataUpdate(expiryDate:ArrayList<ExpiryDateIngredient>) {
-    expiryDates = expiryDate
-    expiryAdapter.ExpiryDateSubmitList(expiryDates)
-}
-companion object {
-    /*
-    fun newInstance(documentID:String) =
-        ExpirationDate().apply {
-            this.documentID = documentID
-        }
-}
-*/
-
-    fun newInstance() =
-        ExpirationDate()
-}
+    fun ExpirationDateSubmit() {
+        checkAuth()
+    }
+    fun DataUpdate(expiryDate:ArrayList<ExpiryDateIngredient>) {
+        expiryDates = expiryDate
+        expiryAdapter.ExpiryDateSubmitList(expiryDates)
+    }
+    companion object {
+        fun newInstance() =
+            ExpirationDate()
+    }
 
 
 }

@@ -23,7 +23,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var expirationdateFragment: ExpirationDate
     private lateinit var noteFragment:Note
     private lateinit var database: FirebaseFirestore
-    private var documentID:String? = null
     private val TAG = "MainActivity"
     private lateinit var binding: ActivityMainBinding
 
@@ -34,22 +33,7 @@ class MainActivity : AppCompatActivity() {
 
         database = FirebaseFirestore.getInstance()
 
-        // Document ID
-        Log.d("intentTest", "${intent.getStringExtra("userid")}")
-        if(intent.hasExtra("userid")) {
-            var userID = intent.getStringExtra("userid")
-            database.collection("Refrigerator")
-                .whereEqualTo("userid", userID)
-                .get()
-                .addOnSuccessListener { documents ->
-                    documentID = documents.documents[0].id
-                    InitFragment()
-                }
-        }
-        else {
-            Log.d("initTest", "$documentID")
-            InitFragment()
-        }
+        InitFragment()
 
         // 초기 화면을 Search 프래그먼트로 설정
         val transection = supportFragmentManager
@@ -70,8 +54,6 @@ class MainActivity : AppCompatActivity() {
     }
     fun InitFragment() {
         searchFragment = Search.newInstance()
-        Log.d("initTest", "$documentID")
-        //expirationdateFragment = ExpirationDate.newInstance(documentID!!)
         expirationdateFragment = ExpirationDate.newInstance()
         noteFragment = Note.newInstance()
         foodbookFragment = FoodBook.newInstance()
@@ -102,15 +84,5 @@ class MainActivity : AppCompatActivity() {
             }
         }
         return super.dispatchTouchEvent(ev)
-    }
-    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-        super.onRestoreInstanceState(savedInstanceState)
-        documentID = savedInstanceState.getString("documentid")
-        Log.d("saveTest", "onRestore Method() ${documentID}")
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putString("documentID", documentID)
     }
 }
