@@ -23,18 +23,26 @@
         android:id="@+id/editTest"/>
 
     <Button
+        android:id="@+id/btnTest"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintLeft_toRightOf="@+id/editTest"
-        android:id="@+id/btnTest"/>
+        app:layout_constraintLeft_toRightOf="@+id/editTest"/>
+    <Button
+        android:id="@+id/removeExpiryIngredient_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/btnTest"
+        app:layout_constraintStart_toStartOf="parent"
+        android:text="삭제"
+        android:visibility="gone"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/expirationRecyclerview"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintHeight_percent="0.94"
-        app:layout_constraintTop_toBottomOf="@+id/editTest"/>
+        app:layout_constraintTop_toBottomOf="@+id/removeExpiryIngredient_btn"/>
 
 
 
