@@ -40,7 +40,7 @@ class IngredientStateAdapter(val ingredients:ArrayList<Ingredient>, val activity
                     else -> -1
                 }
                 activity.expiryListSubmit(position,
-                    ExpiryDateIngredient(ingredients[position], 7, ingredientstatus, storagestatus))
+                    ExpiryDateIngredient(ingredients[position], 7, ingredientstatus, storagestatus, false))
             }
         }
         holder.storageGroup.setOnCheckedChangeListener { group, checkedId ->
@@ -58,7 +58,7 @@ class IngredientStateAdapter(val ingredients:ArrayList<Ingredient>, val activity
                     else -> -1
                 }
                 activity.expiryListSubmit(position,
-                    ExpiryDateIngredient(ingredients[position], 7, ingredientstatus, storagestatus))
+                    ExpiryDateIngredient(ingredients[position], 7, ingredientstatus, storagestatus, false))
             }
         }
         Log.d("recyclerviewTest", "2 : ${ingredients[position].ingredientName}")

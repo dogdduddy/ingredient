@@ -10,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ingredient.activity.MainActivity
@@ -29,6 +30,7 @@ class ExpirationDate : Fragment() {
     private var _binding:FragmentExpirationDateBinding? = null
     private val binding get() = _binding!!
     private var expiryDates = ArrayList<ExpiryDateIngredient>()
+    private var documentID:String? = null
     private lateinit var database: FirebaseFirestore
     private lateinit var expiryAdapter:ExpirationDateAdapter
 
@@ -48,7 +50,7 @@ class ExpirationDate : Fragment() {
         checkAuth()
 
         // Adapter 연결
-        expiryAdapter = ExpirationDateAdapter()
+        expiryAdapter = ExpirationDateAdapter() {show -> showBtnDelete(show)}
         binding.expirationRecyclerview.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
         binding.expirationRecyclerview.adapter = expiryAdapter
 
@@ -58,6 +60,13 @@ class ExpirationDate : Fragment() {
         }
         expiryAdapter.ExpiryDateSubmitList(expiryDates)
 
+        // 삭제 버튼 클릭
+        binding.removeExpiryIngredientBtn.setOnClickListener {
+            expiryAdapter.deleteSelectedItem(documentID!!)
+        }
+
+        // 삭제 버튼 안 보이도록 설정
+        showBtnDelete(false)
         return binding.root
     }
     // 데이터 출력을 위해 사용자 식별
@@ -69,7 +78,8 @@ class ExpirationDate : Fragment() {
             .whereEqualTo("userid", auth.uid)
             .get()
             .addOnSuccessListener { documents ->
-                updateData(documents.documents[0].id!!)
+                documentID = documents.documents[0].id!!
+                updateData(documentID!!)
             }
     }
 
@@ -96,7 +106,8 @@ class ExpirationDate : Fragment() {
                         ),
                         document.get("expirydate").toString().toInt(),
                         document.get("ingredientstatus").toString().toInt(),
-                        document.get("storagestatus").toString().toInt()
+                        document.get("storagestatus").toString().toInt(),
+                        false
                     ))
                 }
                 DataUpdate(temp)
@@ -106,9 +117,13 @@ class ExpirationDate : Fragment() {
     fun ExpirationDateSubmit() {
         checkAuth()
     }
-    fun DataUpdate(expiryDate:ArrayList<ExpiryDateIngredient>) {
+    fun DataUpdate(expiryDate:ArrayList<ExpiryDateIngredient>) {// 데이터 삭제 테스트
         expiryDates = expiryDate
         expiryAdapter.ExpiryDateSubmitList(expiryDates)
+    }
+    // 유통기한 재료 삭제 버튼 보이기 여부
+    fun showBtnDelete(show:Boolean) {
+        binding.removeExpiryIngredientBtn.isVisible = show
     }
     companion object {
         fun newInstance() =
