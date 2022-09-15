@@ -57,16 +57,20 @@ class AddIngredientsActivity : AppCompatActivity() {
 
         // 선택 재료 넘기기 버튼
         binding.pickingredientsave.setOnClickListener {
-            intent = Intent(this, IngredientStateActivity::class.java)
-            intent.putParcelableArrayListExtra("ingredients", pickingredients as ArrayList<Ingredient>)
-            startActivity(intent)
+            if(pickingredients.isNotEmpty()) {
+                intent = Intent(this, IngredientStateActivity::class.java)
+                intent.putParcelableArrayListExtra(
+                    "ingredients",
+                    pickingredients as ArrayList<Ingredient>
+                )
+                startActivity(intent)
+            }
         }
     }
 
     // 검색의 결과를 받아서 출력하는 메서드
     // 첫 시작은 onCreate에서 ""의 겸색 결과를 넘기도록 코드 삽입 예정 => 전체 출력
     fun ViewPagerInit(response:ArrayList<CategoryIngrediets>) {
-        Log.d("TTTT", "4 : ${response}")
         viewPager = binding.viewpagerAddIngredient
         ingredientViewPagerAdapter = AddIngredientViewPagerAdapter(this, this)
         viewPager.adapter = ingredientViewPagerAdapter
