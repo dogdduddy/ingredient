@@ -1,5 +1,7 @@
 package com.example.ingredient.src.expirationDate
 
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
@@ -31,6 +33,7 @@ class ExpirationDate : Fragment() {
     private val binding get() = _binding!!
     private var expiryDates = ArrayList<ExpiryDateIngredient>()
     private var documentID:String? = null
+    private var sortNumber = 0
     private lateinit var database: FirebaseFirestore
     private lateinit var expiryAdapter:ExpirationDateAdapter
 
@@ -65,9 +68,38 @@ class ExpirationDate : Fragment() {
             expiryAdapter.deleteSelectedItem(documentID!!)
         }
 
+
+
+        var dialogList = arrayOf("적은순", "많은순", "등록순")
+        /// 정렬 선택지 보여줄 다이얼로그
+        binding.expitySortBtn.setOnClickListener {
+            AlertDialog.Builder(context)
+                .setTitle("정렬")
+                .setItems(dialogList, object : DialogInterface.OnClickListener {
+                    override fun onClick(dialog: DialogInterface?, which: Int) {
+                        when(which) {
+                            0 -> sortNumber = 0
+                            1 -> sortNumber = 1
+                            2 -> sortNumber = 2
+                        }
+                        DataUpdate(expiryDates)
+                    }
+                }).show()
+        }
         // 삭제 버튼 안 보이도록 설정
         showBtnDelete(false)
         return binding.root
+    }
+    fun sortList(number:Int) {
+        if(number == 0) {
+            expiryDates.sortBy { it.expirydate }
+        }
+        else if(number == 1) {
+            expiryDates.sortByDescending { it.expirydate }
+        }
+        else {
+            TODO()
+        }
     }
     // 데이터 출력을 위해 사용자 식별
     // 따로 구현해야 할것만 같지만 어려워서 auth를 사용하는 것으로 잠시 합의봄
@@ -117,8 +149,9 @@ class ExpirationDate : Fragment() {
     fun ExpirationDateSubmit() {
         checkAuth()
     }
-    fun DataUpdate(expiryDate:ArrayList<ExpiryDateIngredient>) {// 데이터 삭제 테스트
+    fun DataUpdate(expiryDate:ArrayList<ExpiryDateIngredient>) {
         expiryDates = expiryDate
+        sortList(sortNumber)
         expiryAdapter.ExpiryDateSubmitList(expiryDates)
     }
     // 유통기한 재료 삭제 버튼 보이기 여부
