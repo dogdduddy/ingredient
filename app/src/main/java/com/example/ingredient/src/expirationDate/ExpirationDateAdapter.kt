@@ -2,6 +2,7 @@ package com.example.ingredient.src.expirationDate
 
 import android.content.Context
 import android.opengl.Visibility
+import android.os.Parcel
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -118,6 +119,7 @@ class ExpirationDateAdapter(
                     document.reference.delete()
                 }
             }
+
         // 체크 리스트 리셋
         if(itemSelectedList.isNotEmpty()) {
             expirationDateIngredient.removeAll { item -> item.selected }

@@ -3,8 +3,6 @@ package com.example.ingredient.src.expirationDate.add_ingredient.ingredientstate
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Parcel
-import android.os.Parcelable
 import android.util.Log
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -41,8 +39,7 @@ class IngredientStateActivity : AppCompatActivity() {
 
         binding.statesaveBtn.setOnClickListener {
             if(!ExpiryList.contains(null)) {
-                // Firebase에 업로드하기
-                //h3bobl7GeyJZ0X4nw8ck
+                // Firebase에 업로드하기  DocumentID : h3bobl7GeyJZ0X4nw8ck
                 database.collection("Refrigerator")
                     .whereEqualTo("userid", "dogdduddy")
                     .get()
@@ -54,7 +51,8 @@ class IngredientStateActivity : AppCompatActivity() {
                                 "ingredientname" to ExpiryList[i]!!.ingredient.ingredientName,
                                 "expirydate" to ExpiryList[i]!!.expirydate,
                                 "ingredientstatus" to ExpiryList[i]!!.ingredientstatus,
-                                "storagestatus" to ExpiryList[i]!!.storagestatus
+                                "storagestatus" to ExpiryList[i]!!.storagestatus,
+                                "localdate" to com.google.firebase.Timestamp.now()
                             )
                             ExpiryList[i] = null
                             database.collection("Refrigerator")
