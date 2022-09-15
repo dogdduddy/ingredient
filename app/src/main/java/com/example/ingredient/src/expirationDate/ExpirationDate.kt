@@ -74,7 +74,7 @@ class ExpirationDate : Fragment() {
         }
 
         /// 정렬 선택지 보여줄 다이얼로그
-        var dialogList = arrayOf("적은순", "많은순", "등록순")
+        var dialogList = arrayOf("적은순", "많은순", "최근순", "오래된순")
         binding.expitySortBtn.setOnClickListener {
             AlertDialog.Builder(context)
                 .setTitle("정렬")
@@ -84,6 +84,7 @@ class ExpirationDate : Fragment() {
                             0 -> sortNumber = 0
                             1 -> sortNumber = 1
                             2 -> sortNumber = 2
+                            3 -> sortNumber = 3
                         }
                         DataUpdate(expiryDates)
                     }
@@ -102,8 +103,11 @@ class ExpirationDate : Fragment() {
         else if(number == 1) {
             expiryDates.sortByDescending { it.expirydate }
         }
+        else if(number == 2){
+            expiryDates.sortByDescending { it.addedDate }
+        }
         else {
-            TODO()
+            expiryDates.sortBy { it.addedDate }
         }
     }
     // 데이터 출력을 위해 사용자 식별

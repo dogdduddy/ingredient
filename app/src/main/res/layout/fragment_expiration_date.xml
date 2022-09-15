@@ -41,10 +41,6 @@
         android:id="@+id/expirationRecyclerview"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintHeight_percent="0.94"
+        app:layout_constraintHeight_percent="0.9"
         app:layout_constraintTop_toBottomOf="@+id/removeExpiryIngredient_btn"/>
-
-
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>

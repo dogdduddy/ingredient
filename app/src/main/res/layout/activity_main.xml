@@ -15,7 +15,8 @@
         android:gravity="center"
         android:padding="8dp"
         app:cnb_menuResource="@menu/menu"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:layout_editor_absoluteX="0dp" />
 
     <FrameLayout
         android:id="@+id/fragment_container"
