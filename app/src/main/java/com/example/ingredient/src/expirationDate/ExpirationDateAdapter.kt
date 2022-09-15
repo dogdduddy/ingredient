@@ -122,6 +122,7 @@ class ExpirationDateAdapter(
         if(itemSelectedList.isNotEmpty()) {
             expirationDateIngredient.removeAll { item -> item.selected }
             isEnable = false
+            showBtnDelete(false)
             itemSelectedList.clear()
         }
         notifyDataSetChanged()
