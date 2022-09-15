@@ -27,6 +27,11 @@ import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.sql.Timestamp
+import java.time.LocalDate
+import java.time.ZoneId
+import java.util.*
+import kotlin.collections.ArrayList
 
 class ExpirationDate : Fragment() {
     private var _binding:FragmentExpirationDateBinding? = null
@@ -68,10 +73,8 @@ class ExpirationDate : Fragment() {
             expiryAdapter.deleteSelectedItem(documentID!!)
         }
 
-
-
-        var dialogList = arrayOf("적은순", "많은순", "등록순")
         /// 정렬 선택지 보여줄 다이얼로그
+        var dialogList = arrayOf("적은순", "많은순", "등록순")
         binding.expitySortBtn.setOnClickListener {
             AlertDialog.Builder(context)
                 .setTitle("정렬")
@@ -90,6 +93,8 @@ class ExpirationDate : Fragment() {
         showBtnDelete(false)
         return binding.root
     }
+
+    // 유통기한 재료 리스트 설정
     fun sortList(number:Int) {
         if(number == 0) {
             expiryDates.sortBy { it.expirydate }
@@ -117,8 +122,6 @@ class ExpirationDate : Fragment() {
 
     override fun onStart() {
         super.onStart()
-        // documentID를 넘겨받는 방식일 때의 코드, auth로 사용자를 인식하는 방식을 할 때에는 불필요
-        // if(!documentID.isNullOrEmpty())ExpirationDateSubmit()
         ExpirationDateSubmit()
     }
 
@@ -139,7 +142,11 @@ class ExpirationDate : Fragment() {
                         document.get("expirydate").toString().toInt(),
                         document.get("ingredientstatus").toString().toInt(),
                         document.get("storagestatus").toString().toInt(),
-                        false
+                        false,
+                        (document.get("localdate") as com.google.firebase.Timestamp).toDate().toInstant()
+                            .atZone(ZoneId.systemDefault())
+                            .toLocalDate()
+//                        (document.get("localdate").toString() as com.google.firebase.Timestamp) as LocalDate
                     ))
                 }
                 DataUpdate(temp)
@@ -162,6 +169,4 @@ class ExpirationDate : Fragment() {
         fun newInstance() =
             ExpirationDate()
     }
-
-
 }

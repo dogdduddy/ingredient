@@ -6,6 +6,7 @@ import android.content.DialogInterface
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Parcel
 import android.util.Log
 import android.view.inputmethod.EditorInfo
 import androidx.viewpager2.widget.ViewPager2
@@ -170,7 +171,7 @@ class AddIngredientsActivity : AppCompatActivity() {
     }
 
 
-    // Firetore DocumentSnapshot -> Categoryingrediets
+    // Firetore DocumentSnapshot to Categoryingrediets
     fun getIngredients(keyword: String) {
         val refs = database.collection("ingredients")
         // 검색 통해 나온 레시피명을 담는 리스트
