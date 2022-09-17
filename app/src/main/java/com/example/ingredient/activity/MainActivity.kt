@@ -3,17 +3,14 @@ package com.example.ingredient.activity
 import android.graphics.Rect
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.PersistableBundle
-import android.util.Log
 import android.view.MotionEvent
 import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
 import com.example.ingredient.R
-import com.example.ingredient.database.ExpirationDateDatabase
 import com.example.ingredient.src.expirationDate.ExpirationDate
 import com.example.ingredient.src.FoodBook
 import com.example.ingredient.src.search.Search
-import com.example.ingredient.src.Note
+import com.example.ingredient.src.Basket
 import com.example.ingredient.databinding.ActivityMainBinding
 import com.google.firebase.firestore.FirebaseFirestore
 
@@ -21,7 +18,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var searchFragment: Search
     private lateinit var foodbookFragment:FoodBook
     private lateinit var expirationdateFragment: ExpirationDate
-    private lateinit var noteFragment:Note
+    private lateinit var noteFragment:Basket
     private lateinit var database: FirebaseFirestore
     private val TAG = "MainActivity"
     private lateinit var binding: ActivityMainBinding
@@ -55,7 +52,7 @@ class MainActivity : AppCompatActivity() {
     fun InitFragment() {
         searchFragment = Search.newInstance()
         expirationdateFragment = ExpirationDate.newInstance()
-        noteFragment = Note.newInstance()
+        noteFragment = Basket.newInstance()
         foodbookFragment = FoodBook.newInstance()
     }
     // 프래그먼트 전환 메서드. State는 프래그먼트를 객체로 갖고 있기에, 뷰 단에서 저장과 복구 진행함.

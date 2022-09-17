@@ -1,19 +1,13 @@
 package com.example.ingredient.src
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
-import com.bumptech.glide.Glide
-import com.example.ingredient.R
-import com.example.ingredient.database.ExpirationDateDatabase
 import com.example.ingredient.databinding.FragmentNoteBinding
 import com.example.ingredient.src.expirationDate.add_ingredient.models.ExpiryDateIngredient
-import com.google.firebase.ktx.Firebase
-import com.google.firebase.storage.ktx.storage
 
-class Note : Fragment() {
+class Basket : Fragment() {
 
     private var _binding : FragmentNoteBinding? = null
     private val binding get()  = _binding!!
@@ -39,6 +33,6 @@ class Note : Fragment() {
     }
     companion object {
         fun newInstance() =
-            com.example.ingredient.src.Note()
+            com.example.ingredient.src.Basket()
     }
 }
