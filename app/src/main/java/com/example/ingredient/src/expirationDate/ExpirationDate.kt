@@ -37,7 +37,7 @@ class ExpirationDate : Fragment() {
     private var _binding:FragmentExpirationDateBinding? = null
     private val binding get() = _binding!!
     private var expiryDates = ArrayList<ExpiryDateIngredient>()
-    private var documentID:String? = null
+    private lateinit var userid:String
     private var sortNumber = 0
     private lateinit var database: FirebaseFirestore
     private lateinit var expiryAdapter:ExpirationDateAdapter
@@ -55,7 +55,7 @@ class ExpirationDate : Fragment() {
         database = FirebaseFirestore.getInstance()
 
         // 임시 데이터 출력 메서드
-        checkAuth()
+        updateData()
 
         // Adapter 연결
         expiryAdapter = ExpirationDateAdapter() {show -> showBtnDelete(show)}
@@ -70,8 +70,9 @@ class ExpirationDate : Fragment() {
 
         // 삭제 버튼 클릭
         binding.removeExpiryIngredientBtn.setOnClickListener {
-            expiryAdapter.deleteSelectedItem(documentID!!)
+            expiryAdapter.deleteSelectedItem(userid!!)
         }
+
 
         /// 정렬 선택지 보여줄 다이얼로그
         var dialogList = arrayOf("적은순", "많은순", "최근순", "오래된순")
@@ -110,28 +111,16 @@ class ExpirationDate : Fragment() {
             expiryDates.sortBy { it.addedDate }
         }
     }
-    // 데이터 출력을 위해 사용자 식별
-    // 따로 구현해야 할것만 같지만 어려워서 auth를 사용하는 것으로 잠시 합의봄
-    fun checkAuth() {
-        auth = FirebaseAuth.getInstance()
-
-        database.collection("Refrigerator")
-            .whereEqualTo("userid", auth.uid)
-            .get()
-            .addOnSuccessListener { documents ->
-                documentID = documents.documents[0].id!!
-                updateData(documentID!!)
-            }
-    }
 
     override fun onStart() {
         super.onStart()
         ExpirationDateSubmit()
     }
 
-    fun updateData(documentID:String) {
+    fun updateData() {
+        userid = FirebaseAuth.getInstance().uid!!
         database.collection("Refrigerator")
-            .document(documentID!!)
+            .document(userid)
             .collection("ingredients")
             .get()
             .addOnSuccessListener { documents ->
@@ -150,17 +139,16 @@ class ExpirationDate : Fragment() {
                         (document.get("localdate") as com.google.firebase.Timestamp).toDate().toInstant()
                             .atZone(ZoneId.systemDefault())
                             .toLocalDate()
-//                        (document.get("localdate").toString() as com.google.firebase.Timestamp) as LocalDate
                     ))
                 }
                 DataUpdate(temp)
             }
+            .addOnFailureListener { Log.d("Expiry", "Auth Exception : ${it}") }
     }
 
-    fun ExpirationDateSubmit() {
-        checkAuth()
-    }
-    fun DataUpdate(expiryDate:ArrayList<ExpiryDateIngredient>) {
+    fun ExpirationDateSubmit() { updateData() }
+
+    fun DataUpdate(expiryDate:ArrayList<ExpiryDateIngredient>) {// 데이터 삭제 테스트
         expiryDates = expiryDate
         sortList(sortNumber)
         expiryAdapter.ExpiryDateSubmitList(expiryDates)

@@ -2,8 +2,6 @@ package com.example.ingredient.src.expirationDate
 
 import android.content.Context
 import android.opengl.Visibility
-import android.os.Parcel
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -102,7 +100,7 @@ class ExpirationDateAdapter(
         notifyDataSetChanged()
     }
 
-    fun deleteSelectedItem(documentID:String) {
+    fun deleteSelectedItem(userID:String) {
         // 삭제할 유통기한 리스트(이름)
         var removeList = itemSelectedList.map {
             expirationDateIngredient[it].ingredient.ingredientName
@@ -110,7 +108,7 @@ class ExpirationDateAdapter(
         // 리스트 속 유통기한 재료 삭제
         FirebaseFirestore.getInstance()
         .collection("Refrigerator")
-            .document(documentID!!)
+            .document(userID)
             .collection("ingredients")
             .whereIn("ingredientname", removeList)
             .get()
@@ -119,7 +117,6 @@ class ExpirationDateAdapter(
                     document.reference.delete()
                 }
             }
-
         // 체크 리스트 리셋
         if(itemSelectedList.isNotEmpty()) {
             expirationDateIngredient.removeAll { item -> item.selected }
