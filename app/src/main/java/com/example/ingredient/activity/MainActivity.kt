@@ -10,7 +10,7 @@ import com.example.ingredient.R
 import com.example.ingredient.src.expirationDate.ExpirationDate
 import com.example.ingredient.src.FoodBook
 import com.example.ingredient.src.search.Search
-import com.example.ingredient.src.Basket
+import com.example.ingredient.src.basket.Basket
 import com.example.ingredient.databinding.ActivityMainBinding
 import com.google.firebase.firestore.FirebaseFirestore
 
@@ -18,7 +18,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var searchFragment: Search
     private lateinit var foodbookFragment:FoodBook
     private lateinit var expirationdateFragment: ExpirationDate
-    private lateinit var noteFragment:Basket
+    private lateinit var noteFragment: Basket
     private lateinit var database: FirebaseFirestore
     private val TAG = "MainActivity"
     private lateinit var binding: ActivityMainBinding

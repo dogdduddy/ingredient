@@ -16,10 +16,7 @@ FragmentStateAdapter(fa){
 
     override fun createFragment(position: Int): Fragment {
         Log.d(TAG, "IngredientCategoryAdapter - createFragment() : $position")
-        // 탭 설정
-
         val addingredientListFragment = AddIngredientListFragment(ingredients[position])
-
         return addingredientListFragment
     }
 
