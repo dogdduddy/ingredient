@@ -25,19 +25,15 @@ class Basket : Fragment() {
         viewPager = binding.basketViewpager
         basketViewPagerAdapter = basketViewPagerAdapter(this)
 
+        database = FirebaseFirestore.getInstance()
+        database.collection("")
+
         // Init Adapter Fragment
-        var testFragments = arrayListOf(TestFragment1(), TestFragment2())
-        basketViewPagerAdapter.setFragment(testFragments)
+        var basketFragment = arrayListOf(GroupIngredientsFragment(), TotalIngredientsFragment())
+        basketViewPagerAdapter.setFragment(basketFragment)
 
         viewPager.adapter = basketViewPagerAdapter
         return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-    }
-    override fun onStart() {
-        super.onStart()
     }
     companion object {
         fun newInstance() =
