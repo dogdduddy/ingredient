@@ -15,6 +15,7 @@ import com.example.ingredient.src.expirationDate.ExpirationDate
 import com.example.ingredient.src.expirationDate.ExpirationDateAdapter
 import com.example.ingredient.src.expirationDate.add_ingredient.models.ExpiryDateIngredient
 import com.example.ingredient.src.expirationDate.add_ingredient.models.Ingredient
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
 class IngredientStateActivity : AppCompatActivity() {
@@ -38,30 +39,25 @@ class IngredientStateActivity : AppCompatActivity() {
         binding.ingredientState.adapter = adapter
 
         binding.statesaveBtn.setOnClickListener {
+            var userid = FirebaseAuth.getInstance().uid!!
             if(!ExpiryList.contains(null)) {
-                // Firebase에 업로드하기  DocumentID : h3bobl7GeyJZ0X4nw8ck
-                database.collection("Refrigerator")
-                    .whereEqualTo("userid", "dogdduddy")
-                    .get()
-                    .addOnSuccessListener {
-                        for(i in 0 until ExpiryList.size) {
-                            var hashData = hashMapOf(
-                                "ingredienticon" to ExpiryList[i]!!.ingredient.ingredientIcon,
-                                "ingredientidx" to ExpiryList[i]!!.ingredient.ingredientIdx,
-                                "ingredientname" to ExpiryList[i]!!.ingredient.ingredientName,
-                                "expirydate" to ExpiryList[i]!!.expirydate,
-                                "ingredientstatus" to ExpiryList[i]!!.ingredientstatus,
-                                "storagestatus" to ExpiryList[i]!!.storagestatus,
-                                "localdate" to com.google.firebase.Timestamp.now()
-                            )
-                            ExpiryList[i] = null
-                            database.collection("Refrigerator")
-                                .document("h3bobl7GeyJZ0X4nw8ck")
-                                .collection("ingredients")
-                                .document()
-                                .set(hashData)
-                        }
-                    }
+                for(i in 0 until ExpiryList.size) {
+                    var hashData = hashMapOf(
+                        "ingredienticon" to ExpiryList[i]!!.ingredient.ingredientIcon,
+                        "ingredientidx" to ExpiryList[i]!!.ingredient.ingredientIdx,
+                        "ingredientname" to ExpiryList[i]!!.ingredient.ingredientName,
+                        "expirydate" to ExpiryList[i]!!.expirydate,
+                        "ingredientstatus" to ExpiryList[i]!!.ingredientstatus,
+                        "storagestatus" to ExpiryList[i]!!.storagestatus,
+                        "localdate" to com.google.firebase.Timestamp.now()
+                    )
+                    ExpiryList[i] = null
+                    database.collection("ListData")
+                        .document(userid)
+                        .collection("Refrigerator")
+                        .document()
+                        .set(hashData)
+                }
                 val intent = Intent(this, MainActivity::class.java)
                 startActivity(intent)
             }
@@ -69,7 +65,6 @@ class IngredientStateActivity : AppCompatActivity() {
     }
     fun expiryListSubmit(position:Int, value:ExpiryDateIngredient) {
         ExpiryList[position] = value
-        Log.d("stateTest", "T : ${ExpiryList[position]}")
     }
 
 }

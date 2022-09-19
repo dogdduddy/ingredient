@@ -107,9 +107,9 @@ class ExpirationDateAdapter(
         }
         // 리스트 속 유통기한 재료 삭제
         FirebaseFirestore.getInstance()
-        .collection("Refrigerator")
+        .collection("ListData")
             .document(userID)
-            .collection("ingredients")
+            .collection("Refrigerator")
             .whereIn("ingredientname", removeList)
             .get()
             .addOnSuccessListener {

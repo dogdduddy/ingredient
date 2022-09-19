@@ -42,10 +42,6 @@ class ExpirationDate : Fragment() {
     private lateinit var database: FirebaseFirestore
     private lateinit var expiryAdapter:ExpirationDateAdapter
 
-
-    private lateinit var auth: FirebaseAuth
-
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -119,9 +115,9 @@ class ExpirationDate : Fragment() {
 
     fun updateData() {
         userid = FirebaseAuth.getInstance().uid!!
-        database.collection("Refrigerator")
+        database.collection("ListData")
             .document(userid)
-            .collection("ingredients")
+            .collection("Refrigerator")
             .get()
             .addOnSuccessListener { documents ->
                 var temp = ArrayList<ExpiryDateIngredient>()
