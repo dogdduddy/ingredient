@@ -10,7 +10,7 @@ import com.example.ingredient.R
 import com.example.ingredient.src.basket.models.BasketIngredient
 
 class GroupIngredientsFragment(basketList: ArrayList<BasketIngredient>): Fragment() {
-    private var basketList = basketList
+    var basketList = basketList
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

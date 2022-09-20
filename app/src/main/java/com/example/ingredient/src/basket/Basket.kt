@@ -57,9 +57,12 @@ class Basket : Fragment() {
     }
     fun testbtn() {
         var userid = FirebaseAuth.getInstance().uid!!
+        /*
         viewPager = binding.basketViewpager
         basketViewPagerAdapter = basketViewPagerAdapter(this)
         viewPager.adapter = basketViewPagerAdapter
+
+         */
         database.collection("ListData")
             .document(userid)
             .collection("Basket")
@@ -80,6 +83,7 @@ class Basket : Fragment() {
             }
     }
     fun UpdateData(data : ArrayList<BasketIngredient>) {
+        Log.d("basketTest","test 1 : ${data[0].categoryName}")
         basketViewPagerAdapter.submitList(data)
     }
     companion object {
