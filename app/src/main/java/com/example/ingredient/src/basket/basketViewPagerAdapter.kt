@@ -5,10 +5,11 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.example.ingredient.src.basket.models.BasketIngredient
 
 class basketViewPagerAdapter(fa: Fragment):FragmentStateAdapter(fa) {
-
-    var fragments:ArrayList<Fragment> = ArrayList()
+    private lateinit var basketList:ArrayList<BasketIngredient>
+    private var fragments = arrayListOf<Fragment>()
 
     override fun getItemCount(): Int = fragments.size
 
@@ -16,8 +17,9 @@ class basketViewPagerAdapter(fa: Fragment):FragmentStateAdapter(fa) {
         return fragments[position]
     }
 
-    fun setFragment(fragments:ArrayList<Fragment>) {
-        this.fragments.addAll(fragments)
+    fun submitList(basketList: ArrayList<BasketIngredient>) {
+        this.basketList = basketList
+        fragments = arrayListOf(GroupIngredientsFragment(basketList), TotalIngredientsFragment(basketList))
         notifyDataSetChanged()
     }
 }

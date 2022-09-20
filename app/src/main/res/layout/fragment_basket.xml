@@ -24,6 +24,7 @@
         android:id="@+id/basket_viewpager"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:saveEnabled="false"
         app:layout_constraintHeight_percent="0.9"
         app:layout_constraintTop_toBottomOf="@+id/basket_btn"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
