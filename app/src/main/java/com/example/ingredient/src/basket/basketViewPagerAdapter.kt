@@ -27,6 +27,4 @@ class basketViewPagerAdapter(fa: Fragment):FragmentStateAdapter(fa) {
         fmIds = fragments.map { it.hashCode().toLong() }
         notifyDataSetChanged()
     }
-
-
 }

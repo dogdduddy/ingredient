@@ -12,6 +12,8 @@ import com.example.ingredient.src.basket.models.BasketIngredient
 class TotalIngredientsFragment(basketList: ArrayList<BasketIngredient>): Fragment() {
     private var basketList = basketList
 
+    // 총재료 (아이콘, 재료ID, 재료명, 카테고리, 수량)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
