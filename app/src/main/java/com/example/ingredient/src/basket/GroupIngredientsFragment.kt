@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.ingredient.R
 import com.example.ingredient.databinding.FragmentGroupingredientsBinding
 import com.example.ingredient.databinding.FragmentSearchBinding
@@ -25,17 +26,15 @@ class GroupIngredientsFragment(basketList: ArrayList<BasketIngredient>): Fragmen
         _binding = FragmentGroupingredientsBinding.inflate(layoutInflater, container, false)
         return binding.root
     }
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
 
     override fun onStart() {
         super.onStart()
         Log.d("basketTest", "data Test : ${basketList}")
-        val adapter = GroupIngredientsAdapter(basketList)
+        val adapter = GroupIngredientsAdapter()
         val recyclerview = binding.groupRecyclerView
         recyclerview.adapter = adapter
-        adapter.testmethod()
+        recyclerview.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        adapter.testmethod(basketList)
         // ViewPager 속 Recyclerview가 동작하지 않음.
 
     }
