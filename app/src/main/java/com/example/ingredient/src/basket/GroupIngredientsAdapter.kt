@@ -5,11 +5,15 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.ingredient.R
 import com.example.ingredient.src.basket.models.BasketGroupIngredient
 import com.example.ingredient.src.basket.models.BasketIngredient
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 
 class GroupIngredientsAdapter() : RecyclerView.Adapter<GroupIngredientsAdapter.ViewHolder>() {
     private var context: Context? = null
@@ -28,17 +32,31 @@ class GroupIngredientsAdapter() : RecyclerView.Adapter<GroupIngredientsAdapter.V
     }
 
     override fun onBindViewHolder(holder: GroupIngredientsAdapter.ViewHolder, position: Int) {
-        Log.d("basketTest", "onBind")
-        //holder.groupName.text = "test 1"
         holder.groupName.text = DataList[position].first
+        holder.ingredientName.text = DataList[position].second[0].ingredientName
+        holder.ingredientAmount.text = DataList[position].second[0].quantity.toString()
+        holder.groupName.text = DataList[position].first
+
+        // 클릭 시 열리는 드로우 박스 형태로 만들기
+        // 그럴 때 하위 재료들을 어디서 바인딩 해줘야하는가?
+            // 예상은 미리 바인딩 다시키고, Visible을 false로 해두기
+        Glide.with(holder.itemView)
+            .load(DataList[position].second[0].ingredientIcon)
+            .into(holder.ingredientIcon)
     }
 
     inner class ViewHolder internal constructor(view: View):RecyclerView.ViewHolder(view){
         internal var groupName : TextView
+        internal var ingredientName : TextView
+        internal var ingredientIcon : ImageView
+        internal var ingredientAmount : TextView
 
         init {
             context = context
-            groupName = view.findViewById(R.id.group_name)
+            groupName = view.findViewById(R.id.group_ingredientgroupname)
+            ingredientName = view.findViewById(R.id.group_ingredientname)
+            ingredientIcon = view.findViewById(R.id.group_ingredienticon)
+            ingredientAmount = view.findViewById(R.id.group_ingredientamount)
         }
     }
 
