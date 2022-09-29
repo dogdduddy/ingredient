@@ -28,8 +28,6 @@ class Basket : Fragment() {
         basketViewPagerAdapter = basketViewPagerAdapter(this)
         viewPager.adapter = basketViewPagerAdapter
 
-
-        // // 재료 (아이콘, 재료id, 재료명, 카테고리, 그룹명, 수량)
         var userid = FirebaseAuth.getInstance().uid!!
         database = FirebaseFirestore.getInstance()
         database.collection("ListData")
@@ -57,12 +55,7 @@ class Basket : Fragment() {
     }
     fun testbtn() {
         var userid = FirebaseAuth.getInstance().uid!!
-        /*
-        viewPager = binding.basketViewpager
-        basketViewPagerAdapter = basketViewPagerAdapter(this)
-        viewPager.adapter = basketViewPagerAdapter
 
-         */
         database.collection("ListData")
             .document(userid)
             .collection("Basket")
@@ -83,7 +76,6 @@ class Basket : Fragment() {
             }
     }
     fun UpdateData(data : ArrayList<BasketIngredient>) {
-        Log.d("basketTest","test 1 : ${data[0].categoryName}")
         basketViewPagerAdapter.submitList(data)
     }
     companion object {

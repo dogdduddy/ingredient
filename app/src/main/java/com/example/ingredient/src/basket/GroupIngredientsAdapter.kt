@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
@@ -18,6 +19,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 class GroupIngredientsAdapter() : RecyclerView.Adapter<GroupIngredientsAdapter.ViewHolder>() {
     private var context: Context? = null
     private var DataList = mutableListOf<Pair<String, ArrayList<BasketGroupIngredient>>>()
+    private var click = true
 
     //그룹 (그룹명, 재료 리스트)
     //그룹 속 재료 (아이콘, 카테고리, 재료명, 수량)
@@ -35,14 +37,25 @@ class GroupIngredientsAdapter() : RecyclerView.Adapter<GroupIngredientsAdapter.V
         holder.groupName.text = DataList[position].first
         holder.ingredientName.text = DataList[position].second[0].ingredientName
         holder.ingredientAmount.text = DataList[position].second[0].quantity.toString()
-        holder.groupName.text = DataList[position].first
-
-        // 클릭 시 열리는 드로우 박스 형태로 만들기
-        // 그럴 때 하위 재료들을 어디서 바인딩 해줘야하는가?
-            // 예상은 미리 바인딩 다시키고, Visible을 false로 해두기
         Glide.with(holder.itemView)
             .load(DataList[position].second[0].ingredientIcon)
             .into(holder.ingredientIcon)
+
+        holder.drawBtn.setOnClickListener {
+            if(click) {
+                holder.ingredientIcon.visibility = View.VISIBLE
+                holder.ingredientName.visibility = View.VISIBLE
+                holder.ingredientAmount.visibility = View.VISIBLE
+
+
+            }
+            else {
+                holder.ingredientIcon.visibility = View.GONE
+                holder.ingredientName.visibility = View.GONE
+                holder.ingredientAmount.visibility = View.GONE
+            }
+            click = !click
+        }
     }
 
     inner class ViewHolder internal constructor(view: View):RecyclerView.ViewHolder(view){
@@ -50,6 +63,7 @@ class GroupIngredientsAdapter() : RecyclerView.Adapter<GroupIngredientsAdapter.V
         internal var ingredientName : TextView
         internal var ingredientIcon : ImageView
         internal var ingredientAmount : TextView
+        internal var drawBtn : Button
 
         init {
             context = context
@@ -57,20 +71,24 @@ class GroupIngredientsAdapter() : RecyclerView.Adapter<GroupIngredientsAdapter.V
             ingredientName = view.findViewById(R.id.group_ingredientname)
             ingredientIcon = view.findViewById(R.id.group_ingredienticon)
             ingredientAmount = view.findViewById(R.id.group_ingredientamount)
+            drawBtn = view.findViewById(R.id.group_drawBtn)
         }
     }
 
+    // BasketIngredient 리스트를 그룹 묶음 출력물로 변형
     fun GroupData(basketList: ArrayList<BasketIngredient>) : MutableList<Pair<String, ArrayList<BasketGroupIngredient>>>{
-        Log.d("basketTest", "GroupData")
+
         var temp = mutableListOf<Pair<String, ArrayList<BasketGroupIngredient>>>()
         basketList.forEach {
             var position = temp.map {it.first}.indexOf(it.groupName)
             if (position != -1) {
+
                 temp[position].second.add(BasketGroupIngredient(it.ingredientIcon, it.ingredientIdx, it.categoryName, it.ingredientName, it.quantity))
             } else {
                 temp.add(it.groupName to arrayListOf(BasketGroupIngredient(it.ingredientIcon, it.ingredientIdx, it.categoryName, it.ingredientName, it.quantity)))
             }
         }
+
         Log.d("basketTest", "adpater : ${temp}")
         return temp
     }
