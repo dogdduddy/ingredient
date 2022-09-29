@@ -13,6 +13,8 @@ import com.example.ingredient.R
 import com.example.ingredient.src.expirationDate.add_ingredient.models.ExpiryDateIngredient
 import com.example.ingredient.src.expirationDate.add_ingredient.models.Ingredient
 import java.time.LocalDate
+import java.util.*
+import kotlin.collections.ArrayList
 
 class IngredientStateAdapter(val ingredients:ArrayList<Ingredient>, val activity:IngredientStateActivity) : RecyclerView.Adapter<IngredientStateAdapter.ViewHolder>() {
     private var context: Context? = null
@@ -41,7 +43,7 @@ class IngredientStateAdapter(val ingredients:ArrayList<Ingredient>, val activity
                     else -> -1
                 }
                 activity.expiryListSubmit(position,
-                    ExpiryDateIngredient(ingredients[position], 7, ingredientstatus, storagestatus, false, LocalDate.now()))
+                    ExpiryDateIngredient(ingredients[position], (5 .. 10).random(), ingredientstatus, storagestatus, false, LocalDate.now()))
             }
         }
         holder.storageGroup.setOnCheckedChangeListener { group, checkedId ->
@@ -59,7 +61,7 @@ class IngredientStateAdapter(val ingredients:ArrayList<Ingredient>, val activity
                     else -> -1
                 }
                 activity.expiryListSubmit(position,
-                    ExpiryDateIngredient(ingredients[position], 7, ingredientstatus, storagestatus, false, LocalDate.now()))
+                    ExpiryDateIngredient(ingredients[position], (5 .. 10).random(), ingredientstatus, storagestatus, false, LocalDate.now()))
             }
         }
         Log.d("recyclerviewTest", "2 : ${ingredients[position].ingredientName}")
