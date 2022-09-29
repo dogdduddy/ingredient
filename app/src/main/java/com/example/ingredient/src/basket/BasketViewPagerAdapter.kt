@@ -1,14 +1,10 @@
 package com.example.ingredient.src.basket
 
-import android.util.Log
-import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.ingredient.src.basket.models.BasketIngredient
 
-class basketViewPagerAdapter(fa: Fragment):FragmentStateAdapter(fa) {
+class BasketViewPagerAdapter(fa: Fragment):FragmentStateAdapter(fa) {
     private lateinit var basketList:ArrayList<BasketIngredient>
     private lateinit var fmIds:List<Long>
     var fragments = arrayListOf<Fragment>()

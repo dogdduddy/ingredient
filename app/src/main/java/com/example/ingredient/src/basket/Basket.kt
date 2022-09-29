@@ -1,13 +1,11 @@
 package com.example.ingredient.src.basket
 
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import com.example.ingredient.databinding.FragmentBasketBinding
 import com.example.ingredient.src.basket.models.BasketIngredient
-import com.example.ingredient.src.expirationDate.add_ingredient.models.ExpiryDateIngredient
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
@@ -17,7 +15,7 @@ class Basket : Fragment() {
     private val binding get()  = _binding!!
     private lateinit var viewPager:ViewPager2
     private lateinit var database:FirebaseFirestore
-    private lateinit var basketViewPagerAdapter:basketViewPagerAdapter
+    private lateinit var basketViewPagerAdapter:BasketViewPagerAdapter
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -25,7 +23,7 @@ class Basket : Fragment() {
     ): View? {
         _binding = FragmentBasketBinding.inflate(layoutInflater, container, false)
         viewPager = binding.basketViewpager
-        basketViewPagerAdapter = basketViewPagerAdapter(this)
+        basketViewPagerAdapter = BasketViewPagerAdapter(this)
         viewPager.adapter = basketViewPagerAdapter
 
         var userid = FirebaseAuth.getInstance().uid!!
