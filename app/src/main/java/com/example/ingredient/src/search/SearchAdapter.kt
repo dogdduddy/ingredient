@@ -24,6 +24,7 @@ class SearchAdapter (private val recipeList: MutableList<Array<String>>)
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
             val recipe = recipeList[position]
             Log.d("Data Test : ","$position, $recipe")
+            /*
             when (position % 5) {
                 0 -> holder.food.setImageResource(R.drawable.buckwheat)
                 1 -> holder.food.setImageResource(R.drawable.bibim)
@@ -31,6 +32,8 @@ class SearchAdapter (private val recipeList: MutableList<Array<String>>)
                 3 -> holder.food.setImageResource(R.drawable.salad)
                 4 -> holder.food.setImageResource(R.drawable.steak)
             }
+
+             */
             holder.itemView.setOnClickListener {
                 itemCLickListener.onClick(it, position)
             }
