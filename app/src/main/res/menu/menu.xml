@@ -6,23 +6,23 @@
     <item
         android:id="@+id/search"
         android:icon="@drawable/ic_home"
-        android:title="search"
+        android:title="메인"
         app:cnb_iconColor="@color/search" />
 
     <item
         android:id="@+id/expiration_date"
         android:icon="@drawable/ic_love"
-        android:title="expiration_date"
+        android:title="유통기한"
         app:cnb_iconColor="@color/expiration_date" />
     <item
         android:id="@+id/tips"
         android:icon="@drawable/ic_search"
-        android:title="tips"
+        android:title="장바구니"
         app:cnb_iconColor="@color/tips" />
     <item
         android:id="@+id/food_book"
         android:icon="@drawable/ic_profile"
-        android:title="food_book"
+        android:title="음식사전"
         app:cnb_iconColor="@color/food_book" />
 
 </menu>
