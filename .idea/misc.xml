@@ -13,11 +13,14 @@
         <entry key="app/src/main/res/layout/activity_test.xml" value="0.18958333333333333" />
         <entry key="app/src/main/res/layout/fragment_add_ingredient_list.xml" value="0.17350557244174267" />
         <entry key="app/src/main/res/layout/fragment_addingredient_object.xml" value="0.17350557244174267" />
+        <entry key="app/src/main/res/layout/fragment_basket.xml" value="0.396875" />
         <entry key="app/src/main/res/layout/fragment_dialog.xml" value="0.18333333333333332" />
         <entry key="app/src/main/res/layout/fragment_expiration_date.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_food_book.xml" value="0.18333333333333332" />
+        <entry key="app/src/main/res/layout/fragment_groupingredients.xml" value="0.2625" />
         <entry key="app/src/main/res/layout/fragment_note.xml" value="0.29074074074074074" />
         <entry key="app/src/main/res/layout/fragment_search.xml" value="0.20643363728470113" />
+        <entry key="app/src/main/res/layout/fragment_totalingredients.xml" value="0.2625" />
         <entry key="app/src/main/res/layout/frame1.xml" value="0.16018518518518518" />
         <entry key="app/src/main/res/layout/frame2.xml" value="0.16018518518518518" />
         <entry key="app/src/main/res/layout/item_expirydate_ingredient.xml" value="0.25" />
