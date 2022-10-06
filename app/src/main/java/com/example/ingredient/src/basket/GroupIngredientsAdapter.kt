@@ -44,13 +44,9 @@ class GroupIngredientsAdapter() : RecyclerView.Adapter<GroupIngredientsAdapter.V
         holder.drawBtn.setOnClickListener {
             if(click) {
                 holder.recyclerView.visibility = View.VISIBLE
-                Log.d("Test1", "Visible")
-                //recycler!!.visibility = View.VISIBLE
             }
             else {
                 holder.recyclerView.visibility = View.GONE
-                Log.d("Test1", "Gone")
-                //recycler!!.visibility = View.GONE
             }
             click = !click
         }
