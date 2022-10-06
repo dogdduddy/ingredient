@@ -13,17 +13,6 @@ class GroupAddIngredientsAdapter: RecyclerView.Adapter<GroupAddIngredientsAdapte
     private var selectCheck = arrayListOf<Int>()
     private var data = arrayOf<String>()
 
-    init {
-        for (i in data.indices) {
-            if(i == 0 ) {
-                selectCheck.add(1)
-            }
-            else {
-                selectCheck.add(0)
-            }
-        }
-    }
-
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -41,7 +30,7 @@ class GroupAddIngredientsAdapter: RecyclerView.Adapter<GroupAddIngredientsAdapte
             binding.addgroupRadioBtn.apply {
                 text = data[item]
 
-                isSelected = selectCheck[item] == 1
+                isChecked = selectCheck[item] == 1
                 setOnClickListener {
                     for(i in selectCheck.indices) {
                         if (i == item) {
@@ -59,6 +48,7 @@ class GroupAddIngredientsAdapter: RecyclerView.Adapter<GroupAddIngredientsAdapte
 
     fun submitList(data: Array<String>) {
         this.data = data
+
         selectCheck.clear()
         for (i in data.indices) {
             if(i == 0 ) {
@@ -68,5 +58,7 @@ class GroupAddIngredientsAdapter: RecyclerView.Adapter<GroupAddIngredientsAdapte
                 selectCheck.add(0)
             }
         }
+        notifyDataSetChanged()
+
     }
 }
