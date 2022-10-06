@@ -2,7 +2,9 @@ package com.example.ingredient.src.basket
 
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.example.ingredient.src.basket.group.GroupIngredientsFragment
 import com.example.ingredient.src.basket.models.BasketIngredient
+import com.example.ingredient.src.basket.total.TotalIngredientsFragment
 
 class BasketViewPagerAdapter(fa: Fragment):FragmentStateAdapter(fa) {
     private lateinit var basketList:ArrayList<BasketIngredient>

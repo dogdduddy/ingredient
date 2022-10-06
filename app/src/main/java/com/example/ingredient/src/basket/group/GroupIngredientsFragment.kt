@@ -1,17 +1,14 @@
-package com.example.ingredient.src.basket
+package com.example.ingredient.src.basket.group
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.ingredient.R
 import com.example.ingredient.databinding.FragmentGroupingredientsBinding
-import com.example.ingredient.databinding.FragmentSearchBinding
 import com.example.ingredient.src.basket.models.BasketIngredient
 
 class GroupIngredientsFragment(basketList: ArrayList<BasketIngredient>): Fragment() {
@@ -34,8 +31,24 @@ class GroupIngredientsFragment(basketList: ArrayList<BasketIngredient>): Fragmen
         val recyclerview = binding.groupRecyclerView
         recyclerview.adapter = adapter
         recyclerview.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-        adapter.testmethod(basketList)
-        // ViewPager 속 Recyclerview가 동작하지 않음.
+        adapter.submitList(basketList)
 
+        val Addbnt = binding.groupAddBtn
+        Addbnt.setOnClickListener {
+            addIngredientBtn()
+        }
+
+    }
+
+    fun addIngredientBtn() {
+        var temp = arrayListOf<String>()
+        basketList.forEach {
+            temp.add(it.groupName)
+        }
+
+        var intent = Intent(context, GroupAddIngredientsActivity::class.java)
+        temp.toSet().toTypedArray()
+        intent.putExtra("groupList", temp.toSet().toTypedArray())
+        startActivity(intent)
     }
 }

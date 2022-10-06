@@ -1,6 +1,7 @@
 package com.example.ingredient.src.basket
 
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
@@ -46,22 +47,7 @@ class Basket : Fragment() {
                 }
                 UpdateData(data)
             }
-        binding.basketBtn.setOnClickListener {
-            testbtn()
-        }
         return binding.root
-    }
-    fun testbtn() {
-        // 카테고리 추가
-        data.add(BasketIngredient(
-            "",
-            1,
-            "테스트",
-            "테스트 카테고리",
-            "테스트 그룹",
-            3
-        ))
-        UpdateData(data)
     }
     fun UpdateData(data : ArrayList<BasketIngredient>) {
         basketViewPagerAdapter.submitList(data)

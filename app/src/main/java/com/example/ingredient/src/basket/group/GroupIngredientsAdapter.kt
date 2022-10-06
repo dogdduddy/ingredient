@@ -1,4 +1,4 @@
-package com.example.ingredient.src.basket
+package com.example.ingredient.src.basket.group
 
 import android.content.Context
 import android.util.Log
@@ -6,16 +6,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.example.ingredient.R
+import com.example.ingredient.src.basket.BasketGroupAdapter
 import com.example.ingredient.src.basket.models.BasketGroupIngredient
 import com.example.ingredient.src.basket.models.BasketIngredient
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
 
 class GroupIngredientsAdapter() : RecyclerView.Adapter<GroupIngredientsAdapter.ViewHolder>() {
     private var context: Context? = null
@@ -26,7 +23,7 @@ class GroupIngredientsAdapter() : RecyclerView.Adapter<GroupIngredientsAdapter.V
 
     override fun getItemCount(): Int = DataList.size
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GroupIngredientsAdapter.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view =
             LayoutInflater.from(parent!!.context).inflate(R.layout.item_group_ingredient, parent, false)
         context = view.context
@@ -38,7 +35,7 @@ class GroupIngredientsAdapter() : RecyclerView.Adapter<GroupIngredientsAdapter.V
         return ViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: GroupIngredientsAdapter.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.groupName.text = DataList[position].first
         adapter!!.submitList(DataList[position].second)
         holder.drawBtn.setOnClickListener {
@@ -78,7 +75,7 @@ class GroupIngredientsAdapter() : RecyclerView.Adapter<GroupIngredientsAdapter.V
         }
         return temp
     }
-    fun testmethod(basketList: ArrayList<BasketIngredient>) {
+    fun submitList(basketList: ArrayList<BasketIngredient>) {
         Log.d("submitlist", "testmethod ${basketList}")
         DataList = GroupData(basketList)
         notifyDataSetChanged()
