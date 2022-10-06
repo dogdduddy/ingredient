@@ -16,6 +16,7 @@ class Basket : Fragment() {
     private lateinit var viewPager:ViewPager2
     private lateinit var database:FirebaseFirestore
     private lateinit var basketViewPagerAdapter:BasketViewPagerAdapter
+    private var data = ArrayList<BasketIngredient>()
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -33,9 +34,8 @@ class Basket : Fragment() {
             .collection("Basket")
             .get()
             .addOnSuccessListener { documents ->
-                var temp = ArrayList<BasketIngredient>()
                 for(document in documents) {
-                    temp.add(BasketIngredient(
+                    data.add(BasketIngredient(
                         document.get("ingredienticon").toString(),
                         document.get("ingredientidx").toString().toInt(),
                         document.get("ingredientname").toString(),
@@ -44,7 +44,7 @@ class Basket : Fragment() {
                         document.get("ingredientquantity").toString().toInt()
                     ))
                 }
-                UpdateData(temp)
+                UpdateData(data)
             }
         binding.basketBtn.setOnClickListener {
             testbtn()
@@ -52,26 +52,16 @@ class Basket : Fragment() {
         return binding.root
     }
     fun testbtn() {
-        var userid = FirebaseAuth.getInstance().uid!!
-
-        database.collection("ListData")
-            .document(userid)
-            .collection("Basket")
-            .get()
-            .addOnSuccessListener { documents ->
-                var temp = ArrayList<BasketIngredient>()
-                for(document in documents) {
-                    temp.add(BasketIngredient(
-                        document.get("ingredienticon").toString(),
-                        document.get("ingredientidx").toString().toInt(),
-                        document.get("ingredientname").toString(),
-                        "육류",
-                        "돼지김치찌개",
-                        document.get("ingredientquantity").toString().toInt()
-                    ))
-                }
-                UpdateData(temp)
-            }
+        // 카테고리 추가
+        data.add(BasketIngredient(
+            "",
+            1,
+            "테스트",
+            "테스트 카테고리",
+            "테스트 그룹",
+            3
+        ))
+        UpdateData(data)
     }
     fun UpdateData(data : ArrayList<BasketIngredient>) {
         basketViewPagerAdapter.submitList(data)

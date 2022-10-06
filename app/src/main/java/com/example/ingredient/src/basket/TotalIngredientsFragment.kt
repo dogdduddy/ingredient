@@ -6,6 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.ingredient.R
 import com.example.ingredient.src.basket.models.BasketIngredient
 
@@ -24,8 +26,12 @@ class TotalIngredientsFragment(basketList: ArrayList<BasketIngredient>): Fragmen
         savedInstanceState: Bundle?
     ): View? {
         var view = inflater.inflate(R.layout.fragment_totalingredients, container, false)
-        var t = view?.findViewById<TextView>(R.id.totalText)
-        t!!.text = basketList[0].categoryName
+        var recyclerView = view?.findViewById<RecyclerView>(R.id.total_recyclerview)!!
+        var adapter = TotalIngredientsAdapter()
+        recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        recyclerView.adapter = adapter
+
+        adapter.submitList(basketList)
         return view
     }
 }
