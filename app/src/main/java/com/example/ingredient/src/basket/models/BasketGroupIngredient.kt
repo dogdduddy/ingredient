@@ -7,5 +7,5 @@ data class BasketGroupIngredient(
     val ingredientIdx: Int,
     val ingredientName: String,
     val categoryName: String,
-    val quantity:Int
+    var quantity:Int
 )
