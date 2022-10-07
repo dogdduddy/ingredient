@@ -13,8 +13,8 @@ import com.example.ingredient.src.basket.models.BasketIngredient
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
-class GroupIngredientsFragment(basketList: ArrayList<BasketIngredient>): Fragment() {
-    var basketList = basketList
+class GroupIngredientsFragment(basketData: ArrayList<BasketIngredient>): Fragment() {
+    var basketData = basketData
     private var _binding : FragmentGroupingredientsBinding? = null
     private val binding get()  = _binding!!
 
@@ -28,12 +28,26 @@ class GroupIngredientsFragment(basketList: ArrayList<BasketIngredient>): Fragmen
 
     override fun onStart() {
         super.onStart()
-        Log.d("basketTest", "data Test : ${basketList}")
+        Log.d("basketTest", "data Test : ${basketData}")
         val adapter = GroupIngredientsAdapter()
         val recyclerview = binding.groupRecyclerView
         recyclerview.adapter = adapter
         recyclerview.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-        adapter.submitList(basketList)
+
+        var basketList = arrayOf<String>()
+        FirebaseFirestore.getInstance()
+            .collection("ListData")
+            .document(FirebaseAuth.getInstance().uid!!)
+            .collection("BasketList")
+            .get()
+            .addOnSuccessListener { documents ->
+                for(document in documents) {
+                    basketList = basketList.plus(document.get("groupName").toString())
+                }
+                adapter.submitList(basketData, basketList)
+            }
+
+
 
         binding.groupAddBtn.setOnClickListener {
             binding.groupEditText.visibility = View.VISIBLE

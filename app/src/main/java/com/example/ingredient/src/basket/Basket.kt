@@ -19,7 +19,8 @@ class Basket : Fragment() {
     private lateinit var viewPager:ViewPager2
     private lateinit var database:FirebaseFirestore
     private lateinit var basketViewPagerAdapter:BasketViewPagerAdapter
-    private var data = ArrayList<BasketIngredient>()
+    private var userid:String? = null
+    private var basketData = ArrayList<BasketIngredient>()
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -30,15 +31,15 @@ class Basket : Fragment() {
         basketViewPagerAdapter = BasketViewPagerAdapter(this)
         viewPager.adapter = basketViewPagerAdapter
 
-        var userid = FirebaseAuth.getInstance().uid!!
+        userid = FirebaseAuth.getInstance().uid!!
         database = FirebaseFirestore.getInstance()
         database.collection("ListData")
-            .document(userid)
+            .document(userid!!)
             .collection("Basket")
             .get()
             .addOnSuccessListener { documents ->
                 for(document in documents) {
-                    data.add(BasketIngredient(
+                    basketData.add(BasketIngredient(
                         document.get("ingredienticon").toString(),
                         document.get("ingredientidx").toString().toInt(),
                         document.get("ingredientname").toString(),
@@ -47,7 +48,7 @@ class Basket : Fragment() {
                         document.get("ingredientquantity").toString().toInt()
                     ))
                 }
-                UpdateData(data)
+                UpdateData(basketData)
             }
         binding.basketAddButton.setOnClickListener {
             addIngredientBtn()
@@ -63,15 +64,20 @@ class Basket : Fragment() {
     }
 
     fun addIngredientBtn() {
-        var temp = arrayListOf<String>()
-        data.forEach {
-            temp.add(it.groupName)
-        }
+        var basketList = arrayOf<String>()
 
-        var intent = Intent(context, GroupAddIngredientsActivity::class.java)
-        temp.toSet().toTypedArray()
-        intent.putExtra("groupList", temp.toSet().toTypedArray())
-        startActivity(intent)
+        database.collection("ListData")
+            .document(userid!!)
+            .collection("BasketList")
+            .get()
+            .addOnSuccessListener { documents ->
+                for(document in documents) {
+                    basketList = basketList.plus(document.get("groupName").toString())
+                }
+                var intent = Intent(context, GroupAddIngredientsActivity::class.java)
+                intent.putExtra("groupList", basketList)
+                startActivity(intent)
+            }
     }
 }
 

@@ -16,7 +16,7 @@ import com.example.ingredient.src.basket.models.BasketIngredient
 
 class BasketGroupAdapter: RecyclerView.Adapter<BasketGroupAdapter.ViewHolder>() {
     private var context: Context? = null
-    private lateinit var DataList: ArrayList<BasketGroupIngredient>
+    private lateinit var DataList: List<BasketIngredient>
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BasketGroupAdapter.ViewHolder {
         val view =
@@ -48,7 +48,7 @@ class BasketGroupAdapter: RecyclerView.Adapter<BasketGroupAdapter.ViewHolder>() 
             ingredientAmount = view.findViewById(R.id.group_ingredientamount)
         }
     }
-    fun submitList(DataList: ArrayList<BasketGroupIngredient>){
+    fun submitList(DataList: List<BasketIngredient>){
         Log.d("submitList", "submitList: ${DataList}")
         this.DataList = DataList
     }
