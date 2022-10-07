@@ -38,6 +38,7 @@ class Basket : Fragment() {
             .collection("Basket")
             .get()
             .addOnSuccessListener { documents ->
+                basketData.clear()
                 for(document in documents) {
                     basketData.add(BasketIngredient(
                         document.get("ingredienticon").toString(),
