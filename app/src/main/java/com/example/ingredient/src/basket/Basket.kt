@@ -1,11 +1,13 @@
 package com.example.ingredient.src.basket
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import com.example.ingredient.databinding.FragmentBasketBinding
+import com.example.ingredient.src.basket.group.GroupAddIngredientsActivity
 import com.example.ingredient.src.basket.models.BasketIngredient
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -47,6 +49,9 @@ class Basket : Fragment() {
                 }
                 UpdateData(data)
             }
+        binding.basketAddButton.setOnClickListener {
+            addIngredientBtn()
+        }
         return binding.root
     }
     fun UpdateData(data : ArrayList<BasketIngredient>) {
@@ -55,6 +60,18 @@ class Basket : Fragment() {
     companion object {
         fun newInstance() =
             Basket()
+    }
+
+    fun addIngredientBtn() {
+        var temp = arrayListOf<String>()
+        data.forEach {
+            temp.add(it.groupName)
+        }
+
+        var intent = Intent(context, GroupAddIngredientsActivity::class.java)
+        temp.toSet().toTypedArray()
+        intent.putExtra("groupList", temp.toSet().toTypedArray())
+        startActivity(intent)
     }
 }
 
