@@ -18,13 +18,10 @@ class GroupIngredientsAdapter() : RecyclerView.Adapter<GroupIngredientsAdapter.V
     private var context: Context? = null
     private var basketData: ArrayList<BasketIngredient> = ArrayList()
     private var basketList = arrayOf<String>()
-    private var tempArrayList = arrayListOf<BasketIngredient>()
-    private var DataList = mutableListOf<Pair<String, ArrayList<BasketIngredient>>>()
     private var click = true
     private var adapter: BasketGroupAdapter? = null
     private var recycler:RecyclerView? = null
 
-    //override fun getItemCount(): Int = DataList.size
     override fun getItemCount(): Int = basketList.size
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -40,15 +37,6 @@ class GroupIngredientsAdapter() : RecyclerView.Adapter<GroupIngredientsAdapter.V
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-
-        /*
-        holder.groupName.text = DataList[position].first
-        adapter!!.submitList(DataList[position].second)
-
-
-         */
-
-
         holder.groupName.text = basketList[position]
         adapter!!.submitList(basketData.filter { it.groupName == basketList[position] })
 
@@ -76,29 +64,7 @@ class GroupIngredientsAdapter() : RecyclerView.Adapter<GroupIngredientsAdapter.V
         }
     }
 
-    // BasketIngredient 리스트를 그룹 묶음 출력물로 변형
-    fun GroupData(basketList: ArrayList<BasketIngredient>) : MutableList<Pair<String, ArrayList<BasketIngredient>>>{
-        var temp = mutableListOf<Pair<String, ArrayList<BasketIngredient>>>()
-        basketList.forEach {
-            var position = temp.map {it.first}.indexOf(it.groupName)
-            if (position != -1) {
-                temp[position].second.add(BasketIngredient(it.ingredientIcon, it.ingredientIdx, it.categoryName, it.ingredientName, it.groupName, it.quantity))
-            } else {
-                temp.add(it.groupName to arrayListOf(BasketIngredient(it.ingredientIcon, it.ingredientIdx, it.categoryName, it.ingredientName, it.groupName, it.quantity)))
-            }
-        }
-        return temp
-    }
     fun submitList(basketData: ArrayList<BasketIngredient>, basketList: Array<String>) {
-        /*
-        Log.d("submitlist", "testmethod ${basketData}")
-        DataList = GroupData(basketData)
-
-
-         */
-
-
-
         this.basketData = basketData
         this.basketList = basketList
 

@@ -49,7 +49,6 @@ class BasketGroupAdapter: RecyclerView.Adapter<BasketGroupAdapter.ViewHolder>() 
         }
     }
     fun submitList(DataList: List<BasketIngredient>){
-        Log.d("submitList", "submitList: ${DataList}")
         this.DataList = DataList
     }
 }
