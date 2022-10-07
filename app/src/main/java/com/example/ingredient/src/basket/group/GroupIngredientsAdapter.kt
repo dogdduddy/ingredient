@@ -67,8 +67,6 @@ class GroupIngredientsAdapter() : RecyclerView.Adapter<GroupIngredientsAdapter.V
     fun submitList(basketData: ArrayList<BasketIngredient>, basketList: Array<String>) {
         this.basketData = basketData
         this.basketList = basketList
-
-
         notifyDataSetChanged()
     }
 }

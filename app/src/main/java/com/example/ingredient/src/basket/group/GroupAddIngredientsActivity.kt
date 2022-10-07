@@ -25,10 +25,5 @@ class GroupAddIngredientsActivity : AppCompatActivity() {
         recyclerview.adapter = adapter
 
         adapter.submitList(data)
-
-
-        // 라디오 버튼 추가하기 + 블로그 확인하고 Check 어떻ㄱ ㅔ바꿀지 연구
-        // https://velog.io/@zzangdd/RecyclerView%EC%97%90%EC%84%9C-RadioButton-%EB%8B%A8%EC%9D%BC%EC%84%A0%ED%83%9D-%ED%95%98%EA%B8%B0
-
     }
 }

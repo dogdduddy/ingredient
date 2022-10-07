@@ -17,6 +17,7 @@ class GroupIngredientsFragment(basketData: ArrayList<BasketIngredient>): Fragmen
     var basketData = basketData
     private var _binding : FragmentGroupingredientsBinding? = null
     private val binding get()  = _binding!!
+    private val adapter = GroupIngredientsAdapter()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -29,25 +30,11 @@ class GroupIngredientsFragment(basketData: ArrayList<BasketIngredient>): Fragmen
     override fun onStart() {
         super.onStart()
         Log.d("basketTest", "data Test : ${basketData}")
-        val adapter = GroupIngredientsAdapter()
         val recyclerview = binding.groupRecyclerView
         recyclerview.adapter = adapter
         recyclerview.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
-        var basketList = arrayOf<String>()
-        FirebaseFirestore.getInstance()
-            .collection("ListData")
-            .document(FirebaseAuth.getInstance().uid!!)
-            .collection("BasketList")
-            .get()
-            .addOnSuccessListener { documents ->
-                for(document in documents) {
-                    basketList = basketList.plus(document.get("groupName").toString())
-                }
-                adapter.submitList(basketData, basketList)
-            }
-
-
+        InitData()
 
         binding.groupAddBtn.setOnClickListener {
             binding.groupEditText.visibility = View.VISIBLE
@@ -63,6 +50,21 @@ class GroupIngredientsFragment(basketData: ArrayList<BasketIngredient>): Fragmen
                 .set(hashMapOf("groupName" to binding.groupEditText.text.toString()))
             binding.groupEditText.visibility = View.GONE
             binding.AddComBtn.visibility = View.GONE
+            InitData()
         }
+    }
+    fun InitData() {
+        var basketList = arrayOf<String>()
+        FirebaseFirestore.getInstance()
+            .collection("ListData")
+            .document(FirebaseAuth.getInstance().uid!!)
+            .collection("BasketList")
+            .get()
+            .addOnSuccessListener { documents ->
+                for(document in documents) {
+                    basketList = basketList.plus(document.get("groupName").toString())
+                }
+                adapter.submitList(basketData, basketList)
+            }
     }
 }

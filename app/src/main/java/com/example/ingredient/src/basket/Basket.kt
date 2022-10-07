@@ -55,6 +55,7 @@ class Basket : Fragment() {
         }
         return binding.root
     }
+
     fun UpdateData(data : ArrayList<BasketIngredient>) {
         basketViewPagerAdapter.submitList(data)
     }
