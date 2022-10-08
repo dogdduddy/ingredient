@@ -12,7 +12,6 @@ import com.example.ingredient.src.basket.models.BasketIngredient
 
 class TotalIngredientsAdapter():RecyclerView.Adapter<TotalIngredientsAdapter.ViewHolder>() {
     private var context: Context? = null
-    private var basketList = arrayListOf<BasketIngredient>()
     private var ingredientList = arrayListOf<BasketGroupIngredient>()
 
 
@@ -42,7 +41,6 @@ class TotalIngredientsAdapter():RecyclerView.Adapter<TotalIngredientsAdapter.Vie
     override fun getItemCount(): Int = ingredientList.size
 
     fun submitList(basketList: ArrayList<BasketIngredient>){
-        this.basketList = basketList
         ingredientList.clear()
         basketList.forEach { basket ->
             if(ingredientList.map {it.ingredientName}.indexOf(basket.ingredientName) == -1){

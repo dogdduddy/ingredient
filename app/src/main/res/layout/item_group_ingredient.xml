@@ -13,9 +13,18 @@
         app:layout_constraintStart_toStartOf="parent"
         android:text="새우볶음밥"/>
     <Button
-        android:id="@+id/group_drawBtn"
-        android:layout_width="30dp"
+        android:id="@+id/group_removeBtn"
+        android:layout_width="50dp"
         android:layout_height="wrap_content"
+        android:text="삭제"
+        app:layout_constraintTop_toTopOf="@+id/group_ingredientgroupname"
+        app:layout_constraintEnd_toStartOf="@+id/group_drawBtn"
+        app:layout_constraintEnd_toEndOf="parent"/>
+    <Button
+        android:id="@+id/group_drawBtn"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:text="열기"
         app:layout_constraintTop_toTopOf="@+id/group_ingredientgroupname"
         app:layout_constraintEnd_toEndOf="parent"/>
 

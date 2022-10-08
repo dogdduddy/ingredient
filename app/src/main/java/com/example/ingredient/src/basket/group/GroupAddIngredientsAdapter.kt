@@ -61,4 +61,8 @@ class GroupAddIngredientsAdapter: RecyclerView.Adapter<GroupAddIngredientsAdapte
         notifyDataSetChanged()
 
     }
+
+    fun selecCheck() : ArrayList<Int> {
+        return selectCheck
+    }
 }

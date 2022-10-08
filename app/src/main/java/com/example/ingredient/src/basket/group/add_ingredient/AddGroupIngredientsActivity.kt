@@ -1,34 +1,35 @@
-package com.example.ingredient.src.expirationDate.add_ingredient
+package com.example.ingredient.src.basket.group.add_ingredient
 
-import android.app.AlertDialog
-import android.app.Dialog
-import android.content.DialogInterface
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Parcel
 import android.util.Log
 import android.view.inputmethod.EditorInfo
 import androidx.viewpager2.widget.ViewPager2
+import com.example.ingredient.R
+import com.example.ingredient.databinding.ActivityAddGroupIngredientsBinding
 import com.example.ingredient.databinding.ActivityAddingredientsBinding
+import com.example.ingredient.src.expirationDate.add_ingredient.AddIngredientViewPagerAdapter
 import com.example.ingredient.src.expirationDate.add_ingredient.ingredientstate.IngredientStateActivity
 import com.example.ingredient.src.expirationDate.add_ingredient.models.CategoryIngrediets
 import com.example.ingredient.src.expirationDate.add_ingredient.models.Ingredient
 import com.google.android.material.chip.Chip
 import com.google.android.material.tabs.TabLayoutMediator
-import com.google.firebase.firestore.*
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.QueryDocumentSnapshot
+import com.google.firebase.firestore.QuerySnapshot
 
-class AddIngredientsActivity : AppCompatActivity() {
-    private lateinit var binding:ActivityAddingredientsBinding
+class AddGroupIngredientsActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityAddGroupIngredientsBinding
     private lateinit var viewPager: ViewPager2
-    private lateinit var database:FirebaseFirestore
-    private lateinit var ingredientViewPagerAdapter:AddIngredientViewPagerAdapter
+    private lateinit var database: FirebaseFirestore
+    private lateinit var ingredientViewPagerAdapter: AddGroupIngredientViewPagerAdapter
     private var pickingredients = mutableListOf<Ingredient>()
     private var ingredients = ArrayList<CategoryIngrediets>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityAddingredientsBinding.inflate(layoutInflater)
+        binding = ActivityAddGroupIngredientsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         database = FirebaseFirestore.getInstance()
@@ -38,36 +39,40 @@ class AddIngredientsActivity : AppCompatActivity() {
 
         // 검색 기능 구현 중
         // 타자기 검색 버튼으로 검색 버튼 클릭 효과
-        binding.ingredientSearch.setOnEditorActionListener { v, actionId, event ->
+        binding.groupAddIngredientSearch.setOnEditorActionListener { v, actionId, event ->
             var handled = false
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                binding.ingredientSearchBtn.performClick()
+                binding.groupAddIngredientSearch.performClick()
                 handled = true
             }
             handled
         }
         // 검색 버튼
-        binding.ingredientSearchBtn.setOnClickListener {
-            var string = binding.ingredientSearch.text.toString()
+        binding.groupAddIngredientSearchBtn.setOnClickListener {
+            var string = binding.groupAddIngredientSearch.text.toString()
             getIngredients(string)
             // 검색 키워드 string를 firebase로 넘겨서 검색을 진행하는 코드 삽입 or 실행하는 클래스로 넘기기
         }
 
         // 검색 취소 버튼
-        binding.ingredientSearchCancle.setOnClickListener {
-            binding.ingredientSearch.setText("")
+        binding.groupAddIngredientSearchCancle.setOnClickListener {
+            binding.groupAddIngredientSearch.setText("")
             getIngredientsInit()
         }
 
-        // 선택 재료 넘기기 버튼
-        binding.pickingredientsave.setOnClickListener {
+        // 저장 버튼 (선택 재료 넘기기)
+        binding.groupAddPickingredientsave.setOnClickListener {
             if(pickingredients.isNotEmpty()) {
+                /*
                 intent = Intent(this, IngredientStateActivity::class.java)
                 intent.putParcelableArrayListExtra(
                     "ingredients",
                     pickingredients as ArrayList<Ingredient>
                 )
                 startActivity(intent)
+
+                 */
+                Log.d("AddTest", "Complete")
             }
         }
     }
@@ -75,8 +80,8 @@ class AddIngredientsActivity : AppCompatActivity() {
     // 검색의 결과를 받아서 출력하는 메서드
     // 첫 시작은 onCreate에서 ""의 겸색 결과를 넘기도록 코드 삽입 예정 => 전체 출력
     fun ViewPagerInit(response:ArrayList<CategoryIngrediets>) {
-        viewPager = binding.viewpagerAddIngredient
-        ingredientViewPagerAdapter = AddIngredientViewPagerAdapter(this, this)
+        viewPager = binding.groupAddViewpager
+        ingredientViewPagerAdapter = AddGroupIngredientViewPagerAdapter(this, this)
         viewPager.adapter = ingredientViewPagerAdapter
 
         // 임시 카테고리 이름 데이터
@@ -91,30 +96,30 @@ class AddIngredientsActivity : AppCompatActivity() {
         }
 
         // 카테고리 적용
-        TabLayoutMediator(binding.tabLayout, viewPager) { tab, position ->
+        TabLayoutMediator(binding.groupAddTabLayout, viewPager) { tab, position ->
             tab.text = tablayerName[position]
         }.attach()
 
         ingredientViewPagerAdapter.submitList(ingredients)
     }
 
-    fun addingredientClick(ingredient:Ingredient) {
+    fun addingredientClick(ingredient: Ingredient) {
         if(!pickingredients.contains(ingredient)) {
             pickingredients.add(ingredient)
             // 추가된 재료 리사이클러뷰에 추가 후 notification  =>  submitlist
-            binding.pickingredientChip.addView(Chip(this).apply {
+            binding.groupAddPickingredientChip.addView(Chip(this).apply {
                 text = ingredient.ingredientName
                 isCloseIconVisible = true
                 setOnCloseIconClickListener {
                     var ingredientNum:Int = 0
                     run { pickingredients.forEachIndexed {
                             i, v -> if(v.ingredientName == this.text) {
-                                ingredientNum = i
-                                return@run
-                            }
+                        ingredientNum = i
+                        return@run
+                    }
                     }}
                     pickingredients.removeAt(ingredientNum)
-                    binding.pickingredientChip.removeView(this)
+                    binding.groupAddPickingredientChip.removeView(this)
                     Log.d("piingredients", "P : ${pickingredients}")
                 }
             }, 0)

@@ -41,6 +41,7 @@ class GroupIngredientsFragment(basketData: ArrayList<BasketIngredient>): Fragmen
             binding.AddComBtn.visibility = View.VISIBLE
         }
 
+        // 그룹 추가
         binding.AddComBtn.setOnClickListener {
             FirebaseFirestore.getInstance()
                 .collection("ListData")
@@ -53,6 +54,7 @@ class GroupIngredientsFragment(basketData: ArrayList<BasketIngredient>): Fragmen
             InitData()
         }
     }
+    
     fun InitData() {
         var basketList = arrayOf<String>()
         FirebaseFirestore.getInstance()

@@ -7,20 +7,18 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.RadioGroup
 import android.widget.TextView
-import androidx.core.view.children
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ingredient.R
 import com.example.ingredient.src.expirationDate.add_ingredient.models.ExpiryDateIngredient
 import com.example.ingredient.src.expirationDate.add_ingredient.models.Ingredient
 import java.time.LocalDate
-import java.util.*
 import kotlin.collections.ArrayList
 
 class IngredientStateAdapter(val ingredients:ArrayList<Ingredient>, val activity:IngredientStateActivity) : RecyclerView.Adapter<IngredientStateAdapter.ViewHolder>() {
     private var context: Context? = null
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view =
-            LayoutInflater.from(parent!!.context).inflate(R.layout.item_ingredientstate, parent, false)
+            LayoutInflater.from(parent!!.context).inflate(R.layout.item_add_ingredientstate, parent, false)
         context = view.context
         return ViewHolder(view)
     }

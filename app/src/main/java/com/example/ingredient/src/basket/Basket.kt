@@ -45,7 +45,7 @@ class Basket : Fragment() {
                         document.get("ingredientidx").toString().toInt(),
                         document.get("ingredientname").toString(),
                         document.get("ingredientcategory").toString(),
-                        document.get("basketgroup").toString(),
+                        document.get("groupName").toString(),
                         document.get("ingredientquantity").toString().toInt()
                     ))
                 }

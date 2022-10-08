@@ -13,6 +13,8 @@ import com.example.ingredient.R
 import com.example.ingredient.src.basket.BasketGroupAdapter
 import com.example.ingredient.src.basket.models.BasketGroupIngredient
 import com.example.ingredient.src.basket.models.BasketIngredient
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 
 class GroupIngredientsAdapter() : RecyclerView.Adapter<GroupIngredientsAdapter.ViewHolder>() {
     private var context: Context? = null
@@ -32,7 +34,6 @@ class GroupIngredientsAdapter() : RecyclerView.Adapter<GroupIngredientsAdapter.V
         recycler!!.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
         adapter = BasketGroupAdapter()
         recycler!!.adapter = adapter
-
         return ViewHolder(view)
     }
 
@@ -49,18 +50,23 @@ class GroupIngredientsAdapter() : RecyclerView.Adapter<GroupIngredientsAdapter.V
             }
             click = !click
         }
+        holder.removeBtn.setOnClickListener {
+            groupRemove(basketList[position])
+        }
     }
 
     inner class ViewHolder internal constructor(view: View):RecyclerView.ViewHolder(view){
         internal var groupName : TextView
         internal var recyclerView : RecyclerView
         internal var drawBtn : Button
+        internal var removeBtn : Button
 
         init {
             context = context
             groupName = view.findViewById(R.id.group_ingredientgroupname)
             recyclerView = view.findViewById(R.id.group_recyclerview)
             drawBtn = view.findViewById(R.id.group_drawBtn)
+            removeBtn = view.findViewById(R.id.group_removeBtn)
         }
     }
 
@@ -68,5 +74,34 @@ class GroupIngredientsAdapter() : RecyclerView.Adapter<GroupIngredientsAdapter.V
         this.basketData = basketData
         this.basketList = basketList
         notifyDataSetChanged()
+    }
+
+
+    fun groupRemove(groupName:String) {
+        FirebaseFirestore.getInstance()
+            .collection("ListData")
+            .document(FirebaseAuth.getInstance().uid.toString())
+            .collection("BasketList")
+            .whereEqualTo("groupName", groupName)
+            .get()
+            .addOnSuccessListener {
+                it.forEach { document ->
+                    document.reference.delete()
+                }
+            }
+
+        // 해당 그룹 재료 삭제
+        FirebaseFirestore.getInstance()
+            .collection("ListData")
+            .document(FirebaseAuth.getInstance().uid.toString())
+            .collection("Basket")
+            .whereEqualTo("groupName", groupName)
+            .get()
+            .addOnSuccessListener {
+                it.forEach { document ->
+                    document.reference.delete()
+                }
+                notifyDataSetChanged()
+            }
     }
 }

@@ -33,7 +33,6 @@ class BasketGroupAdapter: RecyclerView.Adapter<BasketGroupAdapter.ViewHolder>() 
         Glide.with(holder.itemView)
             .load(DataList[position].ingredientIcon)
             .into(holder.ingredientIcon)
-
     }
 
     inner class ViewHolder internal constructor(view: View):RecyclerView.ViewHolder(view){
