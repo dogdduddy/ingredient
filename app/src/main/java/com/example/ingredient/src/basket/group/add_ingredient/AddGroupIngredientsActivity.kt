@@ -6,15 +6,15 @@ import android.os.Bundle
 import android.util.Log
 import android.view.inputmethod.EditorInfo
 import androidx.viewpager2.widget.ViewPager2
-import com.example.ingredient.R
+import com.example.ingredient.activity.MainActivity
 import com.example.ingredient.databinding.ActivityAddGroupIngredientsBinding
-import com.example.ingredient.databinding.ActivityAddingredientsBinding
-import com.example.ingredient.src.expirationDate.add_ingredient.AddIngredientViewPagerAdapter
-import com.example.ingredient.src.expirationDate.add_ingredient.ingredientstate.IngredientStateActivity
+import com.example.ingredient.src.basket.Basket
+import com.example.ingredient.src.basket.models.BasketIngredient
 import com.example.ingredient.src.expirationDate.add_ingredient.models.CategoryIngrediets
 import com.example.ingredient.src.expirationDate.add_ingredient.models.Ingredient
 import com.google.android.material.chip.Chip
 import com.google.android.material.tabs.TabLayoutMediator
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QueryDocumentSnapshot
 import com.google.firebase.firestore.QuerySnapshot
@@ -31,7 +31,6 @@ class AddGroupIngredientsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityAddGroupIngredientsBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         database = FirebaseFirestore.getInstance()
 
         // Categoty 및 재료 리스트 초기화
@@ -63,16 +62,84 @@ class AddGroupIngredientsActivity : AppCompatActivity() {
         // 저장 버튼 (선택 재료 넘기기)
         binding.groupAddPickingredientsave.setOnClickListener {
             if(pickingredients.isNotEmpty()) {
-                /*
-                intent = Intent(this, IngredientStateActivity::class.java)
-                intent.putParcelableArrayListExtra(
-                    "ingredients",
-                    pickingredients as ArrayList<Ingredient>
-                )
+                var group = intent.extras!!.get("groupName").toString()
+                database.collection("ListData")
+                    .document(FirebaseAuth.getInstance().uid!!)
+                    .collection("Basket")
+                    .whereEqualTo("groupName", group)
+                    .get()
+                    .addOnSuccessListener { documents ->
+                        // 해당 그룹에 재료가 없을 때
+                        if(documents.isEmpty()) {
+                            pickingredients.forEach {
+                                var hash = hashMapOf(
+                                    "ingredienticon" to it.ingredientIcon,
+                                    "ingredientidx" to it.ingredientIdx,
+                                    "ingredientname" to it.ingredientName,
+                                    "ingredientcategory" to "",
+                                    "groupName" to group,
+                                    "ingredientquantity" to 1
+                                )
+                                database.collection("ListData")
+                                    .document(FirebaseAuth.getInstance().uid!!)
+                                    .collection("Basket")
+                                    .document()
+                                    .set(hash)
+                            }
+                        }
+                        // 해당 그룹에 재료가 있을 때
+                        else {
+                            var values = arrayListOf<Ingredient>()
+                            for (document in documents) {
+                                document.data.apply {
+                                    values.add(
+                                        Ingredient(
+                                            get("ingredienticon").toString(),
+                                            get("ingredientidx").toString().toInt(),
+                                            get("ingredientname").toString()
+                                        )
+                                    )
+                                }
+                            }
+                            pickingredients.forEachIndexed { index, ingredient ->
+                                var number = values.indexOf(ingredient)
+                                // 중복 재료가 있을 때
+                                if(number != -1) {
+                                    Log.d("AddTest", "Match Data")
+                                    database.collection("ListData")
+                                        .document(FirebaseAuth.getInstance().uid!!)
+                                        .collection("Basket")
+                                        .document(documents.documents[number].reference.id)
+                                        .update(
+                                            mapOf(
+                                                "ingredientquantity" to documents.documents[number].data!!.get(
+                                                    "ingredientquantity"
+                                                ).toString().toInt() + 1
+                                            )
+                                        )
+                                }
+                                // 중복 재료가 없을 때
+                                else {
+                                    var ingredient = pickingredients[index]
+                                    var hash = hashMapOf(
+                                        "ingredienticon" to ingredient.ingredientIcon,
+                                        "ingredientidx" to ingredient.ingredientIdx,
+                                        "ingredientname" to ingredient.ingredientName,
+                                        "ingredientcategory" to "",
+                                        "groupName" to group,
+                                        "ingredientquantity" to 1
+                                    )
+                                    database.collection("ListData")
+                                        .document(FirebaseAuth.getInstance().uid!!)
+                                        .collection("Basket")
+                                        .document()
+                                        .set(hash)
+                                }
+                            }
+                        }
+                    }
+                intent = Intent(this, MainActivity::class.java)
                 startActivity(intent)
-
-                 */
-                Log.d("AddTest", "Complete")
             }
         }
     }
@@ -174,7 +241,6 @@ class AddGroupIngredientsActivity : AppCompatActivity() {
                 }
             }
     }
-
 
     // Firetore DocumentSnapshot to Categoryingrediets
     fun getIngredients(keyword: String) {

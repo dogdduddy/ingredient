@@ -33,6 +33,7 @@ class GroupAddIngredientsActivity : AppCompatActivity() {
             Log.d("Check", "${adapter.selecCheck()}")
             Log.d("Check", "${data[adapter.selecCheck().indexOf(1)]}")
             var intent = Intent(context, AddGroupIngredientsActivity::class.java)
+            intent.putExtra("groupName", data[adapter.selecCheck().indexOf(1)])
             startActivity(intent)
         }
     }
