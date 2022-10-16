@@ -13,6 +13,8 @@ import com.bumptech.glide.Glide
 import com.example.ingredient.R
 import com.example.ingredient.src.basket.models.BasketGroupIngredient
 import com.example.ingredient.src.basket.models.BasketIngredient
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 
 class BasketGroupAdapter: RecyclerView.Adapter<BasketGroupAdapter.ViewHolder>() {
     private var context: Context? = null
@@ -33,18 +35,61 @@ class BasketGroupAdapter: RecyclerView.Adapter<BasketGroupAdapter.ViewHolder>() 
         Glide.with(holder.itemView)
             .load(DataList[position].ingredientIcon)
             .into(holder.ingredientIcon)
+        holder.ingredientMinus.setOnClickListener {
+            var number = holder.ingredientAmount.text.toString().toInt()
+            holder.ingredientAmount.text = (--number).toString()
+            FirebaseFirestore.getInstance()
+                .collection("ListData")
+                .document(FirebaseAuth.getInstance().uid.toString())
+                .collection("Basket")
+                .whereEqualTo("ingredientname", DataList[position].ingredientName)
+                .whereEqualTo("groupName", DataList[position].groupName)
+                .get()
+                .addOnSuccessListener {
+                    for (document in it) {
+                        if(number < 1) {
+                            document.reference.delete()
+                        }
+                        else {
+                            document.reference.update("ingredientquantity", number)
+                        }
+                    }
+                }
+
+        }
+        holder.ingredientPlus.setOnClickListener {
+            var number = holder.ingredientAmount.text.toString().toInt()
+            holder.ingredientAmount.text = (++number).toString()
+            Log.d("numberTest", "number : $number")
+            FirebaseFirestore.getInstance()
+                .collection("ListData")
+                .document(FirebaseAuth.getInstance().uid.toString())
+                .collection("Basket")
+                .whereEqualTo("ingredientname", DataList[position].ingredientName)
+                .whereEqualTo("groupName", DataList[position].groupName)
+                .get()
+                .addOnSuccessListener {
+                    for (document in it) {
+                        document.reference.update("ingredientquantity", number)
+                    }
+                }
+        }
     }
 
     inner class ViewHolder internal constructor(view: View):RecyclerView.ViewHolder(view){
         internal var ingredientName : TextView
         internal var ingredientIcon : ImageView
         internal var ingredientAmount : TextView
+        internal var ingredientMinus : Button
+        internal var ingredientPlus : Button
 
         init {
             context = context
             ingredientName = view.findViewById(R.id.group_ingredientname)
             ingredientIcon = view.findViewById(R.id.group_ingredienticon)
             ingredientAmount = view.findViewById(R.id.group_ingredientamount)
+            ingredientMinus = view.findViewById(R.id.group_ingredient_minus)
+            ingredientPlus = view.findViewById(R.id.group_ingredient_plus)
         }
     }
     fun submitList(DataList: List<BasketIngredient>){
