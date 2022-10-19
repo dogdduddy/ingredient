@@ -35,6 +35,7 @@ class BasketGroupAdapter: RecyclerView.Adapter<BasketGroupAdapter.ViewHolder>() 
         Glide.with(holder.itemView)
             .load(DataList[position].ingredientIcon)
             .into(holder.ingredientIcon)
+        // 마이너스 버튼 클릭
         holder.ingredientMinus.setOnClickListener {
             var number = holder.ingredientAmount.text.toString().toInt()
             holder.ingredientAmount.text = (--number).toString()
@@ -57,6 +58,7 @@ class BasketGroupAdapter: RecyclerView.Adapter<BasketGroupAdapter.ViewHolder>() 
                 }
 
         }
+        // 플러스 버튼 클릭
         holder.ingredientPlus.setOnClickListener {
             var number = holder.ingredientAmount.text.toString().toInt()
             holder.ingredientAmount.text = (++number).toString()

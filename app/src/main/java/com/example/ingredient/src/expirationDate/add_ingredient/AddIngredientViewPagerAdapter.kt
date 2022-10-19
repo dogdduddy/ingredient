@@ -16,7 +16,10 @@ FragmentStateAdapter(fa){
 
     override fun createFragment(position: Int): Fragment {
         Log.d(TAG, "IngredientCategoryAdapter - createFragment() : $position")
-        val addingredientListFragment = AddIngredientListFragment(ingredients[position])
+        val addingredientListFragment = AddIngredientListFragment()
+        addingredientListFragment.arguments = Bundle().apply {
+            putParcelable("ingredients", ingredients[position])
+        }
         return addingredientListFragment
     }
 

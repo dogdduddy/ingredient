@@ -56,7 +56,7 @@ class GroupIngredientsFragment(basketData: ArrayList<BasketIngredient>): Fragmen
     }
     
     fun InitData() {
-        var basketList = arrayOf<String>()
+        var basketList = arrayListOf<String>()
         FirebaseFirestore.getInstance()
             .collection("ListData")
             .document(FirebaseAuth.getInstance().uid!!)
@@ -64,7 +64,7 @@ class GroupIngredientsFragment(basketData: ArrayList<BasketIngredient>): Fragmen
             .get()
             .addOnSuccessListener { documents ->
                 for(document in documents) {
-                    basketList = basketList.plus(document.get("groupName").toString())
+                    basketList.add(document.data["groupName"].toString())
                 }
                 adapter.submitList(basketData, basketList)
             }

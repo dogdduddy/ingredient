@@ -19,7 +19,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 class GroupIngredientsAdapter() : RecyclerView.Adapter<GroupIngredientsAdapter.ViewHolder>() {
     private var context: Context? = null
     private var basketData: ArrayList<BasketIngredient> = ArrayList()
-    private var basketList = arrayOf<String>()
+    private var basketList = arrayListOf<String>()
     private var click = true
     private var adapter: BasketGroupAdapter? = null
     private var recycler:RecyclerView? = null
@@ -28,7 +28,7 @@ class GroupIngredientsAdapter() : RecyclerView.Adapter<GroupIngredientsAdapter.V
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view =
-            LayoutInflater.from(parent!!.context).inflate(R.layout.item_group_ingredient, parent, false)
+            LayoutInflater.from(parent.context).inflate(R.layout.item_group_ingredient, parent, false)
         context = view.context
         recycler = view.findViewById(R.id.group_recyclerview)
         recycler!!.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
@@ -70,7 +70,7 @@ class GroupIngredientsAdapter() : RecyclerView.Adapter<GroupIngredientsAdapter.V
         }
     }
 
-    fun submitList(basketData: ArrayList<BasketIngredient>, basketList: Array<String>) {
+    fun submitList(basketData: ArrayList<BasketIngredient>, basketList: ArrayList<String>) {
         this.basketData = basketData
         this.basketList = basketList
         notifyDataSetChanged()
@@ -88,6 +88,9 @@ class GroupIngredientsAdapter() : RecyclerView.Adapter<GroupIngredientsAdapter.V
                 it.forEach { document ->
                     document.reference.delete()
                 }
+                basketList.remove(groupName)
+                this.basketList = basketList
+                notifyDataSetChanged()
             }
 
         // 해당 그룹 재료 삭제
@@ -101,6 +104,11 @@ class GroupIngredientsAdapter() : RecyclerView.Adapter<GroupIngredientsAdapter.V
                 it.forEach { document ->
                     document.reference.delete()
                 }
+                basketData.filter { it.groupName == groupName }.let { it1 ->
+                    basketData.removeAll(it1)
+                }
+                this.basketData = basketData
+                Log.d(":removeTest", "success2 : ${this.basketData}")
                 notifyDataSetChanged()
             }
     }

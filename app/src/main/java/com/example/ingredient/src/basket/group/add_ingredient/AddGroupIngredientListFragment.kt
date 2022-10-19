@@ -2,31 +2,30 @@ package com.example.ingredient.src.basket.group.add_ingredient
 
 import android.content.Context
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
-import com.example.ingredient.R
 import com.example.ingredient.databinding.FragmentAddIngredientListBinding
 import com.example.ingredient.src.expirationDate.add_ingredient.models.CategoryIngrediets
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [AddGroupIngredientListFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
-class AddGroupIngredientListFragment (var ingredients: CategoryIngrediets) : Fragment() {
+class AddGroupIngredientListFragment () : Fragment() {
     private var addgroupingredientView:AddGroupIngredientsActivity? = null
     private var _binding: FragmentAddIngredientListBinding? = null
     private val binding get() = _binding!!
+    private var ingredients:CategoryIngrediets? = null
     private lateinit var ingredientRecyclerViewadApter:AddGroupIngredientListAdapter
     //var ingredients: CategoryIngrediets? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        arguments?.let {
+            ingredients = it.getParcelable("ingredients")
+            Log.d("bundleTest","${it.get("ingredients")}")
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

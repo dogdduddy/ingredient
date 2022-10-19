@@ -17,12 +17,19 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 
 
-class AddIngredientListFragment(var ingredients: CategoryIngrediets) : Fragment() {
+class AddIngredientListFragment() : Fragment() {
     private var addingredientActivityView:AddIngredientsActivity? = null
     private var _binding: FragmentAddIngredientListBinding? = null
     private val binding get() = _binding!!
+    private var ingredients:CategoryIngrediets? = null
     private lateinit var ingredientRecyclerViewadApter:AddIngredientListAdapter
-    //var ingredients: CategoryIngrediets? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        arguments?.let {
+            ingredients = it.getParcelable("ingredients")
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
