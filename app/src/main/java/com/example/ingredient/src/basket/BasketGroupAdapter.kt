@@ -18,7 +18,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 
 class BasketGroupAdapter: RecyclerView.Adapter<BasketGroupAdapter.ViewHolder>() {
     private var context: Context? = null
-    private lateinit var DataList: List<BasketIngredient>
+    private lateinit var DataList: ArrayList<BasketIngredient>
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BasketGroupAdapter.ViewHolder {
         val view =
@@ -50,6 +50,10 @@ class BasketGroupAdapter: RecyclerView.Adapter<BasketGroupAdapter.ViewHolder>() 
                     for (document in it) {
                         if(number < 1) {
                             document.reference.delete()
+                            DataList.map { it.ingredientName }.indexOf(DataList[position].ingredientName).let { it1 ->
+                                DataList.removeAt(it1)
+                            }
+                            notifyItemRemoved(position)
                         }
                         else {
                             document.reference.update("ingredientquantity", number)
@@ -94,7 +98,7 @@ class BasketGroupAdapter: RecyclerView.Adapter<BasketGroupAdapter.ViewHolder>() 
             ingredientPlus = view.findViewById(R.id.group_ingredient_plus)
         }
     }
-    fun submitList(DataList: List<BasketIngredient>){
+    fun submitList(DataList: ArrayList<BasketIngredient>){
         this.DataList = DataList
     }
 }

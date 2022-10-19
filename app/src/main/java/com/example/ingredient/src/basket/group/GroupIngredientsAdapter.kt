@@ -39,7 +39,7 @@ class GroupIngredientsAdapter() : RecyclerView.Adapter<GroupIngredientsAdapter.V
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.groupName.text = basketList[position]
-        adapter!!.submitList(basketData.filter { it.groupName == basketList[position] })
+        adapter!!.submitList(basketData.filter { it.groupName == basketList[position] } as ArrayList<BasketIngredient>)
 
         holder.drawBtn.setOnClickListener {
             if(click) {
