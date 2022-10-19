@@ -63,6 +63,15 @@ class Search : Fragment() {
             }
             handled
         }
+        binding.testBtn3.setOnClickListener {
+            if(binding.chipGroup.isSingleLine == true) {
+                binding.chipGroup.setSingleLine(false)
+            }
+            else {
+                binding.chipGroup.setSingleLine(true)
+            }
+            binding.chipGroup.requestLayout()
+        }
 
         binding.searchBtn.setOnClickListener {
             // 검색창에 입력한 재료들 리스트화
