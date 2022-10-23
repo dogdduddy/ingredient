@@ -11,7 +11,7 @@ import com.example.ingredient.databinding.ItemGroupAddBinding
 
 class GroupAddIngredientsAdapter: RecyclerView.Adapter<GroupAddIngredientsAdapter.ViewHolder>() {
     private var selectCheck = arrayListOf<Int>()
-    private var data = arrayOf<String>()
+    private var data = arrayListOf<String>()
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -33,11 +33,10 @@ class GroupAddIngredientsAdapter: RecyclerView.Adapter<GroupAddIngredientsAdapte
                 isChecked = selectCheck[item] == 1
                 setOnClickListener {
                     for(i in selectCheck.indices) {
-                        if (i == item) {
+                        if (i == item)
                             selectCheck[i] = 1
-                        } else {
+                        else
                             selectCheck[i] = 0
-                        }
                     }
                     notifyDataSetChanged()
                 }
@@ -46,20 +45,16 @@ class GroupAddIngredientsAdapter: RecyclerView.Adapter<GroupAddIngredientsAdapte
     }
     override fun getItemCount() = data.size
 
-    fun submitList(data: Array<String>) {
+    fun submitList(data: ArrayList<String>) {
         this.data = data
-
         selectCheck.clear()
         for (i in data.indices) {
-            if(i == 0 ) {
+            if(i == 0 )
                 selectCheck.add(1)
-            }
-            else {
+            else
                 selectCheck.add(0)
-            }
         }
         notifyDataSetChanged()
-
     }
 
     fun selecCheck() : ArrayList<Int> {

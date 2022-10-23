@@ -76,7 +76,6 @@ class GroupIngredientsAdapter() : RecyclerView.Adapter<GroupIngredientsAdapter.V
         notifyDataSetChanged()
     }
 
-
     fun groupRemove(groupName:String) {
         FirebaseFirestore.getInstance()
             .collection("ListData")

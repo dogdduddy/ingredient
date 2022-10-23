@@ -8,7 +8,6 @@
         android:icon="@drawable/ic_home"
         android:title="메인"
         app:cnb_iconColor="@color/search" />
-
     <item
         android:id="@+id/expiration_date"
         android:icon="@drawable/ic_love"

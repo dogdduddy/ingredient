@@ -1,11 +1,18 @@
 package com.example.ingredient.src.basket.group
 
+import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowInsets
+import android.view.inputmethod.InputMethodManager
+import androidx.core.view.WindowCompat
+import androidx.core.view.marginBottom
+import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.ingredient.databinding.FragmentGroupingredientsBinding
@@ -14,7 +21,8 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
 class GroupIngredientsFragment(basketData: ArrayList<BasketIngredient>): Fragment() {
-    var basketData = basketData
+    private var basketData = basketData
+    private var basketList = arrayListOf<String>()
     private var _binding : FragmentGroupingredientsBinding? = null
     private val binding get()  = _binding!!
     private val adapter = GroupIngredientsAdapter()
@@ -36,27 +44,14 @@ class GroupIngredientsFragment(basketData: ArrayList<BasketIngredient>): Fragmen
 
         InitData()
 
-        binding.groupAddBtn.setOnClickListener {
-            binding.groupEditText.visibility = View.VISIBLE
-            binding.AddComBtn.visibility = View.VISIBLE
-        }
-
         // 그룹 추가
-        binding.AddComBtn.setOnClickListener {
-            FirebaseFirestore.getInstance()
-                .collection("ListData")
-                .document(FirebaseAuth.getInstance().uid.toString())
-                .collection("BasketList")
-                .document()
-                .set(hashMapOf("groupName" to binding.groupEditText.text.toString()))
-            binding.groupEditText.visibility = View.GONE
-            binding.AddComBtn.visibility = View.GONE
-            InitData()
+        binding.groupAddBtn.setOnClickListener {
+            addIngredientBtn()
         }
     }
     
     fun InitData() {
-        var basketList = arrayListOf<String>()
+        basketList.clear()
         FirebaseFirestore.getInstance()
             .collection("ListData")
             .document(FirebaseAuth.getInstance().uid!!)
@@ -68,5 +63,11 @@ class GroupIngredientsFragment(basketData: ArrayList<BasketIngredient>): Fragmen
                 }
                 adapter.submitList(basketData, basketList)
             }
+    }
+
+    fun addIngredientBtn() {
+        var intent = Intent(context, GroupAddIngredientsActivity::class.java)
+        intent.putStringArrayListExtra("groupList", basketList)
+        startActivity(intent)
     }
 }
