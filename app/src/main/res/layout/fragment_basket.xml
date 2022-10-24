@@ -14,17 +14,11 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:text="장바구니"/>
-    <Button
-        android:id="@+id/basket_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/basket_text"
-        app:layout_constraintStart_toStartOf="parent"/>
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/basket_viewpager"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="match_parent"
+        android:layout_marginTop="40dp"
         android:saveEnabled="false"
-        app:layout_constraintHeight_percent="0.9"
-        app:layout_constraintTop_toBottomOf="@+id/basket_btn"/>
+        app:layout_constraintTop_toBottomOf="@+id/basket_text"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

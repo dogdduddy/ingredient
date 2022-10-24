@@ -1,33 +1,29 @@
-package com.example.ingredient.src.expirationDate.add_ingredient
+package com.example.ingredient.src.basket.group.add_ingredient
 
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.viewpager2.widget.ViewPager2
-import com.example.ingredient.R
 import com.example.ingredient.databinding.FragmentAddIngredientListBinding
 import com.example.ingredient.src.expirationDate.add_ingredient.models.CategoryIngrediets
-import com.example.ingredient.src.expirationDate.add_ingredient.models.Ingredient
-import com.google.android.material.tabs.TabLayout
-import com.google.android.material.tabs.TabLayoutMediator
 
-
-class AddIngredientListFragment() : Fragment() {
-    private var addingredientActivityView:AddIngredientsActivity? = null
+class AddGroupIngredientListFragment () : Fragment() {
+    private var addgroupingredientView:AddGroupIngredientsActivity? = null
     private var _binding: FragmentAddIngredientListBinding? = null
     private val binding get() = _binding!!
     private var ingredients:CategoryIngrediets? = null
-    private lateinit var ingredientRecyclerViewadApter:AddIngredientListAdapter
+    private lateinit var ingredientRecyclerViewadApter:AddGroupIngredientListAdapter
+    //var ingredients: CategoryIngrediets? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
             ingredients = it.getParcelable("ingredients")
+            Log.d("bundleTest","${it.get("ingredients")}")
         }
     }
 
@@ -42,7 +38,7 @@ class AddIngredientListFragment() : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        ingredientRecyclerViewadApter = AddIngredientListAdapter(addingredientActivityView!!)
+        ingredientRecyclerViewadApter = AddGroupIngredientListAdapter(addgroupingredientView!!)
 
         binding.rvIngredient.apply {
             adapter = ingredientRecyclerViewadApter
@@ -54,12 +50,12 @@ class AddIngredientListFragment() : Fragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        if(context is AddIngredientsActivity) {
-            addingredientActivityView = context
+        if(context is AddGroupIngredientsActivity) {
+            addgroupingredientView = context
         }
     }
     override fun onDetach() {
         super.onDetach()
-        addingredientActivityView = null
+        addgroupingredientView = null
     }
 }

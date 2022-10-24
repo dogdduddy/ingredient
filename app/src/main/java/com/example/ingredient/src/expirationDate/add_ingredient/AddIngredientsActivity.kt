@@ -201,5 +201,4 @@ class AddIngredientsActivity : AppCompatActivity() {
                 ViewPagerInit(temt)
             }
     }
-
 }

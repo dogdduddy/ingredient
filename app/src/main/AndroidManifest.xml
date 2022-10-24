@@ -15,11 +15,22 @@
         android:theme="@style/Theme.MaterialComponents.Light.NoActionBar.Bridge"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".IngredientStateActivity"
-            android:exported="false" />
+            android:name=".src.basket.group.add_ingredient.AddGroupIngredientsActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
         <activity
-            android:name=".activity.TestActivity"
-            android:exported="true" />
+            android:name=".src.basket.group.GroupAddIngredientsActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".src.expirationDate.add_ingredient.ingredientstate.IngredientStateActivity"
+            android:exported="false" />
         <activity
             android:name=".src.expirationDate.add_ingredient.AddIngredientsActivity"
             android:exported="false" />
@@ -62,9 +73,8 @@
         <activity
             android:name=".activity.MainActivity"
             android:exported="true"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".src.expirationDate.add_ingredient.ingredientstate.IngredientStateActivity"
-            android:exported="true"/>
+            android:windowSoftInputMode="adjustNothing"
+            android:screenOrientation="portrait"/>
     </application>
+
 </manifest>

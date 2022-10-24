@@ -3,7 +3,10 @@ package com.example.ingredient.activity
 import android.graphics.Rect
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import android.view.KeyEvent
 import android.view.MotionEvent
+import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
 import com.example.ingredient.R
@@ -18,7 +21,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var searchFragment: Search
     private lateinit var foodbookFragment:FoodBook
     private lateinit var expirationdateFragment: ExpirationDate
-    private lateinit var noteFragment: Basket
+    private lateinit var basketFragment: Basket
     private lateinit var database: FirebaseFirestore
     private val TAG = "MainActivity"
     private lateinit var binding: ActivityMainBinding
@@ -44,7 +47,7 @@ class MainActivity : AppCompatActivity() {
                 // Navigation : 프래그먼트 객체를 변수에 저장하고, 필요시 호출 => State 유지
                 R.id.search -> replaceFragment(searchFragment)
                 R.id.expiration_date -> replaceFragment(expirationdateFragment)
-                R.id.tips -> replaceFragment(noteFragment)
+                R.id.tips -> replaceFragment(basketFragment)
                 R.id.food_book -> replaceFragment(foodbookFragment)
             }
         }
@@ -52,7 +55,7 @@ class MainActivity : AppCompatActivity() {
     fun InitFragment() {
         searchFragment = Search.newInstance()
         expirationdateFragment = ExpirationDate.newInstance()
-        noteFragment = Basket.newInstance()
+        basketFragment = Basket.newInstance()
         foodbookFragment = FoodBook.newInstance()
     }
     // 프래그먼트 전환 메서드. State는 프래그먼트를 객체로 갖고 있기에, 뷰 단에서 저장과 복구 진행함.
@@ -64,9 +67,9 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    // 키보드 팝업 이외의 공간 누르면, 키보드 내려가는 기능
     override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
         var focusView = currentFocus
+
         if(focusView != null) {
             val rect = Rect()
             focusView.getGlobalVisibleRect(rect)
@@ -76,7 +79,7 @@ class MainActivity : AppCompatActivity() {
                 var imm:InputMethodManager =
                     getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
                 if (imm != null)
-                    imm.hideSoftInputFromWindow(focusView.getWindowToken(), 0);
+                    imm.hideSoftInputFromWindow(focusView.getWindowToken(), 0)
                 focusView.clearFocus()
             }
         }
