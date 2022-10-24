@@ -49,7 +49,7 @@ class GroupAddIngredientsAdapter: RecyclerView.Adapter<GroupAddIngredientsAdapte
         this.data = data
         selectCheck.clear()
         for (i in data.indices) {
-            if(i == 0 )
+            if(i == 0)
                 selectCheck.add(1)
             else
                 selectCheck.add(0)

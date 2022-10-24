@@ -43,16 +43,19 @@ class GroupAddIngredientsActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        // 그룹 추가
+        // 새그룹 추가
         binding.addgroupAddgroupBtn.setOnClickListener {
             binding.addgroupAddgroupBtn.visibility = View.GONE
             binding.addgroupGroupEdittext.visibility = View.VISIBLE
             binding.addgroupGroupsaveBtn.visibility = View.VISIBLE
         }
 
-        // 추가 그룹 저장
+        // 추가 새그룹 저장
         binding.addgroupGroupsaveBtn.setOnClickListener {
-            if(!groupList.contains(binding.addgroupGroupEdittext.text.toString())) {
+            if(binding.addgroupGroupEdittext.text.toString().trim().isNullOrBlank()) {
+                Toast.makeText(context, "그룹명을 입력해주세요.", Toast.LENGTH_SHORT).show()
+            }
+            else if(!groupList.contains(binding.addgroupGroupEdittext.text.toString())) {
                 // 그룹 확인
                 Log.d("addgroup", "생성 중")
                 FirebaseFirestore.getInstance()

@@ -1,4 +1,4 @@
-package com.example.ingredient.src.basket
+package com.example.ingredient.src.basket.group.add_ingredient
 
 import android.content.Context
 import android.util.Log
@@ -11,7 +11,6 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.ingredient.R
-import com.example.ingredient.src.basket.models.BasketGroupIngredient
 import com.example.ingredient.src.basket.models.BasketIngredient
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -20,7 +19,7 @@ class BasketGroupAdapter: RecyclerView.Adapter<BasketGroupAdapter.ViewHolder>() 
     private var context: Context? = null
     private lateinit var DataList: ArrayList<BasketIngredient>
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BasketGroupAdapter.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view =
             LayoutInflater.from(parent!!.context).inflate(R.layout.item_basketgroup, parent, false)
         context = view.context
@@ -100,5 +99,6 @@ class BasketGroupAdapter: RecyclerView.Adapter<BasketGroupAdapter.ViewHolder>() 
     }
     fun submitList(DataList: ArrayList<BasketIngredient>){
         this.DataList = DataList
+        notifyDataSetChanged()
     }
 }

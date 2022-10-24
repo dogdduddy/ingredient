@@ -44,7 +44,7 @@ class GroupIngredientsFragment(basketData: ArrayList<BasketIngredient>): Fragmen
 
         InitData()
 
-        // 그룹 추가
+        // 그룹 및 재료 추가
         binding.groupAddBtn.setOnClickListener {
             addIngredientBtn()
         }

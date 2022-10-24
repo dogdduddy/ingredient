@@ -10,8 +10,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ingredient.R
-import com.example.ingredient.src.basket.BasketGroupAdapter
-import com.example.ingredient.src.basket.models.BasketGroupIngredient
+import com.example.ingredient.src.basket.group.add_ingredient.BasketGroupAdapter
 import com.example.ingredient.src.basket.models.BasketIngredient
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -21,8 +20,6 @@ class GroupIngredientsAdapter() : RecyclerView.Adapter<GroupIngredientsAdapter.V
     private var basketData: ArrayList<BasketIngredient> = ArrayList()
     private var basketList = arrayListOf<String>()
     private var click = true
-    private var adapter: BasketGroupAdapter? = null
-    private var recycler:RecyclerView? = null
 
     override fun getItemCount(): Int = basketList.size
 
@@ -30,16 +27,14 @@ class GroupIngredientsAdapter() : RecyclerView.Adapter<GroupIngredientsAdapter.V
         val view =
             LayoutInflater.from(parent.context).inflate(R.layout.item_group_ingredient, parent, false)
         context = view.context
-        recycler = view.findViewById(R.id.group_recyclerview)
-        recycler!!.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
-        adapter = BasketGroupAdapter()
-        recycler!!.adapter = adapter
         return ViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.groupName.text = basketList[position]
-        adapter!!.submitList(basketData.filter { it.groupName == basketList[position] } as ArrayList<BasketIngredient>)
+        (holder.recyclerView.adapter as BasketGroupAdapter).apply {
+            submitList(basketData.filter { it.groupName == basketList[position] } as ArrayList<BasketIngredient>)
+        }
 
         holder.drawBtn.setOnClickListener {
             if(click) {
@@ -51,20 +46,26 @@ class GroupIngredientsAdapter() : RecyclerView.Adapter<GroupIngredientsAdapter.V
             click = !click
         }
         holder.removeBtn.setOnClickListener {
-            groupRemove(basketList[position])
+            (holder.recyclerView.adapter as BasketGroupAdapter).apply {
+                groupRemove(basketList[position])
+            }
         }
     }
-
     inner class ViewHolder internal constructor(view: View):RecyclerView.ViewHolder(view){
         internal var groupName : TextView
-        internal var recyclerView : RecyclerView
+        internal var recyclerView : RecyclerView = view.findViewById(R.id.group_recyclerview)
         internal var drawBtn : Button
         internal var removeBtn : Button
 
         init {
             context = context
             groupName = view.findViewById(R.id.group_ingredientgroupname)
-            recyclerView = view.findViewById(R.id.group_recyclerview)
+            recyclerView.apply {
+                adapter = BasketGroupAdapter()
+                layoutManager =
+                    LinearLayoutManager(context, RecyclerView.VERTICAL, false)
+
+            }
             drawBtn = view.findViewById(R.id.group_drawBtn)
             removeBtn = view.findViewById(R.id.group_removeBtn)
         }
@@ -77,21 +78,6 @@ class GroupIngredientsAdapter() : RecyclerView.Adapter<GroupIngredientsAdapter.V
     }
 
     fun groupRemove(groupName:String) {
-        FirebaseFirestore.getInstance()
-            .collection("ListData")
-            .document(FirebaseAuth.getInstance().uid.toString())
-            .collection("BasketList")
-            .whereEqualTo("groupName", groupName)
-            .get()
-            .addOnSuccessListener {
-                it.forEach { document ->
-                    document.reference.delete()
-                }
-                basketList.remove(groupName)
-                this.basketList = basketList
-                notifyDataSetChanged()
-            }
-
         // 해당 그룹 재료 삭제
         FirebaseFirestore.getInstance()
             .collection("ListData")
@@ -103,12 +89,22 @@ class GroupIngredientsAdapter() : RecyclerView.Adapter<GroupIngredientsAdapter.V
                 it.forEach { document ->
                     document.reference.delete()
                 }
-                basketData.filter { it.groupName == groupName }.let { it1 ->
-                    basketData.removeAll(it1)
-                }
-                this.basketData = basketData
-                Log.d(":removeTest", "success2 : ${this.basketData}")
-                notifyDataSetChanged()
             }
+        FirebaseFirestore.getInstance()
+            .collection("ListData")
+            .document(FirebaseAuth.getInstance().uid.toString())
+            .collection("BasketList")
+            .whereEqualTo("groupName", groupName)
+            .get()
+            .addOnSuccessListener {
+                it.forEach { document ->
+                    document.reference.delete()
+                }
+            }
+        basketData.filter { it.groupName == groupName }.let { it1 ->
+            basketData.removeAll(it1)
+        }
+        basketList.remove(groupName)
+        notifyDataSetChanged()
     }
 }
