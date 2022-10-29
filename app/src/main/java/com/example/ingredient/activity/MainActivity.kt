@@ -9,6 +9,7 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import com.example.ingredient.R
 import com.example.ingredient.src.expirationDate.ExpirationDate
 import com.example.ingredient.src.FoodBook
@@ -26,6 +27,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var database: FirebaseFirestore
     private val TAG = "MainActivity"
     private lateinit var binding: ActivityMainBinding
+    private var transection : FragmentManager = supportFragmentManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,14 +35,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         database = FirebaseFirestore.getInstance()
-
         InitFragment()
-
-        // 초기 화면을 Search 프래그먼트로 설정
-        val transection = supportFragmentManager
-        transection.beginTransaction().
-            add(R.id.fragment_container, mainFragment,"Search").commit()
-        binding.menuBottom.setItemSelected(R.id.search)
 
         // 하단바를 통해 화면(프래그먼트) 전환
         binding.menuBottom.setOnItemSelectedListener { id ->
@@ -58,6 +53,11 @@ class MainActivity : AppCompatActivity() {
         expirationdateFragment = ExpirationDate.newInstance()
         basketFragment = Basket.newInstance()
         foodbookFragment = FoodBook.newInstance()
+
+        // 초기 화면을 Search 프래그먼트로 설정
+        transection.beginTransaction().
+        add(R.id.fragment_container, mainFragment,"Search").commit()
+        binding.menuBottom.setItemSelected(R.id.search)
     }
     // 프래그먼트 전환 메서드. State는 프래그먼트를 객체로 갖고 있기에, 뷰 단에서 저장과 복구 진행함.
     private fun replaceFragment(fragment: Fragment) {
