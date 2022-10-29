@@ -12,4 +12,50 @@
     <color name="expiration_date">#C9379D</color>
     <color name="tips">#E6A919</color>
     <color name="food_book">#1194AA</color>
+
+
+    <color name="grey_100">#F9FAFB</color>
+    <color name="grey_200">#F2F4F6</color>
+    <color name="grey_300">#E5E8EB</color>
+    <color name="grey_400">#D1D6DB</color>
+    <color name="grey_500">#B0B8C1</color>
+    <color name="grey_600">#8B95A1</color>
+    <color name="grey_700">#6B7684</color>
+    <color name="grey_800">#4E5968</color>
+    <color name="grey_900">#333D4B</color>
+    <color name="grey_1000">#191F28</color>
+
+    <color name="orange_100">#FEE6DB</color>
+    <color name="orange_200">#FFCBB4</color>
+    <color name="orange_300">#FF9E73</color>
+    <color name="orange_400">#ED7039</color>
+    <color name="orange_450">#F55800</color>
+    <color name="orange_500">#D25720</color>
+    <color name="orange_600">#944826</color>
+    <color name="orange_700">#692C11</color>
+
+    <color name="mint_100">#EBF2F1</color>
+    <color name="mint_200">#EBF2F1</color>
+    <color name="mint_300">#C2EAE5</color>
+    <color name="mint_400">#9FDCD5</color>
+    <color name="mint_500">#77CDC3</color>
+    <color name="mint_600">#61AFA6</color>
+    <color name="mint_700">#4C8780</color>
+
+    <color name="yellow_100">#FAF9E0</color>
+    <color name="yellow_200">#FEFCCD</color>
+    <color name="yellow_300">#FCF8A8</color>
+    <color name="yellow_400">#FBF459</color>
+    <color name="yellow_500">#EBE21C</color>
+    <color name="yellow_600">#D3CC26</color>
+    <color name="yellow_700">#ADA726</color>
+
+    <color name="blue_100">#DDE8FF</color>
+    <color name="blue_200">#CDDDFF</color>
+    <color name="blue_300">#ACC7FF</color>
+    <color name="blue_400">#88ACF9</color>
+    <color name="blue_500">#4276E4</color>
+    <color name="blue_600">#2458C7</color>
+    <color name="blue_700">#243E77</color>
+
 </resources>

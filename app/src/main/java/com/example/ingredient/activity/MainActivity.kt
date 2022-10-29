@@ -15,10 +15,11 @@ import com.example.ingredient.src.FoodBook
 import com.example.ingredient.src.search.Search
 import com.example.ingredient.src.basket.Basket
 import com.example.ingredient.databinding.ActivityMainBinding
+import com.example.ingredient.src.search.MainFragment
 import com.google.firebase.firestore.FirebaseFirestore
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var searchFragment: Search
+    private lateinit var mainFragment: MainFragment
     private lateinit var foodbookFragment:FoodBook
     private lateinit var expirationdateFragment: ExpirationDate
     private lateinit var basketFragment: Basket
@@ -38,14 +39,14 @@ class MainActivity : AppCompatActivity() {
         // 초기 화면을 Search 프래그먼트로 설정
         val transection = supportFragmentManager
         transection.beginTransaction().
-            add(R.id.fragment_container, Search(),"Search").commit()
+            add(R.id.fragment_container, mainFragment,"Search").commit()
         binding.menuBottom.setItemSelected(R.id.search)
 
         // 하단바를 통해 화면(프래그먼트) 전환
         binding.menuBottom.setOnItemSelectedListener { id ->
             when (id) {
                 // Navigation : 프래그먼트 객체를 변수에 저장하고, 필요시 호출 => State 유지
-                R.id.search -> replaceFragment(searchFragment)
+                R.id.search -> replaceFragment(mainFragment)
                 R.id.expiration_date -> replaceFragment(expirationdateFragment)
                 R.id.tips -> replaceFragment(basketFragment)
                 R.id.food_book -> replaceFragment(foodbookFragment)
@@ -53,7 +54,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
     fun InitFragment() {
-        searchFragment = Search.newInstance()
+        mainFragment = MainFragment.newInstance()
         expirationdateFragment = ExpirationDate.newInstance()
         basketFragment = Basket.newInstance()
         foodbookFragment = FoodBook.newInstance()
@@ -84,5 +85,19 @@ class MainActivity : AppCompatActivity() {
             }
         }
         return super.dispatchTouchEvent(ev)
+    }
+
+    override fun onBackPressed() {
+        var fragmentList = supportFragmentManager.fragments
+        fragmentList.forEach {
+            if(it is onBackPressListener){
+                (it as onBackPressListener).onBackPressed()
+                return
+            }
+        }
+        super.onBackPressed()
+    }
+    interface onBackPressListener {
+        fun onBackPressed()
     }
 }

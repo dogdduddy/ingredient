@@ -2,6 +2,7 @@ package com.example.ingredient.src.search
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +13,8 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.ingredient.R
+import com.example.ingredient.activity.MainActivity
 import com.example.ingredient.database.ExpirationDateDatabase
 import com.example.ingredient.databinding.FragmentSearchBinding
 import com.example.ingredient.common.PurchaseConfirmationDialogFragment
@@ -19,7 +22,7 @@ import com.google.android.material.chip.Chip
 import com.google.firebase.firestore.FirebaseFirestore
 import android.view.inputmethod.InputMethodManager as InputMethodManager
 
-class Search : Fragment() {
+class Search : Fragment(), MainActivity.onBackPressListener {
     private lateinit var adapter: SearchAdapter
     private lateinit var database: FirebaseFirestore
 
@@ -33,6 +36,11 @@ class Search : Fragment() {
     private val layoutParams = ConstraintLayout.LayoutParams(250, 48)
     private val up = 40
     private val down = 140
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -54,6 +62,10 @@ class Search : Fragment() {
 
     override fun onStart() {
         super.onStart()
+
+        IniteditTextFocus()
+
+
         // 키보드 자판 돋보기로 검색 실행 기능
         binding.findwindow.setOnEditorActionListener { v, actionId, event ->
             var handled = false
@@ -80,8 +92,7 @@ class Search : Fragment() {
             var inputData = binding.findwindow.text.toString()
             binding.findwindow.setText("")
             if(!inputData.isNullOrBlank()) {
-                // 키보드 내리기
-                // hideKeyboard()
+                hideKeyboard()
 
                 inputData.split(",").forEach { element ->
                     if(checkDuplicate(element)) {
@@ -151,7 +162,6 @@ class Search : Fragment() {
                 )
             }
         })
-
         binding.FindrecyclerView.layoutManager = LinearLayoutManager(activity, RecyclerView.VERTICAL, false)
         binding.FindrecyclerView.itemAnimator = DefaultItemAnimator()
         binding.FindrecyclerView.adapter = adapter
@@ -164,9 +174,18 @@ class Search : Fragment() {
     }
     // 검색 후 키보드 내리기
     fun hideKeyboard() {
-        imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
         imm?.hideSoftInputFromWindow(binding.findwindow.windowToken,0)
     }
+
+    fun showKeyboard() {
+        imm?.showSoftInput(binding.findwindow,0)
+    }
+
+    fun IniteditTextFocus() {
+        binding.findwindow.requestFocus()
+        showKeyboard()
+    }
+
     // 검색 재료 중복 체크
     fun checkDuplicate(element: String): Boolean {
         return !strList.any { it == element.trim()}
@@ -177,4 +196,12 @@ class Search : Fragment() {
             Search()
     }
 
+    override fun onBackPressed() {
+        parentFragmentManager.beginTransaction().remove(this).commit()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 }
