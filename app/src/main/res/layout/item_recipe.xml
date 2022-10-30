@@ -15,12 +15,12 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:gravity=""
         android:background="@drawable/foodimage"
-        android:padding="2px"
         android:elevation="4dp">
         <ImageView
             android:id="@+id/foodimg"
             android:layout_width="175dp"
             android:layout_height="204dp"
+            android:layout_margin="4px"
             android:scaleType="centerCrop"
             android:background="@drawable/foodimage"
             android:clipToOutline="true"
