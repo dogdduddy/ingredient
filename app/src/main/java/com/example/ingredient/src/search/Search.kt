@@ -1,6 +1,9 @@
 package com.example.ingredient.src.search
 
 import android.content.Context
+import android.content.res.ColorStateList
+import android.content.res.Resources
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -11,6 +14,7 @@ import android.view.inputmethod.EditorInfo
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.DefaultItemAnimator
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ingredient.R
@@ -75,6 +79,7 @@ class Search : Fragment(), MainActivity.onBackPressListener {
             }
             handled
         }
+
         binding.chipgroupDrawerBtn.setOnClickListener {
             if(binding.chipGroup.isSingleLine == true) {
                 binding.chipGroup.setSingleLine(false)
@@ -100,7 +105,8 @@ class Search : Fragment(), MainActivity.onBackPressListener {
                         strList.add(0,element)
                         // chip 생성(왼쪽에 추가) 바꾸려면 인덱스 번호를 제거 하거나, 조정
                         binding.chipGroup.addView(Chip(context).apply {
-                            text = element // chip 텍스트 설정
+                            chipBackgroundColor = ColorStateList.valueOf(resources.getColor(R.color.grey_200, null))
+                                text = element // chip 텍스트 설정
                             isCloseIconVisible = true // chip에서 X 버튼 보이게 하기
                             //Chip X 클릭 이벤트
                             setOnCloseIconClickListener {
@@ -162,7 +168,8 @@ class Search : Fragment(), MainActivity.onBackPressListener {
                 )
             }
         })
-        binding.FindrecyclerView.layoutManager = LinearLayoutManager(activity, RecyclerView.VERTICAL, false)
+
+        binding.FindrecyclerView.layoutManager = GridLayoutManager(activity, 2)
         binding.FindrecyclerView.itemAnimator = DefaultItemAnimator()
         binding.FindrecyclerView.adapter = adapter
     }

@@ -23,23 +23,12 @@ class SearchAdapter (private val recipeList: MutableList<Array<String>>)
 
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
             val recipe = recipeList[position]
-            Log.d("Data Test : ","$position, $recipe")
-            /*
-            when (position % 5) {
-                0 -> holder.food.setImageResource(R.drawable.buckwheat)
-                1 -> holder.food.setImageResource(R.drawable.bibim)
-                2 -> holder.food.setImageResource(R.drawable.ham)
-                3 -> holder.food.setImageResource(R.drawable.salad)
-                4 -> holder.food.setImageResource(R.drawable.steak)
+            holder.itemView.setOnClickListener { itemCLickListener.onClick(it, position) }
+            holder.food.apply {
+                setImageResource(R.drawable.curry)
+                clipToOutline = true
             }
-
-             */
-            holder.itemView.setOnClickListener {
-                itemCLickListener.onClick(it, position)
-            }
-            holder!!.title.text = recipe[0].toString()
-            holder.content.text = "재료 : " + recipe[1]
-            holder.time.text = recipe[2].toString()
+            holder!!.title.text = recipe[0]
         }
 
         override fun getItemCount(): Int {
@@ -48,16 +37,12 @@ class SearchAdapter (private val recipeList: MutableList<Array<String>>)
 
         inner class ViewHolder internal constructor(view: View) : RecyclerView.ViewHolder(view) {
             internal var title: TextView
-            internal var content: TextView
-            internal var time: TextView
             internal var food: ImageView
             init {
                 var context = context
             }
             init {
                 title = view.findViewById(R.id.findTitle)
-                content = view.findViewById(R.id.findContent)
-                time = view.findViewById(R.id.findTime)
                 food = view.findViewById(R.id.foodimg)
 
             }
