@@ -4,26 +4,37 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:clickable="true"
+    android:background="@color/white"
     tools:context=".src.search.Search">
-
-    <EditText
-        android:id="@+id/findwindow"
+    <LinearLayout
+        android:id="@+id/findwindow_layout"
         android:layout_width="377dp"
-        android:layout_height="42dp"
-        android:background="@drawable/searchbar"
+        android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:hint="오늘 냉장고 요리는 뭐 해먹지?"
-        android:textSize="12sp"
-        android:paddingLeft="15dp"
-        android:imeOptions="actionSearch"
-        android:inputType="text"
-        android:maxLines="1"
-        android:privateImeOptions="defaultInputmode=korean"
-        android:text=""
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
+        app:layout_constraintEnd_toEndOf="parent">
+        <EditText
+            android:id="@+id/findwindow"
+            android:layout_width="322dp"
+            android:layout_height="42dp"
+            android:background="@drawable/searchbar"
+            android:hint="오늘 냉장고 요리는 뭐 해먹지?"
+            android:textSize="12sp"
+            android:paddingLeft="15dp"
+            android:imeOptions="actionSearch"
+            android:inputType="text"
+            android:maxLines="1"
+            android:privateImeOptions="defaultInputmode=korean"
+            android:text="" />
+        <Button
+            android:id="@+id/search_cancle_btn"
+            android:layout_width="55dp"
+            android:layout_height="35dp"
+            android:text="취소"
+            android:background="#00FFFFFF"/>
+    </LinearLayout>
 
 
     <Button
@@ -31,9 +42,38 @@
         android:layout_width="40dp"
         android:layout_height="30dp"
         android:background="@drawable/search"
-        app:layout_constraintBottom_toBottomOf="@+id/findwindow"
-        app:layout_constraintEnd_toEndOf="@+id/findwindow"
+        android:layout_marginRight="50dp"
+        app:layout_constraintBottom_toBottomOf="@+id/findwindow_layout"
+        app:layout_constraintEnd_toEndOf="@+id/findwindow_layout"
         tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
+
+
+    <TextView
+        android:id="@+id/chip_group_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="검색재료"
+        app:layout_constraintTop_toBottomOf="@id/findwindow_layout"
+        android:layout_marginTop="15dp"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="@+id/findwindow_layout"/>
+
+    <ScrollView
+        android:id="@+id/chip_group_scroll"
+        android:layout_width="335dp"
+        android:layout_height="100dp"
+        android:overScrollMode="never"
+        android:scrollbars="none"
+        android:layout_marginTop="5dp"
+        app:layout_constraintStart_toStartOf="@+id/chip_group_title"
+        app:layout_constraintTop_toBottomOf="@id/chip_group_title">
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/chip_group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:singleLine="true" />
+    </ScrollView>
 
     <ImageButton
         android:id="@+id/chipgroup_drawer_btn"
@@ -46,17 +86,6 @@
         android:src="@drawable/triangle"
         app:layout_constraintStart_toEndOf="@+id/chip_group_scroll"
         app:layout_constraintTop_toTopOf="@id/chip_group_scroll" />
-
-    <TextView
-        android:id="@+id/chip_group_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="검색재료"
-        app:layout_constraintTop_toBottomOf="@id/findwindow"
-        android:layout_marginTop="15dp"
-        android:textSize="16sp"
-        app:layout_constraintStart_toStartOf="@+id/findwindow"/>
-
     <Button
         android:id="@+id/chip_group_delAll_btn"
         android:layout_width="wrap_content"
@@ -65,29 +94,10 @@
         android:text="전체삭제"
         android:textSize="12sp"
         style="@style/Widget.AppCompat.Button.Borderless"
-        app:layout_constraintEnd_toEndOf="@+id/findwindow"
+        app:layout_constraintEnd_toEndOf="@+id/findwindow_layout"
         android:background="#00FFFFFF"
         android:textColor="@color/grey_900"
         android:elevation="0dp"/>
-
-    <ScrollView
-        android:id="@+id/chip_group_scroll"
-        android:layout_width="0dp"
-        android:layout_height="100dp"
-        android:overScrollMode="never"
-        android:scrollbars="none"
-        android:layout_marginTop="5dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/chip_group_title"
-        app:layout_constraintWidth_percent="0.8">
-
-        <com.google.android.material.chip.ChipGroup
-            android:id="@+id/chip_group"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:singleLine="true" />
-    </ScrollView>
     <View
         android:id="@+id/divisionLine"
         android:layout_width="match_parent"

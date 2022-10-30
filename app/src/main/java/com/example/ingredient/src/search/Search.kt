@@ -69,11 +69,16 @@ class Search : Fragment(), MainActivity.onBackPressListener {
 
         IniteditTextFocus()
 
-
         binding.chipGroupDelAllBtn.setOnClickListener {
             binding.chipGroup.removeAllViews()
             strList.clear()
             for(i in 0 until recipeList.size) adapter.nullItem()
+        }
+
+        binding.searchCancleBtn.setOnClickListener {
+            binding.findwindow.setText("")
+            binding.findwindow.clearFocus()
+            imm?.hideSoftInputFromWindow(binding.findwindow.windowToken, 0)
         }
 
         // 키보드 자판 돋보기로 검색 실행 기능
@@ -108,7 +113,7 @@ class Search : Fragment(), MainActivity.onBackPressListener {
                 inputData.split(",").forEach { element ->
                     if(checkDuplicate(element)) {
                         // Chip 앞쪽에 추가
-                        strList.add(0,element)
+                        strList.add(0,element.trim())
                         // chip 생성(왼쪽에 추가) 바꾸려면 인덱스 번호를 제거 하거나, 조정
                         binding.chipGroup.addView(Chip(context).apply {
                             chipBackgroundColor = ColorStateList.valueOf(resources.getColor(R.color.grey_200, null))
