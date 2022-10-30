@@ -27,7 +27,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import android.view.inputmethod.InputMethodManager as InputMethodManager
 
 class Search : Fragment(), MainActivity.onBackPressListener {
-    private lateinit var adapter: SearchAdapter
+    private var adapter = SearchAdapter()
     private lateinit var database: FirebaseFirestore
 
     private var strList = mutableListOf<String>()
@@ -69,6 +69,12 @@ class Search : Fragment(), MainActivity.onBackPressListener {
 
         IniteditTextFocus()
 
+
+        binding.chipGroupDelAllBtn.setOnClickListener {
+            binding.chipGroup.removeAllViews()
+            strList.clear()
+            for(i in 0 until recipeList.size) adapter.nullItem()
+        }
 
         // 키보드 자판 돋보기로 검색 실행 기능
         binding.findwindow.setOnEditorActionListener { v, actionId, event ->
@@ -158,12 +164,12 @@ class Search : Fragment(), MainActivity.onBackPressListener {
     // fragment에서 setItemClickListener 메서드를 실행 후 onClick 메서드를 재정의
 
     private fun adapterConnect(recipeList: MutableList<Array<String>>){
-        adapter = SearchAdapter(recipeList)
+        adapter.submitList(recipeList)
 
         // Fragment
         adapter.setItemClickListener(object: SearchAdapter.OnItemClickListener {
             override fun onClick(view: View, position: Int) {
-                PurchaseConfirmationDialogFragment(recipeList[position][0].toString()).  show(
+                PurchaseConfirmationDialogFragment(recipeList[position][0]).  show(
                     childFragmentManager, PurchaseConfirmationDialogFragment.TAG
                 )
             }

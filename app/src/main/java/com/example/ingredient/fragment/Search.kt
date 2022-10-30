@@ -23,7 +23,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import android.view.inputmethod.InputMethodManager as InputMethodManager
 
 class Search : Fragment() {
-    private lateinit var adapter: SearchAdapter
+    private var adapter = SearchAdapter()
     private lateinit var database: FirebaseFirestore
     private lateinit var db:ExpirationDateDatabase
 
@@ -149,7 +149,7 @@ class Search : Fragment() {
     // fragment에서 setItemClickListener 메서드를 실행 후 onClick 메서드를 재정의
 
     private fun adapterConnect(recipeList: MutableList<Array<String>>){
-        adapter = SearchAdapter(recipeList)
+        adapter.submitList(recipeList)
 
         // Fragment
         adapter.setItemClickListener(object: SearchAdapter.OnItemClickListener{

@@ -19,7 +19,7 @@ import com.example.ingredient.src.search.SearchAdapter
 import com.google.firebase.firestore.FirebaseFirestore
 
 class FoodBook : Fragment() {
-    private lateinit var adapter: SearchAdapter
+    private var adapter = SearchAdapter()
     private lateinit var database: FirebaseFirestore
     private lateinit var db: ExpirationDateDatabase
 
@@ -172,7 +172,7 @@ class FoodBook : Fragment() {
     }
 
     private fun adapterConnect(recipeList: MutableList<Array<String>>) {
-        adapter = SearchAdapter(recipeList)
+        adapter.submitList(recipeList)
 
         // Fragment
         adapter.setItemClickListener(object : SearchAdapter.OnItemClickListener {

@@ -142,7 +142,7 @@ class FoodBook : Fragment() {
     }
 
     private fun adapterConnect(recipeList: MutableList<Array<String>>) {
-        adapter = SearchAdapter(recipeList)
+        adapter.submitList(recipeList)
 
         // Fragment
         adapter.setItemClickListener(object : SearchAdapter.OnItemClickListener {

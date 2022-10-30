@@ -10,9 +10,10 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ingredient.R
 
-class SearchAdapter (private val recipeList: MutableList<Array<String>>)
+class SearchAdapter ()
     : RecyclerView.Adapter<SearchAdapter.ViewHolder>()
     {
+        private val recipeList: MutableList<Array<String>>  = mutableListOf()
         private var context:Context? = null
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
             val view =
@@ -33,6 +34,12 @@ class SearchAdapter (private val recipeList: MutableList<Array<String>>)
 
         override fun getItemCount(): Int {
             return recipeList.size
+        }
+
+        fun submitList(recipeList: MutableList<Array<String>>) {
+            this.recipeList.clear()
+            this.recipeList.addAll(recipeList)
+            notifyDataSetChanged()
         }
 
         inner class ViewHolder internal constructor(view: View) : RecyclerView.ViewHolder(view) {
