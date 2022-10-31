@@ -38,25 +38,19 @@ class AddIngredientsActivity : AppCompatActivity() {
 
         // 검색 기능 구현 중
         // 타자기 검색 버튼으로 검색 버튼 클릭 효과
-        binding.ingredientSearch.setOnEditorActionListener { v, actionId, event ->
+        binding.ingSearchbar.setOnEditorActionListener { v, actionId, event ->
             var handled = false
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                binding.ingredientSearchBtn.performClick()
+                binding.ingSearchbar.performClick()
                 handled = true
             }
             handled
         }
         // 검색 버튼
-        binding.ingredientSearchBtn.setOnClickListener {
-            var string = binding.ingredientSearch.text.toString()
+        binding.ingSearchBtn.setOnClickListener {
+            var string = binding.ingSearchbar.text.toString()
             getIngredients(string)
             // 검색 키워드 string를 firebase로 넘겨서 검색을 진행하는 코드 삽입 or 실행하는 클래스로 넘기기
-        }
-
-        // 검색 취소 버튼
-        binding.ingredientSearchCancle.setOnClickListener {
-            binding.ingredientSearch.setText("")
-            getIngredientsInit()
         }
 
         // 선택 재료 넘기기 버튼

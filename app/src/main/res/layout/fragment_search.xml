@@ -23,9 +23,9 @@
             android:hint="오늘 냉장고 요리는 뭐 해먹지?"
             android:textSize="12sp"
             android:paddingLeft="15dp"
-            android:imeOptions="actionSearch"
             android:inputType="text"
             android:maxLines="1"
+            android:imeOptions="actionSearch"
             android:privateImeOptions="defaultInputmode=korean"
             android:text="" />
         <Button
