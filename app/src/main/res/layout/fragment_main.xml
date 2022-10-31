@@ -26,6 +26,7 @@
         android:layout_height="30dp"
         android:background="@drawable/search"
         app:layout_constraintEnd_toEndOf="@+id/main_searchbar"
+        app:layout_constraintTop_toTopOf="@+id/main_searchbar"
         app:layout_constraintBottom_toBottomOf="@+id/main_searchbar"
         tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
 

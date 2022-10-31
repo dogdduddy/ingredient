@@ -15,7 +15,7 @@
         app:cnb_iconColor="@color/expiration_date" />
     <item
         android:id="@+id/tips"
-        android:icon="@drawable/ic_search"
+        android:icon="@drawable/ic_search_vector"
         android:title="장바구니"
         app:cnb_iconColor="@color/tips" />
     <item

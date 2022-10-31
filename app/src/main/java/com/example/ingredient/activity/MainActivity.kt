@@ -3,20 +3,20 @@ package com.example.ingredient.activity
 import android.graphics.Rect
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import android.view.KeyEvent
+import android.view.MenuItem
 import android.view.MotionEvent
-import android.view.View
 import android.view.inputmethod.InputMethodManager
+import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.example.ingredient.R
 import com.example.ingredient.src.expirationDate.ExpirationDate
 import com.example.ingredient.src.FoodBook
-import com.example.ingredient.src.search.Search
 import com.example.ingredient.src.basket.Basket
 import com.example.ingredient.databinding.ActivityMainBinding
 import com.example.ingredient.src.search.MainFragment
+import com.google.android.material.navigation.NavigationView
 import com.google.firebase.firestore.FirebaseFirestore
 
 class MainActivity : AppCompatActivity() {
@@ -25,17 +25,35 @@ class MainActivity : AppCompatActivity() {
     private lateinit var expirationdateFragment: ExpirationDate
     private lateinit var basketFragment: Basket
     private lateinit var database: FirebaseFirestore
+
+    private lateinit var drawerLayout: DrawerLayout
+    private lateinit var navigationView : NavigationView
     private val TAG = "MainActivity"
     private lateinit var binding: ActivityMainBinding
     private var transection : FragmentManager = supportFragmentManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         database = FirebaseFirestore.getInstance()
         InitFragment()
+
+
+        // Tool 햄버거
+        var toolbar = binding.toolbar
+        setSupportActionBar(toolbar)
+
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayShowTitleEnabled(false)
+        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_baseline_menu_24)
+
+        drawerLayout = binding.drawerlayout
+        navigationView = binding.navigationView
+        ///
+
 
         // 하단바를 통해 화면(프래그먼트) 전환
         binding.menuBottom.setOnItemSelectedListener { id ->
@@ -89,15 +107,31 @@ class MainActivity : AppCompatActivity() {
 
     override fun onBackPressed() {
         var fragmentList = supportFragmentManager.fragments
-        fragmentList.forEach {
-            if(it is onBackPressListener){
-                (it as onBackPressListener).onBackPressed()
-                return
+        if(drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawers()
+        } else if (fragmentList.size > 1) {
+            fragmentList.forEach {
+                if (it is onBackPressListener) {
+                    (it as onBackPressListener).onBackPressed()
+                    return
+                }
             }
+        } else {
+            super.onBackPressed()
         }
-        super.onBackPressed()
     }
+
     interface onBackPressListener {
         fun onBackPressed()
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId) {
+            android.R.id.home -> {
+                drawerLayout.openDrawer(GravityCompat.START)
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 }
