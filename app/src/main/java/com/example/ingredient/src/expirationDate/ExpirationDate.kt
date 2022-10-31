@@ -53,12 +53,15 @@ class ExpirationDate : Fragment() {
         // 임시 데이터 출력 메서드
         updateData()
 
+        // 삭제 버튼 안 보이도록 설정
+        showBtnDelete(false)
+
         // Adapter 연결
         expiryAdapter = ExpirationDateAdapter() {show -> showBtnDelete(show)}
         binding.expirationRecyclerview.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
         binding.expirationRecyclerview.adapter = expiryAdapter
 
-        binding.btnTest.setOnClickListener {
+        binding.expiryAddBtn.setOnClickListener {
             var intent = Intent(activity, AddIngredientsActivity::class.java)
             startActivity(intent)
         }
@@ -71,41 +74,31 @@ class ExpirationDate : Fragment() {
 
 
         /// 정렬 선택지 보여줄 다이얼로그
-        var dialogList = arrayOf("적은순", "많은순", "최근순", "오래된순")
-        binding.expitySortBtn.setOnClickListener {
+        binding.expirySortLayout.setOnClickListener {
+            var dialogList = arrayOf("최신순", "오래된순", "적은순", "많은순")
             AlertDialog.Builder(context)
                 .setTitle("정렬")
                 .setItems(dialogList, object : DialogInterface.OnClickListener {
                     override fun onClick(dialog: DialogInterface?, which: Int) {
-                        when(which) {
-                            0 -> sortNumber = 0
-                            1 -> sortNumber = 1
-                            2 -> sortNumber = 2
-                            3 -> sortNumber = 3
-                        }
+                        sortNumber = which
+                        binding.expirySortText.text = dialogList[which]
                         DataUpdate(expiryDates)
                     }
                 }).show()
         }
-        // 삭제 버튼 안 보이도록 설정
-        showBtnDelete(false)
         return binding.root
     }
 
     // 유통기한 재료 리스트 설정
     fun sortList(number:Int) {
-        if(number == 0) {
+        if(number == 0)
             expiryDates.sortBy { it.expirydate }
-        }
-        else if(number == 1) {
+        else if(number == 1)
             expiryDates.sortByDescending { it.expirydate }
-        }
-        else if(number == 2){
+        else if(number == 2)
             expiryDates.sortByDescending { it.addedDate }
-        }
-        else {
+        else
             expiryDates.sortBy { it.addedDate }
-        }
     }
 
     override fun onStart() {
@@ -144,7 +137,7 @@ class ExpirationDate : Fragment() {
 
     fun ExpirationDateSubmit() { updateData() }
 
-    fun DataUpdate(expiryDate:ArrayList<ExpiryDateIngredient>) {// 데이터 삭제 테스트
+    fun DataUpdate(expiryDate:ArrayList<ExpiryDateIngredient>) {
         expiryDates = expiryDate
         sortList(sortNumber)
         expiryAdapter.ExpiryDateSubmitList(expiryDates)

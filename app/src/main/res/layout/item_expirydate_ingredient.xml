@@ -2,29 +2,69 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="150dp">
-    <ImageView
-        android:id="@+id/expirydate_ingredient_icon"
-        android:layout_width="150dp"
-        android:layout_height="match_parent"/>
-    <TextView
+    android:layout_height="wrap_content"
+    android:id="@+id/expiry_ing_item_layout"
+    android:gravity="center"
+    android:padding="1dp">
+
+    <LinearLayout
         android:layout_weight="1"
-        android:id="@+id/expirydate_ingredient_name"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="test"/>
-    <TextView
-        android:layout_weight="1"
-        android:id="@+id/expirydate_ingredient_day"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:id="@+id/expiry_ing_icon_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="18dp"
+            android:background="@drawable/foodimage"
+            android:elevation="4dp">
+            <ImageView
+                android:id="@+id/expirydate_ing_icon"
+                android:layout_width="91dp"
+                android:layout_height="91dp"
+                android:layout_margin="4px"
+                android:scaleType="centerInside"
+                android:background="@drawable/foodimage"
+                android:clipToOutline="true"/>
+        </LinearLayout>
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_weight="2"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="d-day"/>
-    <ImageView
-        android:id="@+id/expirydate_ingredient_check"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:src="@drawable/check"/>
+        android:paddingLeft="20dp"
+        android:orientation="vertical">
+        <TextView
+            android:layout_weight="1"
+            android:id="@+id/expirydate_ing_name"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            android:textSize="19sp"
+            android:text="양파"/>
+        <TextView
+            android:id="@+id/expirydate_ing_expirydate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/grey_600"
+            android:textSize="11sp"
+            android:text="폐기날짜 2022.07.07"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:paddingRight="20dp"
+        android:gravity="right">
+        <TextView
+            android:id="@+id/expirydate_ing_dday"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textSize="23sp"
+            android:text="18일"/>
+    </LinearLayout>
 
 </LinearLayout>

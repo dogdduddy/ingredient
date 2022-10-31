@@ -27,8 +27,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var database: FirebaseFirestore
 
     private lateinit var drawerLayout: DrawerLayout
-    private lateinit var navigationView : NavigationView
-    private val TAG = "MainActivity"
     private lateinit var binding: ActivityMainBinding
     private var transection : FragmentManager = supportFragmentManager
 
@@ -40,20 +38,9 @@ class MainActivity : AppCompatActivity() {
 
         database = FirebaseFirestore.getInstance()
         InitFragment()
+        toolBarInit()
 
-
-        // Tool 햄버거
-        var toolbar = binding.toolbar
-        setSupportActionBar(toolbar)
-
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.setDisplayShowTitleEnabled(false)
-        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_baseline_menu_24)
-
-        drawerLayout = binding.drawerlayout
-        navigationView = binding.navigationView
         ///
-
 
         // 하단바를 통해 화면(프래그먼트) 전환
         binding.menuBottom.setOnItemSelectedListener { id ->
@@ -123,6 +110,16 @@ class MainActivity : AppCompatActivity() {
 
     interface onBackPressListener {
         fun onBackPressed()
+    }
+
+    fun toolBarInit() {
+        setSupportActionBar(binding.toolbar)
+
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayShowTitleEnabled(false)
+        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_baseline_menu_24)
+
+        drawerLayout = binding.drawerlayout
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
