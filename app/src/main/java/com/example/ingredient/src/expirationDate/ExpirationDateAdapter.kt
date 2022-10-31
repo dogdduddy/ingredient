@@ -38,7 +38,7 @@ class ExpirationDateAdapter(
     override fun onBindViewHolder(holder: ExpirationDateAdapter.ViewHolder, position: Int) {
         val item = expirationDateIngredient[position]
         holder.name.text = expirationDateIngredient[position].ingredient.ingredientName
-        holder.day.text = "D-" + expirationDateIngredient[position].expirydate.toString()
+        holder.day.text = expirationDateIngredient[position].expirydate.toString() + "일"
         holder.itemView.setOnLongClickListener {
             Toast.makeText(this.context, "${holder.name.text}",Toast.LENGTH_LONG).show()
             return@setOnLongClickListener true
