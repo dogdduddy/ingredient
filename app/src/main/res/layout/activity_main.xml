@@ -23,10 +23,19 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="a!cha"
+                android:text="장바구니"
                 android:textSize="30sp"
                 android:layout_gravity="center"
+                android:visibility="gone"
                 android:id="@+id/toolbar_title"/>
+            <ImageButton
+                android:id="@+id/main_acha_logo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#00FFFFFF"
+                android:layout_gravity="center"
+                android:layout_marginEnd="20dp"
+                android:src="@drawable/ic_acha_logo_s"/>
             <ImageButton
                 android:id="@+id/toolbar_notification_btn"
                 android:layout_width="wrap_content"
@@ -34,7 +43,7 @@
                 android:background="#00FFFFFF"
                 android:layout_gravity="end"
                 android:layout_marginEnd="20dp"
-                android:src="@drawable/notification"/>
+                android:src="@drawable/ic_notify_s"/>
         </androidx.appcompat.widget.Toolbar>
 
 
