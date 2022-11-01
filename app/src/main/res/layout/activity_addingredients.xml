@@ -68,6 +68,7 @@
         app:layout_constraintTop_toTopOf="@id/chip_group_title"
         android:text="전체저장"
         android:textSize="12sp"
+        android:textAlignment="textEnd"
         style="@style/Widget.AppCompat.Button.Borderless"
         app:layout_constraintEnd_toEndOf="@+id/ing_searchbar"
         android:background="#00FFFFFF"

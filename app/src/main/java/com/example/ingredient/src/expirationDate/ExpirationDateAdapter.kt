@@ -16,6 +16,7 @@ import com.example.ingredient.R
 import com.example.ingredient.src.expirationDate.add_ingredient.ingredientstate.IngredientStateAdapter
 import com.example.ingredient.src.expirationDate.add_ingredient.models.ExpiryDateIngredient
 import com.google.firebase.firestore.FirebaseFirestore
+import java.text.SimpleDateFormat
 
 class ExpirationDateAdapter(
     private val showBtnDelete: (Boolean) -> Unit
@@ -35,10 +36,12 @@ class ExpirationDateAdapter(
         colorWhite = ContextCompat.getColor(context!!, R.color.white)
         return ViewHolder(view)
     }
+
     override fun onBindViewHolder(holder: ExpirationDateAdapter.ViewHolder, position: Int) {
         val item = expirationDateIngredient[position]
         holder.name.text = expirationDateIngredient[position].ingredient.ingredientName
         holder.day.text = expirationDateIngredient[position].expirydate.toString() + "일"
+        holder.date.text = "폐기날짜 ${SimpleDateFormat("yyyy.MM.dd").format(expirationDateIngredient[position].discard.time)}"
         holder.itemView.setOnLongClickListener {
             Toast.makeText(this.context, "${holder.name.text}",Toast.LENGTH_LONG).show()
             return@setOnLongClickListener true
@@ -102,11 +105,13 @@ class ExpirationDateAdapter(
         internal var name: TextView
         internal var day: TextView
         internal var layout: LinearLayout
+        internal var date: TextView
         init {
             icon = view.findViewById(R.id.expirydate_ing_icon)
             name = view.findViewById(R.id.expirydate_ing_name)
             day = view.findViewById(R.id.expirydate_ing_dday)
             layout = view.findViewById(R.id.expiry_ing_item_layout)
+            date = view.findViewById(R.id.expirydate_ing_expirydate)
         }
     }
     fun ExpiryDateSubmitList(expirationDateIngredient:ArrayList<ExpiryDateIngredient>) {

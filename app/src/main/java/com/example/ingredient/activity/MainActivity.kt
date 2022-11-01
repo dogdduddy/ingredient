@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.MotionEvent
+import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
@@ -46,10 +47,29 @@ class MainActivity : AppCompatActivity() {
         binding.menuBottom.setOnItemSelectedListener { id ->
             when (id) {
                 // Navigation : 프래그먼트 객체를 변수에 저장하고, 필요시 호출 => State 유지
-                R.id.search -> replaceFragment(mainFragment)
-                R.id.expiration_date -> replaceFragment(expirationdateFragment)
-                R.id.tips -> replaceFragment(basketFragment)
-                R.id.food_book -> replaceFragment(foodbookFragment)
+                R.id.search -> {
+                    binding.toolbarTitle.visibility = View.GONE
+                    binding.mainAchaLogo.visibility = View.VISIBLE
+                    replaceFragment(mainFragment)
+                }
+                R.id.expiration_date -> {
+                    binding.mainAchaLogo.visibility = View.GONE
+                    binding.toolbarTitle.text = "유통기한"
+                    binding.toolbarTitle.visibility = View.VISIBLE
+                    replaceFragment(expirationdateFragment)
+                }
+                R.id.tips -> {
+                    binding.mainAchaLogo.visibility = View.GONE
+                    binding.toolbarTitle.text = "장바구니"
+                    binding.toolbarTitle.visibility = View.VISIBLE
+                    replaceFragment(basketFragment)
+                }
+                R.id.food_book -> {
+                    binding.mainAchaLogo.visibility = View.GONE
+                    binding.toolbarTitle.text = "레시피사전"
+                    binding.toolbarTitle.visibility = View.VISIBLE
+                    replaceFragment(foodbookFragment)
+                }
             }
         }
     }

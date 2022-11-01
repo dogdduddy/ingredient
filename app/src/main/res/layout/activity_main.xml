@@ -21,18 +21,21 @@
             android:layout_gravity="center_horizontal"
             android:theme="@style/Theme.Ingredient">
             <TextView
+                android:id="@+id/toolbar_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="장바구니"
-                android:textSize="30sp"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="@color/orange_400"
                 android:layout_gravity="center"
-                android:visibility="gone"
-                android:id="@+id/toolbar_title"/>
+                android:visibility="gone"/>
             <ImageButton
                 android:id="@+id/main_acha_logo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="#00FFFFFF"
+                android:visibility="visible"
                 android:layout_gravity="center"
                 android:layout_marginEnd="20dp"
                 android:src="@drawable/ic_acha_logo_s"/>

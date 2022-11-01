@@ -15,8 +15,12 @@ import com.example.ingredient.src.expirationDate.ExpirationDate
 import com.example.ingredient.src.expirationDate.ExpirationDateAdapter
 import com.example.ingredient.src.expirationDate.add_ingredient.models.ExpiryDateIngredient
 import com.example.ingredient.src.expirationDate.add_ingredient.models.Ingredient
+import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 class IngredientStateActivity : AppCompatActivity() {
     private lateinit var binding: ActivityIngredientStateBinding
@@ -35,10 +39,10 @@ class IngredientStateActivity : AppCompatActivity() {
         ExpiryList = arrayOfNulls<ExpiryDateIngredient>(ingredients.size)
 
         var adapter = IngredientStateAdapter(ingredients, this)
-        binding.ingredientState.layoutManager = LinearLayoutManager(this,RecyclerView.VERTICAL, false)
-        binding.ingredientState.adapter = adapter
+        binding.statePickingRecycler.layoutManager = LinearLayoutManager(this,RecyclerView.VERTICAL, false)
+        binding.statePickingRecycler.adapter = adapter
 
-        binding.statesaveBtn.setOnClickListener {
+        binding.statePickingSaveBtn.setOnClickListener {
             var userid = FirebaseAuth.getInstance().uid!!
             if(!ExpiryList.contains(null)) {
                 for(i in 0 until ExpiryList.size) {
@@ -49,7 +53,8 @@ class IngredientStateActivity : AppCompatActivity() {
                         "expirydate" to ExpiryList[i]!!.expirydate,
                         "ingredientstatus" to ExpiryList[i]!!.ingredientstatus,
                         "storagestatus" to ExpiryList[i]!!.storagestatus,
-                        "localdate" to com.google.firebase.Timestamp.now()
+                        "localdate" to ExpiryList[i]!!.addedDate,
+                        "discard" to ExpiryList[i]!!.discard
                     )
                     ExpiryList[i] = null
                     database.collection("ListData")
@@ -61,6 +66,10 @@ class IngredientStateActivity : AppCompatActivity() {
                 val intent = Intent(this, MainActivity::class.java)
                 startActivity(intent)
             }
+        }
+
+        binding.statePickingBackBtn.setOnClickListener {
+            finish()
         }
     }
     fun expiryListSubmit(position:Int, value:ExpiryDateIngredient) {

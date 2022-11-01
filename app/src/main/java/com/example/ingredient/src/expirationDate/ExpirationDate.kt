@@ -125,9 +125,8 @@ class ExpirationDate : Fragment() {
                         document.get("ingredientstatus").toString().toInt(),
                         document.get("storagestatus").toString().toInt(),
                         false,
-                        (document.get("localdate") as com.google.firebase.Timestamp).toDate().toInstant()
-                            .atZone(ZoneId.systemDefault())
-                            .toLocalDate()
+                        (document.get("localdate") as com.google.firebase.Timestamp).toDate(),
+                        (document.get("discard") as com.google.firebase.Timestamp).toDate()
                     ))
                 }
                 DataUpdate(temp)
