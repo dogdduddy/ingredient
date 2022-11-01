@@ -12,6 +12,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.example.ingredient.databinding.FragmentBasketBinding
 import com.example.ingredient.src.basket.group.GroupAddIngredientsActivity
 import com.example.ingredient.src.basket.models.BasketIngredient
+import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
@@ -35,6 +36,14 @@ class Basket : Fragment() {
         basketViewPagerAdapter = BasketViewPagerAdapter(this)
         viewPager.adapter = basketViewPagerAdapter
 
+
+        // 임시 카테고리 이름 데이터
+        var tablayerName = arrayListOf("그룹", "총재료")
+
+        // 카테고리 적용
+        TabLayoutMediator(binding.basketTabLayout, viewPager) { tab, position ->
+            tab.text = tablayerName[position]
+        }.attach()
 
 
         userid = FirebaseAuth.getInstance().uid!!

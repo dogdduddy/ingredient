@@ -38,7 +38,7 @@
                 android:layout_height="35dp"
                 android:padding="10dp"
                 android:scaleType="fitStart"
-                android:background="@drawable/save_btn_shape"
+                android:background="@drawable/selector_grey_shape"
                 android:src="@drawable/ic_plus_orange" />
             <TextView
                 android:layout_width="wrap_content"

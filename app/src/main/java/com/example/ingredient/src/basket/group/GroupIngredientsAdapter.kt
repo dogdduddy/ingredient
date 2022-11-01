@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -54,8 +55,8 @@ class GroupIngredientsAdapter() : RecyclerView.Adapter<GroupIngredientsAdapter.V
     inner class ViewHolder internal constructor(view: View):RecyclerView.ViewHolder(view){
         internal var groupName : TextView
         internal var recyclerView : RecyclerView = view.findViewById(R.id.group_recyclerview)
-        internal var drawBtn : Button
-        internal var removeBtn : Button
+        internal var drawBtn : ImageButton
+        internal var removeBtn : ImageButton
 
         init {
             context = context
