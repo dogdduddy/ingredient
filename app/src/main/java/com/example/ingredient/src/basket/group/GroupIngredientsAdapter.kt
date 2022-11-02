@@ -5,23 +5,22 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
+import android.widget.FrameLayout
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ingredient.R
-import com.example.ingredient.src.basket.group.add_ingredient.BasketGroupAdapter
 import com.example.ingredient.src.basket.models.BasketIngredient
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
-class GroupIngredientsAdapter() : RecyclerView.Adapter<GroupIngredientsAdapter.ViewHolder>() {
+class GroupIngredientsAdapter(mCallback:onGroupDrawClickListener) : RecyclerView.Adapter<GroupIngredientsAdapter.ViewHolder>() {
     private var context: Context? = null
     private var basketData: ArrayList<BasketIngredient> = ArrayList()
     private var basketList = arrayListOf<String>()
     private var click = true
-
+    private val mCallback = mCallback
     override fun getItemCount(): Int = basketList.size
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -36,31 +35,38 @@ class GroupIngredientsAdapter() : RecyclerView.Adapter<GroupIngredientsAdapter.V
         (holder.recyclerView.adapter as BasketGroupAdapter).apply {
             submitList(basketData.filter { it.groupName == basketList[position] } as ArrayList<BasketIngredient>)
         }
-
-        holder.drawBtn.setOnClickListener {
-            if(click) {
-                holder.recyclerView.visibility = View.VISIBLE
-            }
-            else {
-                holder.recyclerView.visibility = View.GONE
-            }
-            click = !click
-        }
         holder.removeBtn.setOnClickListener {
             (holder.recyclerView.adapter as BasketGroupAdapter).apply {
                 groupRemove(basketList[position])
             }
         }
+        holder.drawBtn.setOnClickListener {
+            if(basketData.map { it.groupName }.contains(basketList[position]) && click) {
+                holder.recyclerView.visibility = View.VISIBLE
+                holder.groupLayout.elevation = 8f
+                holder.drawBtn.rotation = 0f
+                mCallback.onGroupDrawOpen()
+            }
+            else if(!click) {
+                holder.recyclerView.visibility = View.GONE
+                holder.groupLayout.elevation = 0f
+                holder.drawBtn.rotation = 180f
+                mCallback.onGroupDrawClose()
+            }
+            click = !click
+        }
+
     }
     inner class ViewHolder internal constructor(view: View):RecyclerView.ViewHolder(view){
         internal var groupName : TextView
         internal var recyclerView : RecyclerView = view.findViewById(R.id.group_recyclerview)
         internal var drawBtn : ImageButton
         internal var removeBtn : ImageButton
+        internal var groupLayout : FrameLayout
 
         init {
             context = context
-            groupName = view.findViewById(R.id.group_ingredientgroupname)
+            groupName = view.findViewById(R.id.group_groupname)
             recyclerView.apply {
                 adapter = BasketGroupAdapter()
                 layoutManager =
@@ -69,12 +75,14 @@ class GroupIngredientsAdapter() : RecyclerView.Adapter<GroupIngredientsAdapter.V
             }
             drawBtn = view.findViewById(R.id.group_drawBtn)
             removeBtn = view.findViewById(R.id.group_removeBtn)
+            groupLayout = view.findViewById(R.id.group_layout)
         }
     }
 
     fun submitList(basketData: ArrayList<BasketIngredient>, basketList: ArrayList<String>) {
         this.basketData = basketData
         this.basketList = basketList
+        Log.d("categoryTest", "GroupIngredientsAdapter : ${basketData[0].categoryName}  /  ${basketData[0].ingredientName}")
         notifyDataSetChanged()
     }
 
@@ -107,5 +115,10 @@ class GroupIngredientsAdapter() : RecyclerView.Adapter<GroupIngredientsAdapter.V
         }
         basketList.remove(groupName)
         notifyDataSetChanged()
+    }
+
+    interface onGroupDrawClickListener {
+        fun onGroupDrawOpen()
+        fun onGroupDrawClose()
     }
 }

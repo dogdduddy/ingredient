@@ -1,4 +1,4 @@
-package com.example.ingredient.src.basket.group.add_ingredient
+package com.example.ingredient.src.basket.group
 
 import android.content.Context
 import android.util.Log
@@ -29,15 +29,19 @@ class BasketGroupAdapter: RecyclerView.Adapter<BasketGroupAdapter.ViewHolder>() 
     override fun getItemCount() = DataList.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.ingredientName.text = DataList[position].ingredientName
-        holder.ingredientAmount.text = DataList[position].quantity.toString()
+        holder.ingName.text = DataList[position].ingredientName
+        holder.ingCnt.text = DataList[position].quantity.toString() + category(DataList[position].categoryName, DataList[position].ingredientName)
+        holder.ingCategory.text = DataList[position].categoryName
+
         Glide.with(holder.itemView)
             .load(DataList[position].ingredientIcon)
-            .into(holder.ingredientIcon)
+            .into(holder.ingIcon)
         // 마이너스 버튼 클릭
-        holder.ingredientMinus.setOnClickListener {
-            var number = holder.ingredientAmount.text.toString().toInt()
-            holder.ingredientAmount.text = (--number).toString()
+        holder.ingMinus.setOnClickListener {
+            var cnt = holder.ingCnt.text.toString()
+            var number = cnt.replace("[^0-9]".toRegex(), "").toInt() - 1
+            holder.ingCnt.text = number.toString() + cnt.replace("[0-9]".toRegex(), "")
+
             FirebaseFirestore.getInstance()
                 .collection("ListData")
                 .document(FirebaseAuth.getInstance().uid.toString())
@@ -62,9 +66,12 @@ class BasketGroupAdapter: RecyclerView.Adapter<BasketGroupAdapter.ViewHolder>() 
 
         }
         // 플러스 버튼 클릭
-        holder.ingredientPlus.setOnClickListener {
-            var number = holder.ingredientAmount.text.toString().toInt()
-            holder.ingredientAmount.text = (++number).toString()
+        holder.ingPlus.setOnClickListener {
+
+            var cnt = holder.ingCnt.text.toString()
+            var number = cnt.replace("[^0-9]".toRegex(), "").toInt() + 1
+            holder.ingCnt.text = number.toString() + cnt.replace("[0-9]".toRegex(), "")
+
             Log.d("numberTest", "number : $number")
             FirebaseFirestore.getInstance()
                 .collection("ListData")
@@ -82,21 +89,49 @@ class BasketGroupAdapter: RecyclerView.Adapter<BasketGroupAdapter.ViewHolder>() 
     }
 
     inner class ViewHolder internal constructor(view: View):RecyclerView.ViewHolder(view){
-        internal var ingredientName : TextView
-        internal var ingredientIcon : ImageView
-        internal var ingredientAmount : TextView
-        internal var ingredientMinus : Button
-        internal var ingredientPlus : Button
+        internal var ingName : TextView
+        internal var ingIcon : ImageView
+        internal var ingCnt : TextView
+        internal var ingMinus : Button
+        internal var ingPlus : Button
+        internal var ingCategory : TextView
 
         init {
             context = context
-            ingredientName = view.findViewById(R.id.group_ingredientname)
-            ingredientIcon = view.findViewById(R.id.group_ingredienticon)
-            ingredientAmount = view.findViewById(R.id.group_ingredientamount)
-            ingredientMinus = view.findViewById(R.id.group_ingredient_minus)
-            ingredientPlus = view.findViewById(R.id.group_ingredient_plus)
+            ingName = view.findViewById(R.id.group_inner_ing_name)
+            ingIcon = view.findViewById(R.id.group_inner_ing_icon)
+            ingCnt = view.findViewById(R.id.group_inner_ing_cnt)
+            ingMinus = view.findViewById(R.id.group_inner_ing_minus)
+            ingPlus = view.findViewById(R.id.group_inner_ing_plus)
+            ingCategory = view.findViewById(R.id.group_inner_ing_category)
         }
     }
+
+    fun category(categoryName: String, ingreidentName: String):String {
+        Log.d("categoryTest", "categoryName : $categoryName  /  $ingreidentName")
+        return when(categoryName) {
+            "채소" -> {
+                when(ingreidentName) {
+                    "배추" -> "포기"
+                    "상추", "깻잎" -> "장"
+                    "생강", "마늘" -> "쪽"
+                    "버섯" -> "송이"
+                    else -> "개"
+                }
+            }
+            "육류" -> "근"
+            "수산물" -> when(ingreidentName) {
+                "생선" -> "마리"
+                else -> "개"
+            }
+            "과일" -> when(ingreidentName) {
+                "포도", "바나나" -> "송이"
+                else -> "개"
+            }
+            else -> "개"
+        }
+    }
+
     fun submitList(DataList: ArrayList<BasketIngredient>){
         this.DataList = DataList
         notifyDataSetChanged()

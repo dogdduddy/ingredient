@@ -1,5 +1,6 @@
 package com.example.ingredient.src.basket
 
+import android.util.Log
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.ingredient.src.basket.group.GroupIngredientsFragment
@@ -21,7 +22,14 @@ class BasketViewPagerAdapter(fa: Fragment):FragmentStateAdapter(fa) {
 
     fun submitList(basketList: ArrayList<BasketIngredient>) {
         this.basketList = basketList
-        fragments = arrayListOf(GroupIngredientsFragment(basketList), TotalIngredientsFragment(basketList))
+        Log.d("categoryTest", "BasketViewPagerAdapter : ${basketList[0].ingredientName}  /  ${basketList[0].categoryName}")
+        fragments = arrayListOf(GroupIngredientsFragment(), TotalIngredientsFragment())
+        fragments.forEach { fragment ->
+            when(fragment) {
+                is GroupIngredientsFragment -> fragment.submitList(basketList)
+                is TotalIngredientsFragment -> fragment.submitList(basketList)
+            }
+        }
         fmIds = fragments.map { it.hashCode().toLong() }
         notifyDataSetChanged()
     }

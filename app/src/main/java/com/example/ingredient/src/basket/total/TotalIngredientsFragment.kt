@@ -10,8 +10,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.ingredient.R
 import com.example.ingredient.src.basket.models.BasketIngredient
 
-class TotalIngredientsFragment(basketList: ArrayList<BasketIngredient>): Fragment() {
-    private var basketList = basketList
+class TotalIngredientsFragment: Fragment() {
+    private var basketList: ArrayList<BasketIngredient>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,7 +28,11 @@ class TotalIngredientsFragment(basketList: ArrayList<BasketIngredient>): Fragmen
         recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         recyclerView.adapter = adapter
 
-        adapter.submitList(basketList)
+        adapter.submitList(basketList!!)
         return view
+    }
+
+    fun submitList(basketData: ArrayList<BasketIngredient>) {
+        this.basketList = basketData
     }
 }

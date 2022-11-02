@@ -119,7 +119,8 @@ class ExpirationDate : Fragment() {
                         Ingredient(
                             document.get("ingredienticon").toString(),
                             document.get("ingredientidx").toString().toInt(),
-                            document.get("ingredientname").toString()
+                            document.get("ingredientname").toString(),
+                            document.get("ingredientcategory").toString()
                         ),
                         document.get("expirydate").toString().toInt(),
                         document.get("ingredientstatus").toString().toInt(),

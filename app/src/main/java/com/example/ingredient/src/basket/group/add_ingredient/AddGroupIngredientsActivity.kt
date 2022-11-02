@@ -76,7 +76,7 @@ class AddGroupIngredientsActivity : AppCompatActivity() {
                                     "ingredienticon" to it.ingredientIcon,
                                     "ingredientidx" to it.ingredientIdx,
                                     "ingredientname" to it.ingredientName,
-                                    "ingredientcategory" to "",
+                                    "ingredientcategory" to it.ingredientCategory,
                                     "groupName" to group,
                                     "ingredientquantity" to 1
                                 )
@@ -96,7 +96,8 @@ class AddGroupIngredientsActivity : AppCompatActivity() {
                                         Ingredient(
                                             get("ingredienticon").toString(),
                                             get("ingredientidx").toString().toInt(),
-                                            get("ingredientname").toString()
+                                            get("ingredientname").toString(),
+                                            get("ingredientcategory").toString()
                                         )
                                     )
                                 }
@@ -125,7 +126,7 @@ class AddGroupIngredientsActivity : AppCompatActivity() {
                                         "ingredienticon" to ingredient.ingredientIcon,
                                         "ingredientidx" to ingredient.ingredientIdx,
                                         "ingredientname" to ingredient.ingredientName,
-                                        "ingredientcategory" to "",
+                                        "ingredientcategory" to ingredient.ingredientCategory,
                                         "groupName" to group,
                                         "ingredientquantity" to 1
                                     )
@@ -210,7 +211,8 @@ class AddGroupIngredientsActivity : AppCompatActivity() {
                     Ingredient(
                         it.get("ingredienticon").toString(),
                         it.get("ingredientidx").toString().toInt(),
-                        it.get("ingredientname").toString()
+                        it.get("ingredientname").toString(),
+                        it.get("ingredientcategory").toString()
                     )
                 )
             }
@@ -255,7 +257,8 @@ class AddGroupIngredientsActivity : AppCompatActivity() {
                         Ingredient(
                             it.get("ingredienticon").toString(),
                             it.get("ingredientidx").toString().toInt(),
-                            it.get("ingredientname").toString()
+                            it.get("ingredientname").toString(),
+                            it.get("ingredientcategory").toString()
                         )
                     )
                 }

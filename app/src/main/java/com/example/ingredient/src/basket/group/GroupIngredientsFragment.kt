@@ -14,38 +14,46 @@ import androidx.core.view.WindowCompat
 import androidx.core.view.marginBottom
 import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.ingredient.activity.MainActivity
 import com.example.ingredient.databinding.FragmentGroupingredientsBinding
 import com.example.ingredient.src.basket.models.BasketIngredient
+import com.example.ingredient.src.search.MainFragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.*
 
-class GroupIngredientsFragment(basketData: ArrayList<BasketIngredient>): Fragment() {
-    private var basketData = basketData
+class GroupIngredientsFragment: Fragment(), GroupIngredientsAdapter.onGroupDrawClickListener {
+    private var basketData: ArrayList<BasketIngredient>? = null
     private var basketList = arrayListOf<String>()
     private var _binding : FragmentGroupingredientsBinding? = null
     private val binding get()  = _binding!!
-    private val adapter = GroupIngredientsAdapter()
+    private val adapter = GroupIngredientsAdapter(this)
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentGroupingredientsBinding.inflate(layoutInflater, container, false)
+
         return binding.root
     }
 
+
     override fun onStart() {
         super.onStart()
-        Log.d("basketTest", "data Test : ${basketData}")
-        val recyclerview = binding.groupRecyclerView
+        val recyclerview = binding.groupInnerRecycler
         recyclerview.adapter = adapter
         recyclerview.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
         InitData()
 
         // 그룹 및 재료 추가
-        binding.groupAddBtn.setOnClickListener {
+        binding.groupInnerBtnOrigin.setOnClickListener {
+            addIngredientBtn()
+        }
+        binding.groupInnerBtnOther.setOnClickListener {
             addIngredientBtn()
         }
     }
@@ -61,7 +69,7 @@ class GroupIngredientsFragment(basketData: ArrayList<BasketIngredient>): Fragmen
                 for(document in documents) {
                     basketList.add(document.data["groupName"].toString())
                 }
-                adapter.submitList(basketData, basketList)
+                adapter.submitList(basketData!!, basketList)
             }
     }
 
@@ -70,4 +78,26 @@ class GroupIngredientsFragment(basketData: ArrayList<BasketIngredient>): Fragmen
         intent.putStringArrayListExtra("groupList", basketList)
         startActivity(intent)
     }
+
+    fun submitList(basketData: ArrayList<BasketIngredient>) {
+        this.basketData = basketData
+        adapter.submitList(basketData, basketList)
+    }
+
+    override fun onGroupDrawOpen() {
+        binding.groupInnerBtnOther.visibility = View.VISIBLE
+        binding.groupInnerBtnOrigin.visibility = View.GONE
+    }
+
+    override fun onGroupDrawClose() {
+        CoroutineScope(Dispatchers.Main).launch {
+            launch {  binding.groupInnerRecycler.requestLayout() }.join()
+            launch {if(binding.groupInnerRecycler.height != 1636) {
+                binding.groupInnerBtnOther.visibility = View.GONE
+                binding.groupInnerBtnOrigin.visibility = View.VISIBLE
+            }}
+        }
+
+    }
 }
+

@@ -2,53 +2,65 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="15dp"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <LinearLayout
-        android:layout_width="355dp"
-        android:layout_height="67dp"
-        android:background="@drawable/selector_grey_shape"
-        android:gravity="center_vertical">
-        <TextView
-            android:layout_weight="1"
-            android:id="@+id/group_ingredientgroupname"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:textColor="@color/grey_900"
-            android:textSize="20sp"
-            android:text="아보타도 토스트"/>
-
+    <FrameLayout
+        android:id="@+id/group_layout"
+        android:layout_width="380dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/background_radius"
+        android:layout_margin="15dp">
         <LinearLayout
-            android:layout_weight="1"
-            android:layout_width="wrap_content"
+            android:layout_width="380dp"
             android:layout_height="wrap_content"
-            android:gravity="right">
-            <ImageButton
-                android:id="@+id/group_removeBtn"
-                android:layout_width="39dp"
-                android:layout_height="30dp"
-                android:background="#00ffffff"
-                android:src="@drawable/ic_edit"
-                android:text="삭제"/>
-
-            <ImageButton
-                android:id="@+id/group_drawBtn"
+            android:layout_marginTop="58dp"
+            android:background="@drawable/selector_grey_shape">
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/group_recyclerview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="10dp"
+                android:visibility="gone"/>
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/group_ing_layout"
+            android:layout_width="380dp"
+            android:layout_height="67dp"
+            android:background="@drawable/selector_grey_shape"
+            android:gravity="center_vertical">
+            <TextView
+                android:layout_weight="2"
+                android:id="@+id/group_groupname"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"
-                android:layout_gravity="center_vertical"
-                android:src="@drawable/ic_arrow_grey"
-                android:rotation="180"
-                android:background="#00ffffff"
-                android:text="열기"/>
-        </LinearLayout>
-    </LinearLayout>
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/group_recyclerview"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        app:layout_constraintTop_toBottomOf="@+id/group_drawBtn"/>
+                android:layout_margin="10dp"
+                android:textColor="@color/grey_900"
+                android:textSize="20sp"
+                android:text="아보타도 토스트"/>
+            <LinearLayout
+                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:gravity="right">
+                <ImageButton
+                    android:id="@+id/group_removeBtn"
+                    android:layout_width="39dp"
+                    android:layout_height="match_parent"
+                    android:background="#00ffffff"
+                    android:src="@drawable/ic_edit"
+                    android:text="삭제"/>
 
+                <ImageButton
+                    android:id="@+id/group_drawBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:padding="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/ic_arrow_grey"
+                    android:rotation="180"
+                    android:background="#00ffffff"
+                    android:text="열기"/>
+            </LinearLayout>
+        </LinearLayout>
+    </FrameLayout>
 </LinearLayout>

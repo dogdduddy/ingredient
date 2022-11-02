@@ -13,7 +13,9 @@ data class Ingredient(
     @SerializedName("ingredientIdx")
     val ingredientIdx: Int,
     @SerializedName("ingredientName")
-    val ingredientName: String
+    val ingredientName: String,
+    @SerializedName("ingredientCategory")
+    val ingredientCategory: String
 ): Parcelable
 
 

@@ -132,7 +132,8 @@ class AddIngredientsActivity : AppCompatActivity() {
                     Ingredient(
                         it.get("ingredienticon").toString(),
                         it.get("ingredientidx").toString().toInt(),
-                        it.get("ingredientname").toString()
+                        it.get("ingredientname").toString(),
+                        it.get("ingredientcategory").toString()
                     )
                 )
             }
@@ -178,7 +179,8 @@ class AddIngredientsActivity : AppCompatActivity() {
                         Ingredient(
                             it.get("ingredienticon").toString(),
                             it.get("ingredientidx").toString().toInt(),
-                            it.get("ingredientname").toString()
+                            it.get("ingredientname").toString(),
+                            it.get("ingredientcategory").toString()
                         )
                     )
                 }
