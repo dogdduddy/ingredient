@@ -5,10 +5,12 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".src.basket.group.GroupIngredientsFragment">
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/group_inner_recycler"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingBottom="60dp"
         app:layout_constraintTop_toTopOf="parent"/>
     <Button
         android:id="@+id/group_inner_btn_origin"
@@ -40,6 +42,6 @@
         android:scaleType="fitXY"
         android:background="@drawable/selector_grey_shape"
         android:elevation="8dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginBottom="20dp"/>
+        android:layout_marginEnd="17dp"
+        android:layout_marginBottom="17dp"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

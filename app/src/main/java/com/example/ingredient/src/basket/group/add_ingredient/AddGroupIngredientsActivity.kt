@@ -53,11 +53,6 @@ class AddGroupIngredientsActivity : AppCompatActivity() {
             // 검색 키워드 string를 firebase로 넘겨서 검색을 진행하는 코드 삽입 or 실행하는 클래스로 넘기기
         }
 
-        // 검색 취소 버튼
-        binding.groupAddIngredientSearchCancle.setOnClickListener {
-            binding.groupAddIngredientSearch.setText("")
-            getIngredientsInit()
-        }
 
         // 저장 버튼 (선택 재료 넘기기)
         binding.groupAddPickingredientsave.setOnClickListener {
@@ -140,6 +135,7 @@ class AddGroupIngredientsActivity : AppCompatActivity() {
                         }
                     }
                 intent = Intent(this, MainActivity::class.java)
+                intent.putExtra("fragment", "basket")
                 startActivity(intent)
             }
         }
@@ -164,7 +160,7 @@ class AddGroupIngredientsActivity : AppCompatActivity() {
         }
 
         // 카테고리 적용
-        TabLayoutMediator(binding.groupAddTabLayout, viewPager) { tab, position ->
+        TabLayoutMediator(binding.groupAddTablayout, viewPager) { tab, position ->
             tab.text = tablayerName[position]
         }.attach()
 

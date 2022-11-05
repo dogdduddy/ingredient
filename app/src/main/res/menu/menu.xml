@@ -14,7 +14,7 @@
         android:title="유통기한"
         app:cnb_iconColor="@color/expiration_date" />
     <item
-        android:id="@+id/tips"
+        android:id="@+id/basket"
         android:icon="@drawable/ic_search_vector"
         android:title="장바구니"
         app:cnb_iconColor="@color/tips" />

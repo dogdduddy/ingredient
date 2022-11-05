@@ -41,38 +41,64 @@ class MainActivity : AppCompatActivity() {
         InitFragment()
         toolBarInit()
 
-        ///
+        if(intent.hasExtra("fragment")) {
+            when(intent.getStringExtra("fragment")) {
+                "main" -> setMainFragment()
+                "expiry" -> {
+                    setExpirationDateFragment()
+                    binding.menuBottom.setItemSelected(R.id.expiration_date, true)
+                }
+                "basket" -> {
+                    setBasketFragment()
+                    binding.menuBottom.setItemSelected(R.id.basket, true)
+                }
+                "foodbook" -> setFoodBookFragment()
+            }
+        }
 
         // 하단바를 통해 화면(프래그먼트) 전환
         binding.menuBottom.setOnItemSelectedListener { id ->
             when (id) {
                 // Navigation : 프래그먼트 객체를 변수에 저장하고, 필요시 호출 => State 유지
                 R.id.search -> {
-                    binding.toolbarTitle.visibility = View.GONE
-                    binding.mainAchaLogo.visibility = View.VISIBLE
-                    replaceFragment(mainFragment)
+                    setMainFragment()
                 }
                 R.id.expiration_date -> {
-                    binding.mainAchaLogo.visibility = View.GONE
-                    binding.toolbarTitle.text = "유통기한"
-                    binding.toolbarTitle.visibility = View.VISIBLE
-                    replaceFragment(expirationdateFragment)
+                    setExpirationDateFragment()
                 }
-                R.id.tips -> {
-                    binding.mainAchaLogo.visibility = View.GONE
-                    binding.toolbarTitle.text = "장바구니"
-                    binding.toolbarTitle.visibility = View.VISIBLE
-                    replaceFragment(basketFragment)
+                R.id.basket -> {
+                    setBasketFragment()
                 }
                 R.id.food_book -> {
-                    binding.mainAchaLogo.visibility = View.GONE
-                    binding.toolbarTitle.text = "레시피사전"
-                    binding.toolbarTitle.visibility = View.VISIBLE
-                    replaceFragment(foodbookFragment)
+                    setFoodBookFragment()
                 }
             }
         }
     }
+    fun setMainFragment(){
+        binding.toolbarTitle.visibility = View.GONE
+        binding.mainAchaLogo.visibility = View.VISIBLE
+        replaceFragment(mainFragment)
+    }
+    fun setExpirationDateFragment(){
+        binding.mainAchaLogo.visibility = View.GONE
+        binding.toolbarTitle.text = "유통기한"
+        binding.toolbarTitle.visibility = View.VISIBLE
+        replaceFragment(expirationdateFragment)
+    }
+    fun setBasketFragment(){
+        binding.mainAchaLogo.visibility = View.GONE
+        binding.toolbarTitle.text = "장바구니"
+        binding.toolbarTitle.visibility = View.VISIBLE
+        replaceFragment(basketFragment)
+    }
+    fun setFoodBookFragment(){
+        binding.mainAchaLogo.visibility = View.GONE
+        binding.toolbarTitle.text = "레시피사전"
+        binding.toolbarTitle.visibility = View.VISIBLE
+        replaceFragment(foodbookFragment)
+    }
+
     fun InitFragment() {
         mainFragment = MainFragment.newInstance()
         expirationdateFragment = ExpirationDate.newInstance()

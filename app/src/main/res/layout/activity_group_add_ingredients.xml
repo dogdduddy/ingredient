@@ -4,14 +4,31 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     tools:context=".src.basket.group.GroupAddIngredientsActivity">
-    <Button
+    <ImageButton
+        android:id="@+id/addgroup_finish_btn"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:background="@color/white"
+        android:src="@drawable/ic_arrow_grey"
+        android:rotation="270"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_margin="10dp"/>
+
+    <ImageButton
         android:id="@+id/addgroup_radio_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="45dp"
+        android:layout_height="34dp"
+        android:layout_margin="10dp"
+        android:textSize="30sp"
+        android:background="@drawable/ic_plus_shape"
+        android:src="@drawable/ic_plus"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:text="재료 추가"/>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/addgroup_radio_recyclerview"
         android:layout_width="match_parent"
@@ -20,32 +37,45 @@
         app:layout_constraintTop_toBottomOf="@+id/addgroup_radio_btn"
         app:layout_constraintStart_toStartOf="parent"/>
     <EditText
+        android:layout_weight="3"
         android:id="@+id/addgroup_group_edittext"
         android:hint="그룹 이름"
-        android:layout_width="0dp"
-        app:layout_constraintWidth_percent="0.75"
-        android:visibility="gone"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/addgroup_radio_recyclerview"
-
-        app:layout_constraintStart_toStartOf="parent"/>
-    <Button
+        android:layout_width="377dp"
+        android:layout_height="42dp"
+        android:maxLines="20"
+        android:textSize="12sp"
+        android:layout_marginTop="20dp"
+        android:paddingLeft="20dp"
+        android:background="@drawable/edittext_grey_shape"
+        app:layout_constraintTop_toTopOf="@+id/addgroup_addgroup_btn"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:visibility="gone"/>
+    <ImageButton
+        android:layout_weight="1"
         android:id="@+id/addgroup_groupsave_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        app:layout_constraintTop_toBottomOf="@+id/addgroup_radio_recyclerview"
-        app:layout_constraintStart_toEndOf="@+id/addgroup_group_edittext"/>
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_marginEnd="8dp"
+        android:background="#00FFFFFF"
+        android:src="@drawable/ic_plus"
+        app:layout_constraintTop_toTopOf="@+id/addgroup_group_edittext"
+        app:layout_constraintBottom_toBottomOf="@+id/addgroup_group_edittext"
+        app:layout_constraintEnd_toEndOf="@+id/addgroup_group_edittext"
+        android:visibility="gone"/>
 
     <Button
         android:id="@+id/addgroup_addgroup_btn"
         android:text="새그룹 추가"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="visible"
+        android:layout_width="364dp"
+        android:layout_height="52dp"
+        android:background="@drawable/selector_grey_shape"
+        android:textColor="@color/grey_600"
+        android:layout_marginTop="20dp"
         app:layout_constraintTop_toBottomOf="@+id/addgroup_radio_recyclerview"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        android:visibility="visible"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

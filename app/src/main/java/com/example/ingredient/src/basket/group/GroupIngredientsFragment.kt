@@ -92,7 +92,16 @@ class GroupIngredientsFragment: Fragment(), GroupIngredientsAdapter.onGroupDrawC
     override fun onGroupDrawClose() {
         CoroutineScope(Dispatchers.Main).launch {
             launch {  binding.groupInnerRecycler.requestLayout() }.join()
+            /*
             launch {if(binding.groupInnerRecycler.height != 1636) {
+                binding.groupInnerBtnOther.visibility = View.GONE
+                binding.groupInnerBtnOrigin.visibility = View.VISIBLE
+            }}
+
+             */
+            Log.d("heightTest", "recy : ${binding.groupInnerRecycler.height}")
+            Log.d("heightTest", "btn : ${binding.groupInnerBtnOther.height}")
+            launch {if(binding.groupInnerRecycler.height != binding.groupInnerBtnOther.height) {
                 binding.groupInnerBtnOther.visibility = View.GONE
                 binding.groupInnerBtnOrigin.visibility = View.VISIBLE
             }}

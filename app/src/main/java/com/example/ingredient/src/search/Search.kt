@@ -24,6 +24,7 @@ import com.example.ingredient.databinding.FragmentSearchBinding
 import com.example.ingredient.common.PurchaseConfirmationDialogFragment
 import com.google.android.material.chip.Chip
 import com.google.firebase.firestore.FirebaseFirestore
+import java.util.Random
 import android.view.inputmethod.InputMethodManager as InputMethodManager
 
 class Search : Fragment(), MainActivity.onBackPressListener {
@@ -61,7 +62,6 @@ class Search : Fragment(), MainActivity.onBackPressListener {
         super.onViewCreated(view, savedInstanceState)
         Toast.makeText(context, "onViewCreated : "+recipeList,Toast.LENGTH_LONG).show()
         adapterConnect(recipeList)
-
     }
 
     override fun onStart() {
@@ -109,7 +109,6 @@ class Search : Fragment(), MainActivity.onBackPressListener {
             binding.findwindow.setText("")
             if(!inputData.isNullOrBlank()) {
                 hideKeyboard()
-
                 inputData.split(",").forEach { element ->
                     if(checkDuplicate(element)) {
                         // Chip 앞쪽에 추가
@@ -138,9 +137,59 @@ class Search : Fragment(), MainActivity.onBackPressListener {
             }
         }
     }
+    /*
+    // 데이터 이전
+    fun InsertDate() {
+        database.collection("users")
+            .get()
+            .addOnSuccessListener { documents ->
+                for (doc in documents) {
+                    val data = hashMapOf(
+                        "fulltext" to doc.data["fulltext"],
+                        "ingredients" to doc.data["ingredients"],
+                        "name" to doc.data["name"],
+                        "like" to Random().nextInt(60) + 80,
+                        "subscribe" to Random().nextInt(60) + 80,
+                        "icon" to ""
+                    )
+                    database.collection("Recipes").document()
+                        .set(data)
+                        .addOnSuccessListener { Log.d("Test", "DocumentSnapshot successfully written!") }
+                        .addOnFailureListener { e -> Log.w("Test", "Error writing document", e) }
+                }
+            }
+    }
+
+    // fullltext만 Update
+    fun InsertDate() {
+        database.collection("Recipes")
+            .get()
+            .addOnSuccessListener { documents ->
+                for (doc in documents) {
+                    if (!doc.data["name"]!!.equals("김치볶음밥")) {
+                        fun fullText(string: String): ArrayList<String> {
+                            var fulltextList = ArrayList<String>()
+                            val length: Int = string.length
+
+                            for (i in 1..length) {
+                                for (j in 0..length - i) {
+                                    fulltextList.add(string.slice(j until j + i))
+                                }
+                            }
+                            return fulltextList
+                        }
+                        database.collection("Recipes").document(doc.id)
+                            .update("fulltext", fullText(doc.data["name"].toString()))
+                    }
+                }
+            }
+    }
+
+     */
+
 
     fun SearchQuery(database:FirebaseFirestore, strList:MutableList<String>):Unit {
-        val refs = database.collection("users")
+        val refs = database.collection("Recipes")
         // 검색 통해 나온 레시피명을 담는 리스트
         recipeList = mutableListOf<Array<String>>()
 

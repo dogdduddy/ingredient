@@ -8,10 +8,12 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ImageButton
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ingredient.R
 import com.example.ingredient.src.basket.models.BasketIngredient
+import com.google.common.collect.ArrayTable
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
@@ -19,6 +21,7 @@ class GroupIngredientsAdapter(mCallback:onGroupDrawClickListener) : RecyclerView
     private var context: Context? = null
     private var basketData: ArrayList<BasketIngredient> = ArrayList()
     private var basketList = arrayListOf<String>()
+    private var basketDataList = ArrayList<ArrayList<Any>>()
     private var click = true
     private val mCallback = mCallback
     override fun getItemCount(): Int = basketList.size
@@ -41,19 +44,23 @@ class GroupIngredientsAdapter(mCallback:onGroupDrawClickListener) : RecyclerView
             }
         }
         holder.drawBtn.setOnClickListener {
-            if(basketData.map { it.groupName }.contains(basketList[position]) && click) {
-                holder.recyclerView.visibility = View.VISIBLE
-                holder.groupLayout.elevation = 8f
-                holder.drawBtn.rotation = 0f
-                mCallback.onGroupDrawOpen()
+            if((basketDataList[position][1] as ArrayList<Any>).size >  0) {
+                if (click) {
+                    holder.recyclerView.visibility = View.VISIBLE
+                    holder.groupLayout.elevation = 8f
+                    holder.drawBtn.rotation = 0f
+                    mCallback.onGroupDrawOpen()
+                } else {
+                    holder.recyclerView.visibility = View.GONE
+                    holder.groupLayout.elevation = 0f
+                    holder.drawBtn.rotation = 180f
+                    mCallback.onGroupDrawClose()
+                }
+                click = !click
             }
-            else if(!click) {
-                holder.recyclerView.visibility = View.GONE
-                holder.groupLayout.elevation = 0f
-                holder.drawBtn.rotation = 180f
-                mCallback.onGroupDrawClose()
+            else {
+                Toast.makeText(context, "재료가 없습니다.", Toast.LENGTH_SHORT).show()
             }
-            click = !click
         }
 
     }
@@ -82,8 +89,17 @@ class GroupIngredientsAdapter(mCallback:onGroupDrawClickListener) : RecyclerView
     fun submitList(basketData: ArrayList<BasketIngredient>, basketList: ArrayList<String>) {
         this.basketData = basketData
         this.basketList = basketList
-        Log.d("categoryTest", "GroupIngredientsAdapter : ${basketData[0].categoryName}  /  ${basketData[0].ingredientName}")
+        dataGrouping()
         notifyDataSetChanged()
+    }
+
+    fun dataGrouping() {
+        basketDataList.clear()
+        basketList.forEach { groupName ->
+            basketDataList.add(
+                arrayListOf(groupName, basketData.filter { it.groupName == groupName } as ArrayList<Any>)
+            )
+        }
     }
 
     fun groupRemove(groupName:String) {

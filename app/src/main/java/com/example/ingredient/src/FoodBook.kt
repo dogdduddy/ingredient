@@ -100,7 +100,7 @@ class FoodBook : Fragment() {
 
     // 단순쿼리문 (전체 출력)
     fun SearchQuery(database: FirebaseFirestore): Unit {
-        val refs = database.collection("users")
+        val refs = database.collection("Recipes")
         // 검색 통해 나온 레시피명을 담는 리스트
         recipeList = mutableListOf<Array<String>>()
 
@@ -111,7 +111,7 @@ class FoodBook : Fragment() {
                     recipeList.add(
                         arrayOf(
                             document.get("name").toString(),
-                            // ["김치", 밥, "대파"] 와 같은 형태로 출력 됨. "[" 와 "]"를 제거하기 위한 코드
+                            // ["김치", "밥", "대파"] 와 같은 형태로 출력 됨. "[" 와 "]"를 제거하기 위한 코드
                             document.get("ingredients").toString().drop(1).dropLast(1),
                             document.get("time").toString()
                         )

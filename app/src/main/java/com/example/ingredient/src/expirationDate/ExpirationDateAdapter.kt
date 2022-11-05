@@ -92,7 +92,6 @@ class ExpirationDateAdapter(
         showBtnDelete(true)
         // Check 이벤트
         holder.layout.apply {
-            setPadding(15,15,15,15)
             background = ContextCompat.getDrawable(context, R.color.orange_300)
         }
     }
