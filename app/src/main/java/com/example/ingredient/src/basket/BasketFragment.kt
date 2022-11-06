@@ -1,22 +1,16 @@
 package com.example.ingredient.src.basket
 
-import android.content.Intent
-import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.*
-import androidx.annotation.RequiresApi
-import androidx.core.view.*
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import com.example.ingredient.databinding.FragmentBasketBinding
-import com.example.ingredient.src.basket.group.GroupAddIngredientsActivity
 import com.example.ingredient.src.basket.models.BasketIngredient
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
-class Basket : Fragment() {
+class BasketFragment : Fragment() {
 
     private var _binding : FragmentBasketBinding? = null
     private val binding get()  = _binding!!
@@ -73,7 +67,7 @@ class Basket : Fragment() {
         basketViewPagerAdapter.submitList(data)
     }
     companion object {
-        fun newInstance() = Basket()
+        fun newInstance() = BasketFragment()
     }
 }
 

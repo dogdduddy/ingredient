@@ -3,37 +3,24 @@ package com.example.ingredient.src.expirationDate
 import android.app.AlertDialog
 import android.content.DialogInterface
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
-import android.os.Parcel
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.RequiresApi
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.ingredient.activity.MainActivity
-import com.example.ingredient.database.ExpirationDateDao
-import com.example.ingredient.database.ExpirationDateDatabase
 import com.example.ingredient.databinding.FragmentExpirationDateBinding
 import com.example.ingredient.src.expirationDate.add_ingredient.AddIngredientsActivity
 import com.example.ingredient.src.expirationDate.add_ingredient.models.ExpiryDateIngredient
 import com.example.ingredient.src.expirationDate.add_ingredient.models.Ingredient
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import java.sql.Timestamp
-import java.time.LocalDate
-import java.time.ZoneId
-import java.util.*
 import kotlin.collections.ArrayList
 
-class ExpirationDate : Fragment() {
+class ExpirationDateFragment : Fragment() {
     private var _binding:FragmentExpirationDateBinding? = null
     private val binding get() = _binding!!
     private var expiryDates = ArrayList<ExpiryDateIngredient>()
@@ -148,6 +135,6 @@ class ExpirationDate : Fragment() {
     }
     companion object {
         fun newInstance() =
-            ExpirationDate()
+            ExpirationDateFragment()
     }
 }

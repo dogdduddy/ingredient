@@ -3,23 +3,14 @@ package com.example.ingredient.src.expirationDate.add_ingredient.ingredientstate
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.ingredient.R
 import com.example.ingredient.activity.MainActivity
 import com.example.ingredient.databinding.ActivityIngredientStateBinding
-import com.example.ingredient.databinding.ActivityMainBinding
-import com.example.ingredient.src.expirationDate.ExpirationDate
-import com.example.ingredient.src.expirationDate.ExpirationDateAdapter
 import com.example.ingredient.src.expirationDate.add_ingredient.models.ExpiryDateIngredient
 import com.example.ingredient.src.expirationDate.add_ingredient.models.Ingredient
-import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import java.text.SimpleDateFormat
-import java.util.*
 import kotlin.collections.ArrayList
 
 class IngredientStateActivity : AppCompatActivity() {

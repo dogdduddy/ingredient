@@ -2,10 +2,7 @@ package com.example.ingredient.src.search
 
 import android.content.Context
 import android.content.res.ColorStateList
-import android.content.res.Resources
-import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -15,19 +12,15 @@ import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.ingredient.R
 import com.example.ingredient.activity.MainActivity
-import com.example.ingredient.database.ExpirationDateDatabase
 import com.example.ingredient.databinding.FragmentSearchBinding
 import com.example.ingredient.common.PurchaseConfirmationDialogFragment
 import com.google.android.material.chip.Chip
 import com.google.firebase.firestore.FirebaseFirestore
-import java.util.Random
 import android.view.inputmethod.InputMethodManager as InputMethodManager
 
-class Search : Fragment(), MainActivity.onBackPressListener {
+class SearchFragment : Fragment(), MainActivity.onBackPressListener {
     private var adapter = SearchAdapter()
     private lateinit var database: FirebaseFirestore
 
@@ -260,7 +253,7 @@ class Search : Fragment(), MainActivity.onBackPressListener {
 
     companion object {
         fun newInstance() =
-            Search()
+            SearchFragment()
     }
 
     override fun onBackPressed() {

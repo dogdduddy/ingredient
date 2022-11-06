@@ -1,17 +1,14 @@
 package com.example.ingredient.src.search
 
-import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
 import com.example.ingredient.R
 import com.example.ingredient.databinding.FragmentMainBinding
-import com.example.ingredient.databinding.FragmentSearchBinding
 
-class MainFragment : Fragment() {
+class SearchMainFragment : Fragment() {
     private var _binding : FragmentMainBinding? = null
     private val binding get()  = _binding!!
 
@@ -33,7 +30,7 @@ class MainFragment : Fragment() {
     override fun onStart() {
         super.onStart()
         binding.mainSearchbar.setOnClickListener {
-            val searchFragment = Search()
+            val searchFragment = SearchFragment()
             val transaction = activity?.supportFragmentManager?.beginTransaction()
             transaction?.add(R.id.fragment_container, searchFragment)
             transaction?.commit()
@@ -41,7 +38,7 @@ class MainFragment : Fragment() {
     }
     companion object {
         fun newInstance() =
-            MainFragment()
+            SearchMainFragment()
     }
     override fun onDestroyView() {
         super.onDestroyView()

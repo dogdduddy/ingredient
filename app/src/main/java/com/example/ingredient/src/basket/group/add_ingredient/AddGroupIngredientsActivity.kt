@@ -8,8 +8,6 @@ import android.view.inputmethod.EditorInfo
 import androidx.viewpager2.widget.ViewPager2
 import com.example.ingredient.activity.MainActivity
 import com.example.ingredient.databinding.ActivityAddGroupIngredientsBinding
-import com.example.ingredient.src.basket.Basket
-import com.example.ingredient.src.basket.models.BasketIngredient
 import com.example.ingredient.src.expirationDate.add_ingredient.models.CategoryIngrediets
 import com.example.ingredient.src.expirationDate.add_ingredient.models.Ingredient
 import com.google.android.material.chip.Chip

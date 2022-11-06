@@ -1,25 +1,14 @@
 package com.example.ingredient.src.basket.group
 
-import android.content.Context
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowInsets
-import android.view.inputmethod.InputMethodManager
-import androidx.core.view.WindowCompat
-import androidx.core.view.marginBottom
-import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.ingredient.activity.MainActivity
 import com.example.ingredient.databinding.FragmentGroupingredientsBinding
 import com.example.ingredient.src.basket.models.BasketIngredient
-import com.example.ingredient.src.search.MainFragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.*
@@ -92,15 +81,6 @@ class GroupIngredientsFragment: Fragment(), GroupIngredientsAdapter.onGroupDrawC
     override fun onGroupDrawClose() {
         CoroutineScope(Dispatchers.Main).launch {
             launch {  binding.groupInnerRecycler.requestLayout() }.join()
-            /*
-            launch {if(binding.groupInnerRecycler.height != 1636) {
-                binding.groupInnerBtnOther.visibility = View.GONE
-                binding.groupInnerBtnOrigin.visibility = View.VISIBLE
-            }}
-
-             */
-            Log.d("heightTest", "recy : ${binding.groupInnerRecycler.height}")
-            Log.d("heightTest", "btn : ${binding.groupInnerBtnOther.height}")
             launch {if(binding.groupInnerRecycler.height != binding.groupInnerBtnOther.height) {
                 binding.groupInnerBtnOther.visibility = View.GONE
                 binding.groupInnerBtnOrigin.visibility = View.VISIBLE
