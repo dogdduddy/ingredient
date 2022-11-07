@@ -13,15 +13,15 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.example.ingredient.R
 import com.example.ingredient.src.expirationDate.ExpirationDateFragment
-import com.example.ingredient.src.foodbook.FoodBookFragment
 import com.example.ingredient.src.basket.BasketFragment
 import com.example.ingredient.databinding.ActivityMainBinding
+import com.example.ingredient.src.foodbook.FoodBookMainFragment
 import com.example.ingredient.src.search.SearchMainFragment
 import com.google.firebase.firestore.FirebaseFirestore
 
 class MainActivity : AppCompatActivity() {
     private lateinit var mainFragment: SearchMainFragment
-    private lateinit var foodbookFragment: FoodBookFragment
+    private lateinit var foodbookFragment: FoodBookMainFragment
     private lateinit var expirationdateFragment: ExpirationDateFragment
     private lateinit var basketFragment: BasketFragment
     private lateinit var database: FirebaseFirestore
@@ -102,7 +102,7 @@ class MainActivity : AppCompatActivity() {
         mainFragment = SearchMainFragment.newInstance()
         expirationdateFragment = ExpirationDateFragment.newInstance()
         basketFragment = BasketFragment.newInstance()
-        foodbookFragment = FoodBookFragment.newInstance()
+        foodbookFragment = FoodBookMainFragment.newInstance()
 
         // 초기 화면을 Search 프래그먼트로 설정
         transection.beginTransaction().

@@ -33,6 +33,7 @@ class FoodBookFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
     }
 
     override fun onCreateView(
@@ -85,7 +86,7 @@ class FoodBookFragment : Fragment() {
             if (!inputData.isNullOrBlank()) {
                 hideKeyboard()
                 if(checkDuplicate(inputData)) {
-                    SearchFullTextQuery(database, inputData)
+                    SearchFullTextQuery(database, inputData, false)
                 }
                 binding.findwindow.setText("")
             } else {
@@ -123,7 +124,7 @@ class FoodBookFragment : Fragment() {
     }
 
     // Full Text 형태로 검색 구현
-    fun SearchFullTextQuery(database: FirebaseFirestore, str: String): Unit {
+    fun SearchFullTextQuery(database: FirebaseFirestore, str: String, chipClick:Boolean): Unit {
         val refs = database.collection("Recipes")
         // 검색 통해 나온 레시피명을 담는 리스트
         recipeList = mutableListOf<Array<String>>()
@@ -145,7 +146,9 @@ class FoodBookFragment : Fragment() {
                             )
                         )
                     }
-                    addChip(str)
+                    if(!chipClick) {
+                        addChip(str)
+                    }
                     adapterConnect(recipeList)
                 }
             }
@@ -201,14 +204,9 @@ class FoodBookFragment : Fragment() {
             text = inputData // chip 텍스트 설정
             setOnClickListener {
                 binding.findwindow.setText(text)
-                SearchFullTextQuery(database, text.toString())
+                SearchFullTextQuery(database, text.toString(), true)
             }
         }, 0)
-    }
-
-    fun IniteditTextFocus() {
-        binding.findwindow.requestFocus()
-        showKeyboard()
     }
 
     // 검색 후 키보드 내리기
@@ -219,6 +217,12 @@ class FoodBookFragment : Fragment() {
     fun showKeyboard() {
         imm?.showSoftInput(binding.findwindow,0)
     }
+
+    fun IniteditTextFocus() {
+        binding.findwindow.requestFocus()
+        showKeyboard()
+    }
+
 
     fun checkDuplicate(element: String): Boolean {
         return !strList.any { it == element.trim()}
