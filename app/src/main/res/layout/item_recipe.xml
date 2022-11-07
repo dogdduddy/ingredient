@@ -46,12 +46,13 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:minWidth="70dp"
+            android:minWidth="55dp"
+            android:gravity="center_vertical"
             android:layout_weight="1">
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_love"
+                android:src="@drawable/ic_like"
                 android:layout_marginRight="5dp"/>
             <TextView
                 android:layout_width="wrap_content"
@@ -65,11 +66,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:minWidth="70dp"
+            android:gravity="center_vertical"
             android:layout_weight="1">
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_love"
+                android:src="@drawable/ic_subscribe"
                 android:layout_marginRight="5dp"/>
             <TextView
                 android:layout_width="wrap_content"
@@ -77,7 +79,7 @@
                 android:textStyle="bold"
                 android:textSize="14sp"
                 android:textColor="@color/grey_700"
-                android:text="12K"/>
+                android:text="12"/>
         </LinearLayout>
     </LinearLayout>
 
