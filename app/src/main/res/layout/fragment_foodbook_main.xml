@@ -33,6 +33,12 @@
         app:layout_constraintBottom_toBottomOf="@+id/foodbook_main_searchbar"
         app:layout_constraintEnd_toEndOf="@+id/foodbook_main_searchbar"
         tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/foodbook_main_tablayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:tabIndicatorColor="@color/orange_300"
+        app:layout_constraintTop_toBottomOf="@+id/foodbook_main_searchbar"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/FindrecyclerView"
