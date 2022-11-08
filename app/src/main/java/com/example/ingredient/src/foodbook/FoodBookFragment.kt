@@ -70,6 +70,11 @@ class FoodBookFragment : Fragment() {
             handled
         }
 
+        binding.searchCancleBtn.setOnClickListener {
+            binding.findwindow.setText("")
+            activity?.supportFragmentManager?.beginTransaction()?.remove(this)?.commit()
+        }
+
         binding.searchBtn.setOnClickListener {
             // 검색 후 키보드 내리기
             hideKeyboard()

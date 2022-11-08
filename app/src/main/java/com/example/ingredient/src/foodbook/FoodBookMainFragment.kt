@@ -52,13 +52,6 @@ class FoodBookMainFragment : Fragment() {
         }
         return binding.root
     }
-    fun tabsInit(temp : ArrayList<ArrayList<Any>>) {
-        categoryList.addAll(temp)
-        temp.forEach {
-            tabs.addTab(tabs.newTab().setText(it[0].toString()))
-        }
-        query(0)
-    }
 
     override fun onStart() {
         super.onStart()
@@ -109,7 +102,6 @@ class FoodBookMainFragment : Fragment() {
             .get()
             .addOnSuccessListener { documents ->
                 for (document in documents) {
-                    // 레시피 검색해서 나온 이름, 재료, 시간 저장
                     recipeList.add(
                         arrayOf(
                             document.get("name").toString(),
@@ -120,6 +112,14 @@ class FoodBookMainFragment : Fragment() {
                 }
                 adapterConnect(recipeList)
             }
+    }
+
+    fun tabsInit(temp : ArrayList<ArrayList<Any>>) {
+        categoryList.addAll(temp)
+        temp.forEach {
+            tabs.addTab(tabs.newTab().setText(it[0].toString()))
+        }
+        query(0)
     }
 
     companion object {

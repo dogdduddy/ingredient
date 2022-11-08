@@ -30,11 +30,6 @@ class SearchFragment : Fragment(), MainActivity.onBackPressListener {
     private val binding get()  = _binding!!
     private var imm:InputMethodManager? = null
 
-    // 구글과 같은 동적 애니메이션 위한 코드
-    private val layoutParams = ConstraintLayout.LayoutParams(250, 48)
-    private val up = 40
-    private val down = 140
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
@@ -94,6 +89,10 @@ class SearchFragment : Fragment(), MainActivity.onBackPressListener {
                 binding.chipgroupDrawerBtn.rotation = 90f
             }
             binding.chipGroup.requestLayout()
+        }
+        binding.searchCancleBtn.setOnClickListener {
+            binding.findwindow.setText("")
+            activity?.supportFragmentManager?.beginTransaction()?.remove(this)?.commit()
         }
 
         binding.searchBtn.setOnClickListener {
@@ -227,11 +226,6 @@ class SearchFragment : Fragment(), MainActivity.onBackPressListener {
         binding.FindrecyclerView.adapter = adapter
     }
 
-    // 동적 버튼 / 검색시 서치바 위치가 올라가도록
-    fun setSearchBarMargin(locate:Int){
-        layoutParams.setMargins(0, locate,0,0)
-        binding.findwindow.layoutParams = layoutParams
-    }
     // 검색 후 키보드 내리기
     fun hideKeyboard() {
         imm?.hideSoftInputFromWindow(binding.findwindow.windowToken,0)
