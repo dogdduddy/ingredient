@@ -32,6 +32,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="달콤고소 비빔국수"
+                android:bufferType="spannable"
                 android:textSize="16sp"
                 android:textColor="#393939"
                 android:gravity="center_horizontal"

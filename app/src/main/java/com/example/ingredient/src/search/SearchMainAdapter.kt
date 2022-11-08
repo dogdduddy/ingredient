@@ -2,6 +2,8 @@ package com.example.ingredient.src.search
 
 import android.content.Context
 import android.media.Image
+import android.text.Spannable
+import android.text.style.ForegroundColorSpan
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -29,6 +31,8 @@ class SearchMainAdapter ()
             clipToOutline = true
         }
         holder.title.text = recommendList[position][1]
+        var span:Spannable = holder.title.text as Spannable
+        span.setSpan(ForegroundColorSpan(context!!.getColor(R.color.orange_300)), 0, 4, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
         holder.subtitle.text = recommendList[position][2]
     }
 
