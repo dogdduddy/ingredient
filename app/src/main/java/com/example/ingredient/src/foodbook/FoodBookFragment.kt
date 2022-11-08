@@ -29,7 +29,7 @@ class FoodBookFragment : Fragment() {
     private var strList = mutableListOf<String>()
     private var maxStrListSize = 8
 
-    private var recipeList = mutableListOf<Array<String>>()
+    private var recipeList: ArrayList<MutableMap<String, String>> = arrayListOf<MutableMap<String, String>>()
     private var _binding: FragmentFoodBookBinding? = null
     private val binding get() = _binding!!
     private var imm: InputMethodManager? = null
@@ -51,7 +51,6 @@ class FoodBookFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        adapterConnect(recipeList)
     }
 
     override fun onStart() {
@@ -83,14 +82,6 @@ class FoodBookFragment : Fragment() {
             hideKeyboard()
 
             var inputData = binding.findwindow.text.toString().trim()
-            /*
-            if (!str.isNullOrBlank()) {
-                SearchQuery(database, str)
-            } else {
-                SearchQuery(database)
-            }
-
-             */
             if (!inputData.isNullOrBlank()) {
                 hideKeyboard()
                 if(checkDuplicate(inputData)) {
@@ -100,7 +91,6 @@ class FoodBookFragment : Fragment() {
             } else {
                 SearchQuery(database)
             }
-            ////
         }
 
 
@@ -110,21 +100,27 @@ class FoodBookFragment : Fragment() {
     fun SearchQuery(database: FirebaseFirestore): Unit {
         val refs = database.collection("Recipes")
         // 검색 통해 나온 레시피명을 담는 리스트
-        recipeList = mutableListOf<Array<String>>()
+        recipeList.clear()
+
         refs.get()
             .addOnSuccessListener { documents ->
                 binding.FindrecyclerView.visibility = View.VISIBLE
                 binding.foodbookNotfoundLayout.visibility = View.GONE
                 for (document in documents) {
                     // 레시피 검색해서 나온 이름, 재료, 시간 저장
+                    var ing_str: String = ""
+                    (document.get("ingredients") as ArrayList<String>).forEachIndexed { index, element ->
+                        if(index == 0)
+                            ing_str = element
+                        else
+                            ing_str += " / $element"
+                    }
                     recipeList.add(
-                        arrayOf(
-                            document.get("name").toString(),
-                            // ["김치", "밥", "대파"] 와 같은 형태로 출력 됨. "[" 와 "]"를 제거하기 위한 코드
-                            document.get("ingredients").toString().drop(1).dropLast(1),
-                            document.get("time").toString()
-                        )
-                    )
+                        mutableMapOf("name" to document.get("name").toString(),
+                            "ingredients" to ing_str,
+                            "like" to document.get("like").toString(),
+                            "subscribe" to document.get("subscribe").toString()
+                        ))
                 }
                 adapterConnect(recipeList)
             }
@@ -135,7 +131,7 @@ class FoodBookFragment : Fragment() {
     fun SearchFullTextQuery(database: FirebaseFirestore, str: String, chipClick:Boolean): Unit {
         val refs = database.collection("Recipes")
         // 검색 통해 나온 레시피명을 담는 리스트
-        recipeList = mutableListOf<Array<String>>()
+        recipeList.clear()
 
         refs.whereArrayContains("fulltext", str)
             .get()
@@ -146,13 +142,19 @@ class FoodBookFragment : Fragment() {
                     hideNotFound()
                     for (document in documents) {
                         // 레시피 검색해서 나온 이름, 재료, 시간 저장
+                        var ing_str: String = ""
+                        (document.get("ingredients") as ArrayList<String>).forEachIndexed { index, element ->
+                            if(index == 0)
+                                ing_str = element
+                            else
+                                ing_str += " / $element"
+                        }
                         recipeList.add(
-                            arrayOf(
-                                document.get("name").toString(),
-                                document.get("ingredients").toString().drop(1).dropLast(1),
-                                document.get("time").toString()
-                            )
-                        )
+                            mutableMapOf("name" to document.get("name").toString(),
+                                "ingredients" to ing_str,
+                                "like" to document.get("like").toString(),
+                                "subscribe" to document.get("subscribe").toString()
+                            ))
                     }
                     if(!chipClick) {
                         addChip(str)
@@ -166,7 +168,7 @@ class FoodBookFragment : Fragment() {
     fun SearchQuery(database: FirebaseFirestore, str: String): Unit {
         val refs = database.collection("users")
         // 검색 통해 나온 레시피명을 담는 리스트
-        recipeList = mutableListOf<Array<String>>()
+        recipeList.clear()
 
         refs.whereGreaterThan("name", str)
             .whereLessThan("name", "$str\uf8ff")
@@ -174,25 +176,31 @@ class FoodBookFragment : Fragment() {
             .addOnSuccessListener { documents ->
                 for (document in documents) {
                     // 레시피 검색해서 나온 이름, 재료, 시간 저장
+                    var ing_str: String = ""
+                    (document.get("ingredients") as ArrayList<String>).forEachIndexed { index, element ->
+                        if(index == 0)
+                            ing_str = element
+                        else
+                            ing_str += " / $element"
+                    }
                     recipeList.add(
-                        arrayOf(
-                            document.get("name").toString(),
-                            document.get("ingredients").toString().drop(1).dropLast(1),
-                            document.get("time").toString()
-                        )
-                    )
+                        mutableMapOf("name" to document.get("name").toString(),
+                            "ingredients" to ing_str,
+                            "like" to document.get("like").toString(),
+                            "subscribe" to document.get("subscribe").toString()
+                        ))
                 }
                 adapterConnect(recipeList)
             }
     }
 
-    private fun adapterConnect(recipeList: MutableList<Array<String>>) {
+    private fun adapterConnect(recipeList: ArrayList<MutableMap<String, String>> = arrayListOf<MutableMap<String, String>>()) {
         adapter.submitList(recipeList)
 
         // Fragment
         adapter.setItemClickListener(object : SearchAdapter.OnItemClickListener {
             override fun onClick(view: View, position: Int) {
-                PurchaseConfirmationDialogFragment(recipeList[position][0].toString()).show(
+                PurchaseConfirmationDialogFragment(recipeList[position]["name"].toString()).show(
                     childFragmentManager, PurchaseConfirmationDialogFragment.TAG
                 )
             }

@@ -25,7 +25,7 @@ class SearchFragment : Fragment(), MainActivity.onBackPressListener {
     private lateinit var database: FirebaseFirestore
 
     private var strList = mutableListOf<String>()
-    private var recipeList = mutableListOf<Array<String>>()
+    private var recipeList: ArrayList<MutableMap<String, String>> = ArrayList()
     private var _binding : FragmentSearchBinding? = null
     private val binding get()  = _binding!!
     private var imm:InputMethodManager? = null
@@ -183,22 +183,25 @@ class SearchFragment : Fragment(), MainActivity.onBackPressListener {
     fun SearchQuery(database:FirebaseFirestore, strList:MutableList<String>):Unit {
         val refs = database.collection("Recipes")
         // 검색 통해 나온 레시피명을 담는 리스트
-        recipeList = mutableListOf<Array<String>>()
+        recipeList.clear()
 
         refs.whereArrayContainsAny("ingredients", strList).get()
             .addOnSuccessListener { documents ->
                 for (document in documents) {
                     // 레시피 검색해서 나온 이름, 재료, 시간 저장
-                    var ing_str: String = document.get("ingredients").toString()
-                    // 재료들을 포함하는 리스트
-                    ing_str = ing_str.substring(1..ing_str.length - 2)
+                    var ing_str: String = ""
+                    (document.get("ingredients") as ArrayList<String>).forEachIndexed { index, element ->
+                        if(index == 0)
+                            ing_str = element
+                        else
+                            ing_str += " / $element"
+                    }
                     recipeList.add(
-                        arrayOf(
-                            document.get("name").toString(),
-                            ing_str,
-                            document.get("time").toString()
-                        )
-                    )
+                        mutableMapOf("name" to document.get("name").toString(),
+                            "ingredients" to ing_str,
+                            "like" to document.get("like").toString(),
+                            "subscribe" to document.get("subscribe").toString()
+                        ))
                 }
                 adapterConnect(recipeList)
             }
@@ -209,13 +212,13 @@ class SearchFragment : Fragment(), MainActivity.onBackPressListener {
     // interface 타입의 변수를 갖고 있는 setItemClickListener 메서드 생성
     // fragment에서 setItemClickListener 메서드를 실행 후 onClick 메서드를 재정의
 
-    private fun adapterConnect(recipeList: MutableList<Array<String>>){
+    private fun adapterConnect(recipeList: ArrayList<MutableMap<String, String>>){
         adapter.submitList(recipeList)
 
         // Fragment
         adapter.setItemClickListener(object: SearchAdapter.OnItemClickListener {
             override fun onClick(view: View, position: Int) {
-                PurchaseConfirmationDialogFragment(recipeList[position][0]).  show(
+                PurchaseConfirmationDialogFragment(recipeList[position]["name"].toString()).  show(
                     childFragmentManager, PurchaseConfirmationDialogFragment.TAG
                 )
             }

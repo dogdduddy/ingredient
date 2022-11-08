@@ -25,6 +25,7 @@ class FoodBookMainFragment : Fragment() {
     private var adapter = SearchAdapter()
     private lateinit var database: FirebaseFirestore
     private var _binding : FragmentFoodbookMainBinding? = null
+    private var recipeList: ArrayList<MutableMap<String, String>> = ArrayList()
     private val binding get()  = _binding!!
     private var imm: InputMethodManager? = null
     private var categoryList = arrayListOf<ArrayList<Any>>()
@@ -78,13 +79,13 @@ class FoodBookMainFragment : Fragment() {
 
     }
 
-    private fun adapterConnect(recipeList: MutableList<Array<String>>) {
+    private fun adapterConnect(recipeList: ArrayList<MutableMap<String, String>> = ArrayList()) {
         adapter.submitList(recipeList)
 
         // Fragment
         adapter.setItemClickListener(object : SearchAdapter.OnItemClickListener {
             override fun onClick(view: View, position: Int) {
-                PurchaseConfirmationDialogFragment(recipeList[position][0].toString()).show(
+                PurchaseConfirmationDialogFragment(recipeList[position]["name"].toString()).show(
                     childFragmentManager, PurchaseConfirmationDialogFragment.TAG
                 )
             }
@@ -96,30 +97,37 @@ class FoodBookMainFragment : Fragment() {
 
     fun query(position:Int) {
         val refs = database.collection("Recipes")
-        var recipeList = mutableListOf<Array<String>>()
+        recipeList.clear()
 
         refs.whereIn("name", categoryList[position][1] as List<Any>)
             .get()
             .addOnSuccessListener { documents ->
                 for (document in documents) {
+                    var ing_str: String = ""
+                    (document.get("ingredients") as ArrayList<String>).forEachIndexed { index, element ->
+                        if(index == 0)
+                            ing_str = element
+                        else
+                            ing_str += " / $element"
+                    }
                     recipeList.add(
-                        arrayOf(
-                            document.get("name").toString(),
-                            document.get("ingredients").toString().drop(1).dropLast(1),
-                            document.get("time").toString()
-                        )
-                    )
+                        mutableMapOf("name" to document.get("name").toString(),
+                            "ingredients" to ing_str,
+                            "like" to document.get("like").toString(),
+                            "subscribe" to document.get("subscribe").toString()
+                        ))
                 }
                 adapterConnect(recipeList)
             }
     }
 
     fun tabsInit(temp : ArrayList<ArrayList<Any>>) {
+        categoryList.clear()
         categoryList.addAll(temp)
+        Log.d("tabs",temp[0].toString())
         temp.forEach {
             tabs.addTab(tabs.newTab().setText(it[0].toString()))
         }
-        query(0)
     }
 
     companion object {

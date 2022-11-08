@@ -1,0 +1,58 @@
+package com.example.ingredient.src.search
+
+import android.content.Context
+import android.media.Image
+import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
+import com.example.ingredient.R
+
+class SearchMainAdapter ()
+    : RecyclerView.Adapter<SearchMainAdapter.ViewHolder>()
+{
+    private var recommendList: MutableList<ArrayList<String>>  = mutableListOf()
+    private var context:Context? = null
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val view =
+            LayoutInflater.from(parent!!.context).inflate(R.layout.item_main_recommend, parent, false)
+        context = view.context
+        return ViewHolder(view)
+    }
+
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        holder.image.apply {
+            setImageResource(R.drawable.curry)
+            clipToOutline = true
+        }
+        holder.title.text = recommendList[position][1]
+        holder.subtitle.text = recommendList[position][2]
+    }
+
+    override fun getItemCount(): Int {
+        return recommendList.size
+    }
+
+    fun submitList(recommendList: MutableList<ArrayList<String>>) {
+        this.recommendList = recommendList
+        notifyDataSetChanged()
+    }
+
+    inner class ViewHolder internal constructor(view: View) : RecyclerView.ViewHolder(view) {
+        internal var image: ImageView
+        internal var title: TextView
+        internal var subtitle: TextView
+        init {
+            var context = context
+        }
+        init {
+            image = view.findViewById(R.id.main_recommend_image)
+            title = view.findViewById(R.id.main_recommend_title)
+            subtitle = view.findViewById(R.id.main_recommend_subtitle)
+
+        }
+    }
+}

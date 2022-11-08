@@ -13,7 +13,7 @@ import com.example.ingredient.R
 class SearchAdapter ()
     : RecyclerView.Adapter<SearchAdapter.ViewHolder>()
     {
-        private val recipeList: MutableList<Array<String>>  = mutableListOf()
+        private val recipeList: ArrayList<MutableMap<String, String>>  = arrayListOf()
         private var context:Context? = null
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
             val view =
@@ -29,14 +29,16 @@ class SearchAdapter ()
                 setImageResource(R.drawable.curry)
                 clipToOutline = true
             }
-            holder!!.title.text = recipe[0]
+            holder.like.text = recipe["like"]
+            holder.subscribe.text = recipe["subscribe"]
+            holder.title.text = recipe["name"]
         }
 
         override fun getItemCount(): Int {
             return recipeList.size
         }
 
-        fun submitList(recipeList: MutableList<Array<String>>) {
+        fun submitList(recipeList: ArrayList<MutableMap<String, String>>) {
             this.recipeList.clear()
             this.recipeList.addAll(recipeList)
             notifyDataSetChanged()
@@ -45,13 +47,16 @@ class SearchAdapter ()
         inner class ViewHolder internal constructor(view: View) : RecyclerView.ViewHolder(view) {
             internal var title: TextView
             internal var food: ImageView
+            internal var like: TextView
+            internal var subscribe: TextView
             init {
                 var context = context
             }
             init {
                 title = view.findViewById(R.id.findTitle)
                 food = view.findViewById(R.id.foodimg)
-
+                like = view.findViewById(R.id.recipe_like)
+                subscribe = view.findViewById(R.id.recipe_subscribe)
             }
         }
         // 마지막 chip 삭제했을 때는 값이 없으므로 쿼리가 불가능 => recyclerview 아이템 직접 삭제

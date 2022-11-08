@@ -55,6 +55,7 @@
                 android:src="@drawable/ic_like"
                 android:layout_marginRight="5dp"/>
             <TextView
+                android:id="@+id/recipe_like"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="14sp"
@@ -74,6 +75,7 @@
                 android:src="@drawable/ic_subscribe"
                 android:layout_marginRight="5dp"/>
             <TextView
+                android:id="@+id/recipe_subscribe"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
