@@ -2,6 +2,7 @@ package com.example.ingredient.src.foodbook
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -16,6 +17,9 @@ import com.example.ingredient.databinding.FragmentMainBinding
 import com.example.ingredient.src.search.SearchAdapter
 import com.google.android.material.tabs.TabLayout
 import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class FoodBookMainFragment : Fragment() {
     private var adapter = SearchAdapter()
@@ -23,12 +27,13 @@ class FoodBookMainFragment : Fragment() {
     private var _binding : FragmentFoodbookMainBinding? = null
     private val binding get()  = _binding!!
     private var imm: InputMethodManager? = null
+    private var categoryList = arrayListOf<ArrayList<Any>>()
+    private lateinit var tabs:TabLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
         database = FirebaseFirestore.getInstance()
-
 
     }
 
@@ -37,7 +42,22 @@ class FoodBookMainFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentFoodbookMainBinding.inflate(layoutInflater, container, false)
+        tabs = binding.foodbookMainTablayout
+        database.collection("FoodCategory").get().addOnSuccessListener { result ->
+            var CategoryDataList = arrayListOf<ArrayList<Any>>()
+            for (document in result) {
+                CategoryDataList.add(arrayListOf(document.data["categoryname"].toString(), document.data["recipes"] as ArrayList<Any>))
+            }
+            tabsInit(CategoryDataList)
+        }
         return binding.root
+    }
+    fun tabsInit(temp : ArrayList<ArrayList<Any>>) {
+        categoryList.addAll(temp)
+        temp.forEach {
+            tabs.addTab(tabs.newTab().setText(it[0].toString()))
+        }
+        query(0)
     }
 
     override fun onStart() {
@@ -48,34 +68,10 @@ class FoodBookMainFragment : Fragment() {
             transaction?.add(R.id.fragment_container, foodBookFragment)
             transaction?.commit()
         }
-        // 원래는 전체
-        query("김치볶음밥")
-
-
-        var tabs:TabLayout = binding.foodbookMainTablayout
-        tabs.addTab(tabs.newTab().setText("전체"))
-        tabs.addTab(tabs.newTab().setText("한식"))
-        tabs.addTab(tabs.newTab().setText("중식"))
-        tabs.addTab(tabs.newTab().setText("양식"))
 
         tabs.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
-                var category = ""
-                var inputData = ""
-                when(tab?.position){
-                    0 -> category = "전체"
-                    1 -> category = "한식"
-                    2 -> category = "중식"
-                    3 -> category = "양식"
-                }
-                // 해당 카테고리의 레시피 리스트를 받을 수 있도록 쿼리문 짜기
-                when(category) {
-                    "전체" -> inputData = "김치볶음밥"
-                    "한식" -> inputData = "김치전"
-                    "중식" -> inputData = "비빔밥"
-                    "양식" -> inputData = "호박전"
-                }
-                query(inputData)
+                query(tab?.position!!)
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab?) {
@@ -86,6 +82,7 @@ class FoodBookMainFragment : Fragment() {
                 //
             }
         })
+
     }
 
     private fun adapterConnect(recipeList: MutableList<Array<String>>) {
@@ -104,11 +101,11 @@ class FoodBookMainFragment : Fragment() {
         binding.FindrecyclerView.adapter = adapter
     }
 
-    fun query(inputData:String) {
+    fun query(position:Int) {
         val refs = database.collection("Recipes")
-        // 검색 통해 나온 레시피명을 담는 리스트
         var recipeList = mutableListOf<Array<String>>()
-        refs.whereArrayContains("fulltext", inputData)
+
+        refs.whereIn("name", categoryList[position][1] as List<Any>)
             .get()
             .addOnSuccessListener { documents ->
                 for (document in documents) {
