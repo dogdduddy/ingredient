@@ -2,7 +2,10 @@ package com.example.ingredient.src.foodbook
 
 import android.content.Context
 import android.content.res.ColorStateList
+import android.graphics.Color
 import android.os.Bundle
+import android.text.Spannable
+import android.text.style.ForegroundColorSpan
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -237,6 +240,8 @@ class FoodBookFragment : Fragment() {
         binding.foodbookNotfoundLayout.visibility = View.VISIBLE
         binding.FindrecyclerView.visibility = View.GONE
         binding.foodbookNotfoundText.text = str + " 레시피를 찾을 수가 없었어요.."
+        var span:Spannable = binding.foodbookNotfoundText.text as Spannable
+        span.setSpan(ForegroundColorSpan(requireActivity().getColor(R.color.orange_300)), 0, str.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
     }
 
     fun hideNotFound() {
