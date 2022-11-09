@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.ingredient.R
 
 class SearchAdapter ()
@@ -25,13 +26,22 @@ class SearchAdapter ()
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
             val recipe = recipeList[position]
             holder.itemView.setOnClickListener { itemCLickListener.onClick(it, position) }
+            /*
             holder.food.apply {
                 setImageResource(R.drawable.curry)
                 clipToOutline = true
             }
+
+             */
             holder.like.text = recipe["like"]
             holder.subscribe.text = recipe["subscribe"]
             holder.title.text = recipe["name"]
+
+            // 이미지 로드
+            holder.food.clipToOutline = true
+            Glide.with(holder.itemView)
+                .load(recipe["icon"])
+                .into(holder.food)
         }
 
         override fun getItemCount(): Int {

@@ -110,7 +110,7 @@ class FoodBookFragment : Fragment() {
                 for (document in documents) {
                     // 레시피 검색해서 나온 이름, 재료, 시간 저장
                     var ing_str: String = ""
-                    (document.get("ingredients") as ArrayList<String>).forEachIndexed { index, element ->
+                    (document.get("ingredient") as ArrayList<String>).forEachIndexed { index, element ->
                         if(index == 0)
                             ing_str = element
                         else
@@ -118,9 +118,10 @@ class FoodBookFragment : Fragment() {
                     }
                     recipeList.add(
                         mutableMapOf("name" to document.get("name").toString(),
-                            "ingredients" to ing_str,
+                            "ingredient" to ing_str,
                             "like" to document.get("like").toString(),
-                            "subscribe" to document.get("subscribe").toString()
+                            "subscribe" to document.get("subscribe").toString(),
+                            "icon" to document.get("icon").toString(),
                         ))
                 }
                 adapterConnect(recipeList)

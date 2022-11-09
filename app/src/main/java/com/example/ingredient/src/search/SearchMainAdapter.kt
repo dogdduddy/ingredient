@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.ingredient.R
 
 class SearchMainAdapter ()
@@ -27,10 +28,11 @@ class SearchMainAdapter ()
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.itemView.setOnClickListener { itemCLickListener.onClick(it, position) }
-        holder.image.apply {
-            setImageResource(R.drawable.curry)
-            clipToOutline = true
-        }
+        holder.image.clipToOutline = true
+        Glide.with(holder.itemView)
+            .load(recommendList[position][1])
+            .into(holder.image)
+
         holder.title.text = recommendList[position][2]
         var span:Spannable = holder.title.text as Spannable
         span.setSpan(ForegroundColorSpan(context!!.getColor(R.color.orange_300)), 0, 4, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)

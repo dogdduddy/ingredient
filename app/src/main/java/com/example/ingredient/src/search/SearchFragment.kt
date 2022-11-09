@@ -354,7 +354,7 @@ class SearchFragment : Fragment(), MainActivity.onBackPressListener {
         // 검색 통해 나온 레시피명을 담는 리스트
         recipeList.clear()
 
-        refs.whereArrayContainsAny("ingredients", strList).get()
+        refs.whereArrayContainsAny("ingredient", strList).get()
             .addOnSuccessListener { documents ->
                 for (document in documents) {
                     // 레시피 검색해서 나온 이름, 재료, 시간 저장
@@ -369,7 +369,8 @@ class SearchFragment : Fragment(), MainActivity.onBackPressListener {
                         mutableMapOf("name" to document.get("name").toString(),
                             "ingredient" to ing_str,
                             "like" to document.get("like").toString(),
-                            "subscribe" to document.get("subscribe").toString()
+                            "subscribe" to document.get("subscribe").toString(),
+                            "icon" to document.get("icon").toString(),
                         ))
                 }
                 adapterConnect(recipeList)
