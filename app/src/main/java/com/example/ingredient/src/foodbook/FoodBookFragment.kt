@@ -1,6 +1,7 @@
 package com.example.ingredient.src.foodbook
 
 import android.content.Context
+import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
@@ -16,7 +17,7 @@ import android.view.inputmethod.InputMethodManager
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.ingredient.R
-import com.example.ingredient.common.PurchaseConfirmationDialogFragment
+import com.example.ingredient.common.RecipeDialogActivity
 import com.example.ingredient.database.ExpirationDateDatabase
 import com.example.ingredient.databinding.FragmentFoodBookBinding
 import com.example.ingredient.src.search.SearchAdapter
@@ -198,11 +199,11 @@ class FoodBookFragment : Fragment() {
         adapter.submitList(recipeList)
 
         // Fragment
-        adapter.setItemClickListener(object : SearchAdapter.OnItemClickListener {
+        adapter.setItemClickListener(object: SearchAdapter.OnItemClickListener {
             override fun onClick(view: View, position: Int) {
-                PurchaseConfirmationDialogFragment(recipeList[position]["name"].toString()).show(
-                    childFragmentManager, PurchaseConfirmationDialogFragment.TAG
-                )
+                val intent = Intent(context, RecipeDialogActivity::class.java)
+                intent.putExtra("name", recipeList[position]["name"].toString())
+                startActivity(intent)
             }
         })
         binding.FindrecyclerView.layoutManager = GridLayoutManager(activity, 2)

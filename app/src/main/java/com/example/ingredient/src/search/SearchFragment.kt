@@ -1,6 +1,9 @@
 package com.example.ingredient.src.search
 
+import android.app.AlertDialog
+import android.app.Dialog
 import android.content.Context
+import android.content.Intent
 import android.content.res.ColorStateList
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -15,7 +18,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.example.ingredient.R
 import com.example.ingredient.activity.MainActivity
 import com.example.ingredient.databinding.FragmentSearchBinding
-import com.example.ingredient.common.PurchaseConfirmationDialogFragment
+import com.example.ingredient.common.RecipeDialogActivity
 import com.google.android.material.chip.Chip
 import com.google.firebase.firestore.FirebaseFirestore
 import android.view.inputmethod.InputMethodManager as InputMethodManager
@@ -129,55 +132,6 @@ class SearchFragment : Fragment(), MainActivity.onBackPressListener {
             }
         }
     }
-    /*
-    // 데이터 이전
-    fun InsertDate() {
-        database.collection("users")
-            .get()
-            .addOnSuccessListener { documents ->
-                for (doc in documents) {
-                    val data = hashMapOf(
-                        "fulltext" to doc.data["fulltext"],
-                        "ingredients" to doc.data["ingredients"],
-                        "name" to doc.data["name"],
-                        "like" to Random().nextInt(60) + 80,
-                        "subscribe" to Random().nextInt(60) + 80,
-                        "icon" to ""
-                    )
-                    database.collection("Recipes").document()
-                        .set(data)
-                        .addOnSuccessListener { Log.d("Test", "DocumentSnapshot successfully written!") }
-                        .addOnFailureListener { e -> Log.w("Test", "Error writing document", e) }
-                }
-            }
-    }
-
-    // fullltext만 Update
-    fun InsertDate() {
-        database.collection("Recipes")
-            .get()
-            .addOnSuccessListener { documents ->
-                for (doc in documents) {
-                    if (!doc.data["name"]!!.equals("김치볶음밥")) {
-                        fun fullText(string: String): ArrayList<String> {
-                            var fulltextList = ArrayList<String>()
-                            val length: Int = string.length
-
-                            for (i in 1..length) {
-                                for (j in 0..length - i) {
-                                    fulltextList.add(string.slice(j until j + i))
-                                }
-                            }
-                            return fulltextList
-                        }
-                        database.collection("Recipes").document(doc.id)
-                            .update("fulltext", fullText(doc.data["name"].toString()))
-                    }
-                }
-            }
-    }
-
-     */
 
 
     fun SearchQuery(database:FirebaseFirestore, strList:MutableList<String>):Unit {
@@ -215,12 +169,30 @@ class SearchFragment : Fragment(), MainActivity.onBackPressListener {
     private fun adapterConnect(recipeList: ArrayList<MutableMap<String, String>>){
         adapter.submitList(recipeList)
 
+        /*
         // Fragment
         adapter.setItemClickListener(object: SearchAdapter.OnItemClickListener {
             override fun onClick(view: View, position: Int) {
                 PurchaseConfirmationDialogFragment(recipeList[position]["name"].toString()).  show(
                     childFragmentManager, PurchaseConfirmationDialogFragment.TAG
                 )
+            }
+        })
+
+        adapter.setItemClickListener(object: SearchAdapter.OnItemClickListener {
+            override fun onClick(view: View, position: Int) {
+                AlertDialog.Builder(requireContext(), R.style.PopupDialog)
+                    .setView(R.layout.activity_recipe_dialog)
+                    .create()
+                    .show()
+            }
+        })
+         */
+        adapter.setItemClickListener(object: SearchAdapter.OnItemClickListener {
+            override fun onClick(view: View, position: Int) {
+                val intent = Intent(context, RecipeDialogActivity::class.java)
+                intent.putExtra("name", recipeList[position]["name"].toString())
+                startActivity(intent)
             }
         })
 

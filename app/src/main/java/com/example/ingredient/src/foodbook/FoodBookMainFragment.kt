@@ -1,6 +1,7 @@
 package com.example.ingredient.src.foodbook
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -11,13 +12,11 @@ import android.view.inputmethod.InputMethodManager
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.ingredient.R
-import com.example.ingredient.common.PurchaseConfirmationDialogFragment
+import com.example.ingredient.common.RecipeDialogActivity
 import com.example.ingredient.databinding.FragmentFoodbookMainBinding
-import com.example.ingredient.databinding.FragmentMainBinding
 import com.example.ingredient.src.search.SearchAdapter
 import com.google.android.material.tabs.TabLayout
 import com.google.firebase.firestore.FirebaseFirestore
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -83,11 +82,11 @@ class FoodBookMainFragment : Fragment() {
         adapter.submitList(recipeList)
 
         // Fragment
-        adapter.setItemClickListener(object : SearchAdapter.OnItemClickListener {
+        adapter.setItemClickListener(object: SearchAdapter.OnItemClickListener {
             override fun onClick(view: View, position: Int) {
-                PurchaseConfirmationDialogFragment(recipeList[position]["name"].toString()).show(
-                    childFragmentManager, PurchaseConfirmationDialogFragment.TAG
-                )
+                val intent = Intent(context, RecipeDialogActivity::class.java)
+                intent.putExtra("name", recipeList[position]["name"].toString())
+                startActivity(intent)
             }
         })
         binding.FindrecyclerView.layoutManager = GridLayoutManager(activity, 2)
