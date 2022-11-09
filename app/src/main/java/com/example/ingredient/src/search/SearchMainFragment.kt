@@ -1,5 +1,6 @@
 package com.example.ingredient.src.search
 
+import android.content.Intent
 import android.graphics.Typeface
 import android.os.Bundle
 import android.text.Spannable
@@ -13,6 +14,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.ingredient.R
+import com.example.ingredient.common.RecipeDialogActivity
 import com.example.ingredient.databinding.FragmentMainBinding
 
 class SearchMainFragment : Fragment() {
@@ -21,6 +23,14 @@ class SearchMainFragment : Fragment() {
     private var adapter1 = SearchMainAdapter()
     private var adapter2 = SearchMainAdapter()
     private var adapter3 = SearchMainAdapter()
+
+    private var temp1 = mutableListOf<ArrayList<String>>(
+        arrayListOf("비빔국수", "", "구수고소 비빔국수", "간장국수로 시~원하게"), arrayListOf("비빔국수","", "새콤달콤 에이드", "간장국수로 시~원하게"), arrayListOf("비빔국수","", "구수고소 미숫가루", "간장국수로 시~원하게"))
+    private var temp2 = mutableListOf<ArrayList<String>>(
+        arrayListOf("간장국수", "", "달콤구수 비빔국수", "간장국수로 시~원하게"), arrayListOf("비빔국수","", "새콤달콤 에이드", "간장국수로 시~원하게"), arrayListOf("비빔국수","", "달콤구수 미숫가루", "간장국수로 시~원하게"))
+    private var temp3 = mutableListOf<ArrayList<String>>(
+        arrayListOf("그런국수", "", "달콤고소 비빔국수", "간장국수로 시~원하게"), arrayListOf("비빔국수","", "새콤달콤 에이드", "간장국수로 시~원하게"), arrayListOf("비빔국수","", "달콤고소 미숫가루", "간장국수로 시~원하게"))
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,12 +76,6 @@ class SearchMainFragment : Fragment() {
     }
 
     fun submitList() {
-        var temp1 = mutableListOf<ArrayList<String>>(
-            arrayListOf("", "구수고소 비빔국수", "간장국수로 시~원하게"), arrayListOf("", "새콤달콤 에이드", "간장국수로 시~원하게"), arrayListOf("", "구수고소 미숫가루", "간장국수로 시~원하게"))
-        var temp2 = mutableListOf<ArrayList<String>>(
-            arrayListOf("", "달콤구수 비빔국수", "간장국수로 시~원하게"), arrayListOf("", "새콤달콤 에이드", "간장국수로 시~원하게"), arrayListOf("", "달콤구수 미숫가루", "간장국수로 시~원하게"))
-        var temp3 = mutableListOf<ArrayList<String>>(
-            arrayListOf("", "달콤고소 비빔국수", "간장국수로 시~원하게"), arrayListOf("", "새콤달콤 에이드", "간장국수로 시~원하게"), arrayListOf("", "달콤고소 미숫가루", "간장국수로 시~원하게"))
         adapter1.submitList(temp1)
         adapter2.submitList(temp2)
         adapter3.submitList(temp3)
@@ -85,6 +89,28 @@ class SearchMainFragment : Fragment() {
             transaction?.add(R.id.fragment_container, searchFragment)
             transaction?.commit()
         }
+        adapter1.setItemClickListener(object: SearchMainAdapter.OnItemClickListener {
+            override fun onClick(view: View, position: Int) {
+                val intent = Intent(context, RecipeDialogActivity::class.java)
+                intent.putExtra("name", temp1[position][0])
+                startActivity(intent)
+            }
+        })
+        adapter2.setItemClickListener(object: SearchMainAdapter.OnItemClickListener {
+            override fun onClick(view: View, position: Int) {
+                val intent = Intent(context, RecipeDialogActivity::class.java)
+                intent.putExtra("name", temp2[position][0])
+                startActivity(intent)
+            }
+        })
+        adapter3.setItemClickListener(object: SearchMainAdapter.OnItemClickListener {
+            override fun onClick(view: View, position: Int) {
+                val intent = Intent(context, RecipeDialogActivity::class.java)
+                intent.putExtra("name", temp3[position][0])
+                startActivity(intent)
+            }
+        })
+
     }
 
     companion object {

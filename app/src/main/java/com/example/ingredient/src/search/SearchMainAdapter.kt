@@ -26,14 +26,15 @@ class SearchMainAdapter ()
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        holder.itemView.setOnClickListener { itemCLickListener.onClick(it, position) }
         holder.image.apply {
             setImageResource(R.drawable.curry)
             clipToOutline = true
         }
-        holder.title.text = recommendList[position][1]
+        holder.title.text = recommendList[position][2]
         var span:Spannable = holder.title.text as Spannable
         span.setSpan(ForegroundColorSpan(context!!.getColor(R.color.orange_300)), 0, 4, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-        holder.subtitle.text = recommendList[position][2]
+        holder.subtitle.text = recommendList[position][3]
     }
 
     override fun getItemCount(): Int {
@@ -59,4 +60,13 @@ class SearchMainAdapter ()
 
         }
     }
+    // Adapter
+    interface OnItemClickListener {
+        fun onClick(view:View, position: Int)
+    }
+
+    fun setItemClickListener(onItemClickListener: OnItemClickListener) {
+        this.itemCLickListener = onItemClickListener
+    }
+    private lateinit var itemCLickListener: OnItemClickListener
 }
