@@ -60,13 +60,13 @@ class SearchMainFragment : Fragment() {
         recyclerView3.adapter = adapter3
         submitList()
 
-        binding.mainRecommendTitle1.text = "집이 곧 카페가 되는 홈쿠킹 레시피"
+        binding.mainRecommendTitle1.text = "집이 곧 카페가 되는 홈베이킹 레시피"
         binding.mainRecommendTitle2.text = "스트레스 다 날려버릴 매운맛 레시피"
         binding.mainRecommendTitle3.text = "추운 겨울을 따뜻하게 보낼 레시피"
         var span1: Spannable = binding.mainRecommendTitle1.text as Spannable
         var span2: Spannable = binding.mainRecommendTitle2.text as Spannable
         var span3: Spannable = binding.mainRecommendTitle3.text as Spannable
-        span1.setSpan(ForegroundColorSpan(requireActivity().getColor(R.color.apricot)), 12, 15, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        span1.setSpan(ForegroundColorSpan(requireActivity().getColor(R.color.apricot)), 12, 16, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
         span1.setSpan(StyleSpan(Typeface.BOLD), 12, 15, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
         span2.setSpan(ForegroundColorSpan(requireActivity().getColor(R.color.red)), 12, 15, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
         span2.setSpan(StyleSpan(Typeface.BOLD), 12, 15, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
