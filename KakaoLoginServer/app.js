@@ -91,11 +91,15 @@ function createFirebaseToken(kakaoAccessToken) {
         }
         let nickname = null;
         let profileImage = null;
+        let email = null;
         if (body.properties) {
             nickname = body.properties.nickname;
             profileImage = body.properties.profile_image;
         }
-        return updateOrCreateUser(userId, body.kaccount_email, nickname,
+        if (body.kakao_account.has_email) {
+            email = body.kakao_account.email;
+        }
+        return updateOrCreateUser(userId, email, nickname,
             profileImage);
     }).then((userRecord) => {
         const userId = userRecord.uid;

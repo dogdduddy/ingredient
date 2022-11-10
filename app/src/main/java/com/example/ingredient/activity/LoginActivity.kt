@@ -85,7 +85,7 @@ class LoginActivity : AppCompatActivity() {
 
         // 자동 로그인
         val currentUser = auth.currentUser
-        updateUI(currentUser)
+        //updateUI(currentUser)
 
         //facebook
         val facebookLoginBtn = findViewById<LoginButton>(R.id.facebookLoginBtn)
@@ -172,7 +172,7 @@ class LoginActivity : AppCompatActivity() {
     public override fun onStart() {
         super.onStart()
         val currentUser = auth.currentUser
-        updateUI(currentUser)
+        //updateUI(currentUser)
     }
 
     fun signOut() {
