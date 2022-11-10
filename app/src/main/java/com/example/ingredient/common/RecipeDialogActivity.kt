@@ -2,19 +2,26 @@ package com.example.ingredient.common
 
 import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.AttributeSet
+import android.util.Log
 import android.view.View
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
 import com.example.ingredient.R
+import com.example.ingredient.activity.MainActivity
+import com.example.ingredient.src.expirationDate.add_ingredient.models.Ingredient
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
 class RecipeDialogActivity : Activity() {
     private var recipeName: String? = null
+    private var ingredientList = arrayListOf<String>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,6 +34,48 @@ class RecipeDialogActivity : Activity() {
 
     override fun onStart() {
         super.onStart()
+        var database = Firebase.firestore
+        var addBasket: Button = findViewById<Button>(R.id.recipe_dialog_pass_basket_btn)
+        addBasket.setOnClickListener {
+            if(ingredientList.isNotEmpty()) {
+                ingredientList.forEach {
+                    database.collection("ingredients")
+                        .whereEqualTo("ingredientname", it)
+                        .get()
+                        .addOnSuccessListener {  documents ->
+                            Log.d("testtest", "docs : ${it}")
+                            Log.d("testtest", "docs : ${documents.documents}")
+                            if(!documents.documents.isNullOrEmpty()) {
+                                var data = documents.documents[0].data
+                                var hash = hashMapOf(
+                                    "ingredienticon" to data!!.get("ingredienticon").toString(),
+                                    "ingredientidx" to data!!.get("ingredientidx").toString(),
+                                    "ingredientname" to data!!.get("ingredientname").toString(),
+                                    "ingredientcategory" to data!!.get("ingredientcategory")
+                                        .toString(),
+                                    "groupName" to recipeName,
+                                    "ingredientquantity" to 1
+                                )
+                                database.collection("ListData")
+                                    .document(FirebaseAuth.getInstance().uid!!)
+                                    .collection("Basket")
+                                    .document()
+                                    .set(hash)
+                            }
+
+                        }
+                }
+                database.collection("ListData")
+                    .document(FirebaseAuth.getInstance().uid!!)
+                    .collection("BasketList")
+                    .document()
+                    .set(hashMapOf("groupName" to recipeName))
+                intent = Intent(this, MainActivity::class.java)
+                intent.putExtra("fragment", "basket")
+                startActivity(intent)
+            }
+        }
+
 
         recipeName = intent.extras!!.get("name").toString()
         initRecipe(recipeName!!)
@@ -62,7 +111,9 @@ class RecipeDialogActivity : Activity() {
                 level.text = recipe["level"].toString()
                 count.text = (recipe["ingredients"] as ArrayList<String>).size.toString() + "가지"
                 var str = ""
-                (recipe["ingredients"] as ArrayList<String>) .forEachIndexed { index, s ->
+                ingredientList.clear()
+                ingredientList = recipe["ingredients"] as ArrayList<String>
+                ingredientList.forEachIndexed { index, s ->
                     if(index == 0) {
                         str = s
                     }
