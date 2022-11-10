@@ -22,7 +22,6 @@ class BasketViewPagerAdapter(fa: Fragment):FragmentStateAdapter(fa) {
 
     fun submitList(basketList: ArrayList<BasketIngredient>) {
         this.basketList = basketList
-        Log.d("categoryTest", "BasketViewPagerAdapter : ${basketList[0].ingredientName}  /  ${basketList[0].categoryName}")
         fragments = arrayListOf(GroupIngredientsFragment(), TotalIngredientsFragment())
         fragments.forEach { fragment ->
             when(fragment) {

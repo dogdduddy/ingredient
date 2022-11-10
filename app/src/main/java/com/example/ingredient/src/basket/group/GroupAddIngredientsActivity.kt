@@ -36,6 +36,9 @@ class GroupAddIngredientsActivity : AppCompatActivity() {
 
         adapter!!.submitList(groupList)
 
+        binding.addgroupFinishBtn.setOnClickListener {
+            finish()
+        }
         // 재료 추가 (선택 그룹 넘기기)
         binding.addgroupRadioBtn.setOnClickListener {
             var intent = Intent(context, AddGroupIngredientsActivity::class.java)

@@ -26,13 +26,6 @@ class SearchAdapter ()
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
             val recipe = recipeList[position]
             holder.itemView.setOnClickListener { itemCLickListener.onClick(it, position) }
-            /*
-            holder.food.apply {
-                setImageResource(R.drawable.curry)
-                clipToOutline = true
-            }
-
-             */
             holder.like.text = recipe["like"]
             holder.subscribe.text = recipe["subscribe"]
             holder.title.text = recipe["name"]

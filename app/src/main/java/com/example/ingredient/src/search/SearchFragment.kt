@@ -388,6 +388,7 @@ class SearchFragment : Fragment(), MainActivity.onBackPressListener {
             override fun onClick(view: View, position: Int) {
                 val intent = Intent(context, RecipeDialogActivity::class.java)
                 intent.putExtra("name", recipeList[position]["name"].toString())
+                (activity as MainActivity).addRecentRecipe(recipeList[position]["name"].toString(), recipeList[position]["icon"].toString())
                 startActivity(intent)
             }
         })

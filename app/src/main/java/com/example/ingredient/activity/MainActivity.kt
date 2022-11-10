@@ -1,23 +1,40 @@
 package com.example.ingredient.activity
 
+import android.content.Intent
 import android.graphics.Rect
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.util.Log
 import android.view.MenuItem
 import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.Button
+import android.widget.ImageView
+import android.widget.TextView
+import android.widget.Toast
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.GravityCompat
+import androidx.core.view.get
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.ingredient.R
 import com.example.ingredient.src.expirationDate.ExpirationDateFragment
 import com.example.ingredient.src.basket.BasketFragment
 import com.example.ingredient.databinding.ActivityMainBinding
 import com.example.ingredient.src.foodbook.FoodBookMainFragment
 import com.example.ingredient.src.search.SearchMainFragment
+import com.facebook.login.LoginManager
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.kakao.usermgmt.UserManagement
+import com.kakao.usermgmt.callback.LogoutResponseCallback
 
 class MainActivity : AppCompatActivity() {
     private lateinit var mainFragment: SearchMainFragment
@@ -28,6 +45,8 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var binding: ActivityMainBinding
+    private var nav_adapter = RecentRecipeAdapter()
+    private var recent_recipe_list = ArrayList<MutableMap<String, String>>()
     private var transection : FragmentManager = supportFragmentManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -73,7 +92,50 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+        var navi_header = binding.navigationView.getHeaderView(0)
+        navi_header.findViewById<ImageView>(R.id.nav_setting).setOnClickListener {
+            Toast.makeText(this,"설정", Toast.LENGTH_SHORT).show()
+        }
+        navi_header.findViewById<Button>(R.id.nav_logout).setOnClickListener { logout() }
+        if(!intent.extras?.get("user").toString().isNullOrBlank()) {
+            navi_header.findViewById<TextView>(R.id.nav_profile_nickname).text = intent.extras?.get("user").toString()
+        }
+        if(!intent.extras?.get("email").toString().isNullOrBlank()) {
+            navi_header.findViewById<TextView>(R.id.nav_profile_email).text = intent.extras?.get("email").toString()
+        }
+
+        // 이미지 로드
+        if(!intent.extras?.get("photo").toString().isNullOrBlank()) {
+            Glide.with(this).load(intent.extras?.get("photo")).into(navi_header.findViewById<ImageView>(R.id.nav_profile_image)).onLoadFailed(ResourcesCompat.getDrawable(resources,R.drawable.profile_defalut_1, null))
+        }else {
+            navi_header.findViewById<ImageView>(R.id.nav_profile_image).setImageResource(R.drawable.profile_defalut_1)
+        }
+
+        // 최근 본 레시피
+        var recent_recyclerview = navi_header.findViewById<RecyclerView>(R.id.nav_recent_recipe)
+        recent_recyclerview.layoutManager = GridLayoutManager(this, 3)
+        recent_recyclerview.adapter = nav_adapter
     }
+
+    fun addRecentRecipe(name:String, icon:String) {
+        Log.d("navSubmitList", recent_recipe_list.toString())
+        recent_recipe_list.map { it["name"] }.forEach {
+            if(it == name) {
+                return
+            }
+        }
+        recent_recipe_list.add(0, mutableMapOf("name" to name, "image" to icon))
+        if(recent_recipe_list.size > 6) {
+            recent_recipe_list.removeLast()
+        }
+        navSubmitList()
+    }
+
+    fun navSubmitList() {
+        Log.d("navSubmitList", recent_recipe_list.toString())
+        nav_adapter.submitList(recent_recipe_list)
+    }
+
     fun setMainFragment(){
         binding.toolbarTitle.visibility = View.GONE
         binding.mainAchaLogo.visibility = View.VISIBLE
@@ -175,5 +237,16 @@ class MainActivity : AppCompatActivity() {
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+    fun logout() {
+        LoginManager.getInstance().logOut()
+        UserManagement.getInstance().requestLogout(object : LogoutResponseCallback() {
+            override fun onCompleteLogout() {
+                FirebaseAuth.getInstance().signOut()
+            }
+        })
+        val intent = Intent(this, LoginActivity::class.java)
+        startActivity(intent)
+        finish()
     }
 }

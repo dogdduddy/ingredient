@@ -22,9 +22,7 @@
             android:layout_margin="4px"
             android:scaleType="centerCrop"
             android:background="@drawable/foodimage"
-            android:clipToOutline="true"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"/>
+            android:clipToOutline="true"/>
     </LinearLayout>
 
     <TextView

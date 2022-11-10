@@ -127,10 +127,12 @@
                 android:layout_height="wrap_content" />
             <TextView
                 android:id="@+id/recipe_dialog_ing_box_ingredients"
-                android:textSize="18sp"
+                android:textSize="16sp"
                 android:textColor="#000"
                 android:gravity="center"
                 android:textStyle="bold"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
                 android:layout_marginTop="10dp"
                 android:text="아보카도 / 식빵 / 버터 / 계란"
                 android:layout_marginBottom="3dp"

@@ -15,6 +15,6 @@
         android:title="공지사항" />
     <item
         android:id="@+id/item_service_center"
-        android:title="고객센터" />
+        android:title="로그아웃" />
 
 </menu>

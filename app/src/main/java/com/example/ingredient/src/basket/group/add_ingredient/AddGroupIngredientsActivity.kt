@@ -200,7 +200,7 @@ class AddGroupIngredientsActivity : AppCompatActivity() {
         // 3번
         fun categoryMerge(document:QueryDocumentSnapshot, doc:QuerySnapshot) {
             var ingredientList = mutableListOf<Ingredient>()
-            doc.forEach {
+            doc.reversed().forEach {
                 ingredientList.add(
                     Ingredient(
                         it.get("ingredienticon").toString(),
