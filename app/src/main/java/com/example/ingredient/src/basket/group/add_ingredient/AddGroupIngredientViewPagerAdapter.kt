@@ -27,7 +27,7 @@ class AddGroupIngredientViewPagerAdapter (fa: FragmentActivity, val view: AddGro
 
     fun submitList(ingredients: ArrayList<CategoryIngrediets>) {
         this.ingredients = ingredients
-        Log.d("adapter", "${this.ingredients}")
+        Log.d("adapterT", "${this.ingredients}")
         notifyDataSetChanged()
     }
 }

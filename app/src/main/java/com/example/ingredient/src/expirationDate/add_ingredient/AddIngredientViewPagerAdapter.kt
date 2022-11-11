@@ -25,7 +25,7 @@ FragmentStateAdapter(fa){
 
     fun submitList(ingredients: ArrayList<CategoryIngrediets>) {
         this.ingredients = ingredients
-        Log.d("adapter", "${this.ingredients}")
+        Log.d("adapterTT", "${this.ingredients}")
         notifyDataSetChanged()
     }
 }

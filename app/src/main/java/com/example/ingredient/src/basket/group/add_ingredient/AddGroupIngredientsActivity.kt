@@ -198,41 +198,48 @@ class AddGroupIngredientsActivity : AppCompatActivity() {
         var categoryList = ArrayList<CategoryIngrediets>()
 
         // 3번
-        fun categoryMerge(document:QueryDocumentSnapshot, doc:QuerySnapshot) {
-            var ingredientList = mutableListOf<Ingredient>()
-            doc.reversed().forEach {
-                ingredientList.add(
-                    Ingredient(
-                        it.get("ingredienticon").toString(),
-                        it.get("ingredientidx").toString().toInt(),
-                        it.get("ingredientname").toString(),
-                        it.get("ingredientcategory").toString()
-                    )
-                )
-            }
+        fun categoryMerge(document:QueryDocumentSnapshot, ingredientList:MutableList<Ingredient>) {
             categoryList.add(CategoryIngrediets(
                 document.get("categoryid").toString().toInt(),
                 document.get("categoryname").toString(),
                 ingredientList as List<Ingredient>
             ))
-            if(categoryList.size == 2) {
-                ViewPagerInit(categoryList)
-            }
+            ViewPagerInit(categoryList)
         }
         // 2번
         fun ingredientQuery(document:QueryDocumentSnapshot, list:List<String>) {
-            database.collection("ingredients")
-                .whereIn("ingredientname", list)
-                .get()
-                .addOnSuccessListener {
-                    categoryMerge(document, it)
+            var ingredientList = mutableListOf<Ingredient>()
+            for (i in 0 until list.size step 10) {
+                var temp = listOf<String>()
+                if(i/10 == list.size/10) {
+                    temp = list.subList(i,list.size)
+                }else {
+                    temp = list.subList(i,i+10)
                 }
+                database.collection("ingredients")
+                    .whereIn("ingredientname", temp)
+                    .get()
+                    .addOnSuccessListener { doc ->
+                        doc.forEach {
+                            ingredientList.add(
+                                Ingredient(
+                                    it.get("ingredienticon").toString(),
+                                    it.get("ingredientidx").toString().toInt(),
+                                    it.get("ingredientname").toString(),
+                                    it.get("ingredientcategory").toString()
+                                )
+                            )
+                        }
+                    }
+            }
+            categoryMerge(document, ingredientList)
         }
 
         // Category Collection 쿼리
         refs.get()
             .addOnSuccessListener { documents ->
-                for (document in documents) {
+                var sortedDocs = documents.sortedBy { it.get("categoryid").toString().toInt() }
+                for (document in sortedDocs) {
                     ingredientQuery(document,(document.get("ingredientlist") as List<String>))
                 }
             }

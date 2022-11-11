@@ -78,18 +78,20 @@ class AddIngredientsActivity : AppCompatActivity() {
 
         // 재료 리스트를 적용 및 카테고리만 추출
         ingredients.clear()
+        if(response.size == 8) {
+            Log.d("responset", "t ${response.toString()}")
+            response.forEach {
+                ingredients.add(it)
+                tablayerName.add(it.ingredientCategoryName)
+            }
 
-        response.forEach {
-            ingredients.add(it)
-            tablayerName.add(it.ingredientCategoryName)
+            // 카테고리 적용
+            TabLayoutMediator(binding.tabLayout, viewPager) { tab, position ->
+                tab.text = tablayerName[position]
+            }.attach()
+
+            ingredientViewPagerAdapter.submitList(ingredients)
         }
-
-        // 카테고리 적용
-        TabLayoutMediator(binding.tabLayout, viewPager) { tab, position ->
-            tab.text = tablayerName[position]
-        }.attach()
-
-        ingredientViewPagerAdapter.submitList(ingredients)
     }
 
     fun addingredientClick(ingredient:Ingredient) {
@@ -158,10 +160,10 @@ class AddIngredientsActivity : AppCompatActivity() {
         // 2번
         fun ingredientQuery(document:QueryDocumentSnapshot, list:List<String>) {
             var ingredientList = mutableListOf<Ingredient>()
-            for (i in 0 until list.size-1 step 10) {
+            for (i in 0 until list.size step 10) {
                 var temp = listOf<String>()
                 if(i/10 == list.size/10) {
-                    temp = list.subList(i,list.size-1)
+                    temp = list.subList(i,list.size)
                 }else {
                     temp = list.subList(i,i+10)
                 }
@@ -196,7 +198,8 @@ class AddIngredientsActivity : AppCompatActivity() {
         // Category Collection 쿼리
         refs.get()
             .addOnSuccessListener { documents ->
-                for (document in documents) {
+                var sortedDocs = documents.sortedBy { it.get("categoryid").toString().toInt() }
+                for (document in sortedDocs) {
                     ingredientQuery(document,(document.get("ingredientlist") as List<String>))
                 }
             }
