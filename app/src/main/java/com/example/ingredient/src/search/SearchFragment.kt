@@ -134,6 +134,7 @@ class SearchFragment : Fragment(), MainActivity.onBackPressListener {
         }
     }
 /*
+
     // 데이터 추가
     fun insertDate() {
         database.collection("Recipes")

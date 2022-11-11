@@ -125,6 +125,7 @@ class AddIngredientsActivity : AppCompatActivity() {
         var categoryList = ArrayList<CategoryIngrediets>()
 
         // 3번
+        /*
         fun categoryMerge(document:QueryDocumentSnapshot, doc:QuerySnapshot) {
             var ingredientList = mutableListOf<Ingredient>()
             doc.forEach {
@@ -142,18 +143,54 @@ class AddIngredientsActivity : AppCompatActivity() {
                 document.get("categoryname").toString(),
                 ingredientList as List<Ingredient>
             ))
-            if(categoryList.size == 2) {
-                ViewPagerInit(categoryList)
-            }
+            ViewPagerInit(categoryList)
+        }
+
+         */
+        fun categoryMerge(document:QueryDocumentSnapshot, ingredientList:MutableList<Ingredient>) {
+            categoryList.add(CategoryIngrediets(
+                document.get("categoryid").toString().toInt(),
+                document.get("categoryname").toString(),
+                ingredientList as List<Ingredient>
+            ))
+            ViewPagerInit(categoryList)
         }
         // 2번
         fun ingredientQuery(document:QueryDocumentSnapshot, list:List<String>) {
+            var ingredientList = mutableListOf<Ingredient>()
+            for (i in 0 until list.size-1 step 10) {
+                var temp = listOf<String>()
+                if(i/10 == list.size/10) {
+                    temp = list.subList(i,list.size-1)
+                }else {
+                    temp = list.subList(i,i+10)
+                }
+                database.collection("ingredients")
+                    .whereIn("ingredientname", temp)
+                    .get()
+                    .addOnSuccessListener { doc ->
+                        doc.forEach {
+                            ingredientList.add(
+                                Ingredient(
+                                    it.get("ingredienticon").toString(),
+                                    it.get("ingredientidx").toString().toInt(),
+                                    it.get("ingredientname").toString(),
+                                    it.get("ingredientcategory").toString()
+                                )
+                            )
+                        }
+                    }
+            }
+            categoryMerge(document, ingredientList)
+            /*
             database.collection("ingredients")
                 .whereIn("ingredientname", list)
                 .get()
                 .addOnSuccessListener {
                     categoryMerge(document, it)
                 }
+
+             */
         }
 
         // Category Collection 쿼리
