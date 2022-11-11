@@ -156,7 +156,8 @@ class FoodBookFragment : Fragment() {
                             mutableMapOf("name" to document.get("name").toString(),
                                 "ingredient" to ing_str,
                                 "like" to document.get("like").toString(),
-                                "subscribe" to document.get("subscribe").toString()
+                                "subscribe" to document.get("subscribe").toString(),
+                                "icon" to document.get("icon").toString(),
                             ))
                     }
                     if(!chipClick) {
@@ -190,7 +191,8 @@ class FoodBookFragment : Fragment() {
                         mutableMapOf("name" to document.get("name").toString(),
                             "ingredient" to ing_str,
                             "like" to document.get("like").toString(),
-                            "subscribe" to document.get("subscribe").toString()
+                            "subscribe" to document.get("subscribe").toString(),
+                            "icon" to document.get("icon").toString(),
                         ))
                 }
                 adapterConnect(recipeList)
