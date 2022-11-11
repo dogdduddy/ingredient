@@ -99,9 +99,16 @@ class MainActivity : AppCompatActivity() {
         navi_header.findViewById<Button>(R.id.nav_logout).setOnClickListener { logout() }
         if(!intent.extras?.get("user").toString().isNullOrBlank()) {
             navi_header.findViewById<TextView>(R.id.nav_profile_nickname).text = intent.extras?.get("user").toString()
+        } else {
+            navi_header.findViewById<TextView>(R.id.nav_profile_nickname).text = "귀여운 텀보"
         }
-        if(!intent.extras?.get("email").toString().isNullOrBlank()) {
+
+        Log.d("testtest", "onCreate: ${intent.extras?.get("email").toString()}")
+        Log.d("testtest", "onCreate: ${intent.extras?.get("email").toString().isNullOrBlank()}")
+        if(intent.extras?.get("email").toString() != "null") {
             navi_header.findViewById<TextView>(R.id.nav_profile_email).text = intent.extras?.get("email").toString()
+        } else {
+            navi_header.findViewById<TextView>(R.id.nav_profile_email).text = "xld333@naver.com"
         }
 
         // 이미지 로드
