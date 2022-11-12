@@ -28,13 +28,18 @@ import com.example.ingredient.R
 import com.example.ingredient.src.expirationDate.ExpirationDateFragment
 import com.example.ingredient.src.basket.BasketFragment
 import com.example.ingredient.databinding.ActivityMainBinding
+import com.example.ingredient.src.expirationDate.add_ingredient.models.CategoryIngrediets
 import com.example.ingredient.src.foodbook.FoodBookMainFragment
 import com.example.ingredient.src.search.SearchMainFragment
 import com.facebook.login.LoginManager
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
+import com.google.firebase.firestore.QuerySnapshot
 import com.kakao.usermgmt.UserManagement
 import com.kakao.usermgmt.callback.LogoutResponseCallback
+import kotlinx.coroutines.*
+import kotlinx.coroutines.tasks.await
 
 class MainActivity : AppCompatActivity() {
     private lateinit var mainFragment: SearchMainFragment
@@ -103,8 +108,6 @@ class MainActivity : AppCompatActivity() {
             navi_header.findViewById<TextView>(R.id.nav_profile_nickname).text = "귀여운 텀보"
         }
 
-        Log.d("testtest", "onCreate: ${intent.extras?.get("email").toString()}")
-        Log.d("testtest", "onCreate: ${intent.extras?.get("email").toString().isNullOrBlank()}")
         if(intent.extras?.get("email").toString() != "null") {
             navi_header.findViewById<TextView>(R.id.nav_profile_email).text = intent.extras?.get("email").toString()
         } else {
@@ -256,4 +259,6 @@ class MainActivity : AppCompatActivity() {
         startActivity(intent)
         finish()
     }
+
+
 }

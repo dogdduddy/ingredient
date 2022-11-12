@@ -31,11 +31,16 @@ import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.*
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.kakao.auth.AuthType
 import com.kakao.auth.Session
 import com.kakao.util.helper.Utility
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 import org.json.JSONObject
 import java.util.*
 
@@ -57,6 +62,7 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         auth = Firebase.auth
+
 
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.my_web_client_id))
@@ -91,7 +97,7 @@ class LoginActivity : AppCompatActivity() {
 
         // 자동 로그인
         val currentUser = auth.currentUser
-        updateUI(currentUser)
+        //updateUI(currentUser)
 
         //facebook
         val facebookLoginBtn = findViewById<Button>(R.id.facebookLoginBtn)
@@ -174,7 +180,7 @@ class LoginActivity : AppCompatActivity() {
     public override fun onStart() {
         super.onStart()
         val currentUser = auth.currentUser
-        updateUI(currentUser)
+        //updateUI(currentUser)
     }
 
     // 자동 로그인

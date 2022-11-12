@@ -3,6 +3,7 @@ package com.example.ingredient.src.expirationDate.add_ingredient.ingredientstate
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ingredient.activity.MainActivity
@@ -35,7 +36,7 @@ class IngredientStateActivity : AppCompatActivity() {
 
         binding.statePickingSaveBtn.setOnClickListener {
             var userid = FirebaseAuth.getInstance().uid!!
-            if(!ExpiryList.contains(null)) {
+            if(!ExpiryList.isNullOrEmpty()) {
                 for(i in 0 until ExpiryList.size) {
                     var hashData = hashMapOf(
                         "ingredienticon" to ExpiryList[i]!!.ingredient.ingredientIcon,
@@ -55,7 +56,6 @@ class IngredientStateActivity : AppCompatActivity() {
                         .set(hashData)
                 }
                 val intent = Intent(this, MainActivity::class.java)
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                 intent.putExtra("fragment", "expiry")
                 startActivity(intent)
             }

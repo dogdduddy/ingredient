@@ -24,6 +24,10 @@ import com.example.ingredient.databinding.FragmentFoodBookBinding
 import com.example.ingredient.src.search.SearchAdapter
 import com.google.android.material.chip.Chip
 import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 
 class FoodBookFragment : Fragment() {
     private var adapter = SearchAdapter()
