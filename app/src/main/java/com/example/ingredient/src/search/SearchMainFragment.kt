@@ -31,7 +31,7 @@ class SearchMainFragment : Fragment() {
     private var adapter2 = SearchMainAdapter()
     private var adapter3 = SearchMainAdapter()
     private var temp1 = mutableListOf<ArrayList<String>>(
-        arrayListOf("매운어묵꼬치", "https://firebasestorage.googleapis.com/v0/b/ingredient-7f334.appspot.com/o/%E1%84%86%E1%85%A2%E1%84%8B%E1%85%AE%E1%86%AB%E1%84%8B%E1%85%A5%E1%84%86%E1%85%AE%E1%86%A8%E1%84%81%E1%85%A9%E1%84%8E%E1%85%B5.jpeg?alt=media&token=8165f0bc-8c5b-468d-99d7-5c33218946f0", "매콤얼큰 어묵꼬치", "뜨끈한 국물을 시원하게"), arrayListOf("쭈꾸미볶음","https://firebasestorage.googleapis.com/v0/b/ingredient-7f334.appspot.com/o/%E1%84%8D%E1%85%AE%E1%84%81%E1%85%AE%E1%84%86%E1%85%B5%E1%84%87%E1%85%A9%E1%86%A9%E1%84%8B%E1%85%B3%E1%86%B7.jpeg?alt=media&token=9a68521b-6884-40fc-9736-2a800ed68567", "달콤화끈 쭈꾸미볶음", "매콤한 바다향을 느끼며"), arrayListOf("불닭팽이","https://firebasestorage.googleapis.com/v0/b/ingredient-7f334.appspot.com/o/%E1%84%87%E1%85%AE%E1%86%AF%E1%84%83%E1%85%A1%E1%86%B0%E1%84%91%E1%85%A2%E1%86%BC%E1%84%8B%E1%85%B5.jpeg?alt=media&token=913b4e55-fdcb-4c85-9726-0c083a2340a1", "인생버섯 불닭팽이", "아는 맛을 식감좋게"))
+        arrayListOf("김치볶음밥", "https://firebasestorage.googleapis.com/v0/b/ingredient-7f334.appspot.com/o/%E1%84%80%E1%85%B5%E1%86%B7%E1%84%8E%E1%85%B5%E1%84%87%E1%85%A9%E1%86%A9%E1%84%8B%E1%85%B3%E1%86%B7%E1%84%87%E1%85%A1%E1%86%B8.jpeg?alt=media&token=ae698823-8684-4a25-8678-17f7d7d43fc0", "엄마생각 김치볶음밥", "엄마가 해주던 그"), arrayListOf("쭈꾸미볶음","https://firebasestorage.googleapis.com/v0/b/ingredient-7f334.appspot.com/o/%E1%84%8D%E1%85%AE%E1%84%81%E1%85%AE%E1%84%86%E1%85%B5%E1%84%87%E1%85%A9%E1%86%A9%E1%84%8B%E1%85%B3%E1%86%B7.jpeg?alt=media&token=9a68521b-6884-40fc-9736-2a800ed68567", "달콤화끈 쭈꾸미볶음", "매콤한 바다향을 느끼며"), arrayListOf("호박전","https://firebasestorage.googleapis.com/v0/b/ingredient-7f334.appspot.com/o/%E1%84%92%E1%85%A9%E1%84%87%E1%85%A1%E1%86%A8%E1%84%8C%E1%85%A5%E1%86%AB.jpeg?alt=media&token=12c41da9-6c5d-43aa-b48d-c2cdde29be67", "명절사랑 호박전", "명절이 그리워 지는"))
     private var temp2 = mutableListOf<ArrayList<String>>(
         arrayListOf("스콘", "https://firebasestorage.googleapis.com/v0/b/ingredient-7f334.appspot.com/o/%E1%84%89%E1%85%B3%E1%84%8F%E1%85%A9%E1%86%AB.jpeg?alt=media&token=383d4f57-f75c-466e-811b-f92ea2af101e", "고소담백 스콘", "커피와 함께 고소하게"), arrayListOf("마들렌","https://firebasestorage.googleapis.com/v0/b/ingredient-7f334.appspot.com/o/%E1%84%86%E1%85%A1%E1%84%83%E1%85%B3%E1%86%AF%E1%84%85%E1%85%A6%E1%86%AB.jpeg?alt=media&token=423a7633-7378-4eee-b607-79a3e58f9e36", "부드러운 마들렌", "레몬향과 부드러운 식감"), arrayListOf("땅콩버터쿠키","https://firebasestorage.googleapis.com/v0/b/ingredient-7f334.appspot.com/o/%E1%84%84%E1%85%A1%E1%86%BC%E1%84%8F%E1%85%A9%E1%86%BC%E1%84%87%E1%85%A5%E1%84%90%E1%85%A5%E1%84%8F%E1%85%AE%E1%84%8F%E1%85%B5.jpeg?alt=media&token=c5c91c4e-6214-4566-8321-dbe5d438dbca", "땅콩버터 쿠키", "향긋한 버터향의 쿠키"))
     private var temp3 = mutableListOf<ArrayList<String>>(
@@ -92,7 +92,7 @@ class SearchMainFragment : Fragment() {
     override fun onStart() {
         super.onStart()
         CoroutineScope(Dispatchers.Main).launch {
-            async {  recommendInit() }.join()
+            temp1 = async {  recommendInit() }.await()
             submitList()
         }
 
@@ -129,8 +129,9 @@ class SearchMainFragment : Fragment() {
         })
 
     }
-    suspend fun recommendInit() {
+    suspend fun recommendInit():MutableList<ArrayList<String>> {
         // recommend List
+        var middle = mutableListOf<ArrayList<String>>()
         var database = FirebaseFirestore.getInstance()
         CoroutineScope(Dispatchers.IO).async {
             var result = arrayListOf<ArrayList<Int>>()
@@ -143,21 +144,17 @@ class SearchMainFragment : Fragment() {
                 .collection("Refrigerator")
                 .get().await().toMutableList().map{it.data["ingredientname"]}
 
-            Log.d("sortedResult", "responseM : $responseM")
             responseRMap.forEachIndexed { index, doc ->
                 var temp = (doc as List<String>) + responseM
                 result.add(arrayListOf(index, temp.groupBy { it }.filter { it.value.size > 1 }.flatMap { it.value }.distinct().size))
-                Log.d("sortedResult", "temp $temp")
-                Log.d("sortedResult", "result : ${result[index].toString()}")
             }
             var sortedResult = result.sortedBy { it[1] }.reversed()
-            Log.d("sortedResult", sortedResult.toString())
-
-            temp1 = mutableListOf<ArrayList<String>>(
+            middle = mutableListOf<ArrayList<String>>(
                 arrayListOf(responseR[sortedResult[0][0]].get("name").toString(), responseR[sortedResult[0][0]].get("icon").toString(),responseR[sortedResult[0][0]].get("title").toString(), responseR[sortedResult[0][0]].get("description").toString()),
                 arrayListOf(responseR[sortedResult[1][0]].get("name").toString(), responseR[sortedResult[1][0]].get("icon").toString(),responseR[sortedResult[1][0]].get("title").toString(), responseR[sortedResult[0][0]].get("description").toString()),
                 arrayListOf(responseR[sortedResult[2][0]].get("name").toString(), responseR[sortedResult[2][0]].get("icon").toString(),responseR[sortedResult[2][0]].get("title").toString(), responseR[sortedResult[0][0]].get("description").toString()))
-        }
+        }.await()
+        return middle
     }
 
     companion object {

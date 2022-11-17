@@ -36,7 +36,10 @@ class IngredientStateActivity : AppCompatActivity() {
 
         binding.statePickingSaveBtn.setOnClickListener {
             var userid = FirebaseAuth.getInstance().uid!!
+            Log.d("ExpiryList", "1 : ${ExpiryList[0]}")
+            Log.d("ExpiryList", "1 : ${ExpiryList[ExpiryList.size-1]}")
             if(!ExpiryList.isNullOrEmpty()) {
+                Log.d("ExpiryList", ExpiryList.toString())
                 for(i in 0 until ExpiryList.size) {
                     var hashData = hashMapOf(
                         "ingredienticon" to ExpiryList[i]!!.ingredient.ingredientIcon,

@@ -83,18 +83,10 @@ class MainActivity : AppCompatActivity() {
         binding.menuBottom.setOnItemSelectedListener { id ->
             when (id) {
                 // Navigation : 프래그먼트 객체를 변수에 저장하고, 필요시 호출 => State 유지
-                R.id.search -> {
-                    setMainFragment()
-                }
-                R.id.expiration_date -> {
-                    setExpirationDateFragment()
-                }
-                R.id.basket -> {
-                    setBasketFragment()
-                }
-                R.id.food_book -> {
-                    setFoodBookFragment()
-                }
+                R.id.search -> setMainFragment()
+                R.id.expiration_date -> setExpirationDateFragment()
+                R.id.basket -> setBasketFragment()
+                R.id.food_book -> setFoodBookFragment()
             }
         }
         var navi_header = binding.navigationView.getHeaderView(0)
@@ -111,7 +103,7 @@ class MainActivity : AppCompatActivity() {
         if(intent.extras?.get("email").toString() != "null") {
             navi_header.findViewById<TextView>(R.id.nav_profile_email).text = intent.extras?.get("email").toString()
         } else {
-            navi_header.findViewById<TextView>(R.id.nav_profile_email).text = "xld333@naver.com"
+            navi_header.findViewById<TextView>(R.id.nav_profile_email).text = "dogdduddy@gmail.com"
         }
 
         // 이미지 로드

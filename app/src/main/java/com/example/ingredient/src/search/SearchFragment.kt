@@ -51,7 +51,7 @@ class SearchFragment : Fragment(), MainActivity.onBackPressListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Toast.makeText(context, "onViewCreated : "+recipeList,Toast.LENGTH_LONG).show()
+        //Toast.makeText(context, "onViewCreated : "+recipeList,Toast.LENGTH_LONG).show()
         adapterConnect(recipeList)
     }
 

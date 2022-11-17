@@ -1,12 +1,8 @@
 package com.example.ingredient.src.expirationDate.add_ingredient
 
-import android.app.AlertDialog
-import android.app.Dialog
-import android.content.DialogInterface
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Parcel
 import android.util.Log
 import android.view.inputmethod.EditorInfo
 import androidx.viewpager2.widget.ViewPager2
@@ -17,6 +13,10 @@ import com.example.ingredient.src.expirationDate.add_ingredient.models.Ingredien
 import com.google.android.material.chip.Chip
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.firestore.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 
 class AddIngredientsActivity : AppCompatActivity() {
     private lateinit var binding:ActivityAddingredientsBinding
@@ -25,6 +25,7 @@ class AddIngredientsActivity : AppCompatActivity() {
     private lateinit var ingredientViewPagerAdapter:AddIngredientViewPagerAdapter
     private var pickingredients = mutableListOf<Ingredient>()
     private var ingredients = ArrayList<CategoryIngrediets>()
+    private var activity = this
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,6 +67,88 @@ class AddIngredientsActivity : AppCompatActivity() {
         }
     }
 
+    fun addingredientClick(ingredient:Ingredient) {
+        if(!pickingredients.contains(ingredient)) {
+            pickingredients.add(ingredient)
+            // 추가된 재료 리사이클러뷰에 추가 후 notification  =>  submitlist
+            binding.pickingredientChip.addView(Chip(this).apply {
+                text = ingredient.ingredientName
+                isCloseIconVisible = true
+                setOnCloseIconClickListener {
+                    var ingredientNum:Int = 0
+                    run { pickingredients.forEachIndexed {
+                            i, v -> if(v.ingredientName == this.text) {
+                                ingredientNum = i
+                                return@run
+                            }
+                    }}
+                    pickingredients.removeAt(ingredientNum)
+                    binding.pickingredientChip.removeView(this)
+                    Log.d("piingredients", "P : ${pickingredients}")
+                }
+            }, 0)
+        }
+    }
+
+    /*
+    // 최신 08.22
+    // 1. 쿼리를 통한 결과(Category Document List)를 반복문으로 돌림
+    // 2. 각 카테고리의 ingredientList를 가져와 ingredientQuery 메서드 에서 재료리스트의 재료들을 ingredients collection에서 불러옴
+    // 3. categoryMerge 메서드 에서 해당 재료 리스트와 Category를 결합함
+    // categoryList는 공유 변수로 두고 이용함.
+    fun getIngredientsInit() {
+        val refs = database.collection("Category")
+        var categoryList = ArrayList<CategoryIngrediets>()
+
+        fun categoryMerge(document:QueryDocumentSnapshot, ingredientList:MutableList<Ingredient>) {
+            categoryList.add(CategoryIngrediets(
+                document.get("categoryid").toString().toInt(),
+                document.get("categoryname").toString(),
+                ingredientList as List<Ingredient>
+            ))
+            Log.d("adapterTT", "merge : ${ingredientList}")
+            ViewPagerInit(categoryList)
+        }
+        // 2번
+        fun ingredientQuery(document:QueryDocumentSnapshot, list:List<String>) {
+            var ingredientList = mutableListOf<Ingredient>()
+            for (i in 0 until list.size step 10) {
+                var temp = listOf<String>()
+                if(i/10 == list.size/10) {
+                    temp = list.subList(i,list.size)
+                }else {
+                    temp = list.subList(i,i+10)
+                }
+                database.collection("ingredients")
+                    .whereIn("ingredientname", temp)
+                    .get()
+                    .addOnSuccessListener { docs ->
+                        for(doc in docs) {
+                            ingredientList.add(
+                                Ingredient(
+                                    doc.get("ingredienticon").toString(),
+                                    doc.get("ingredientidx").toString().toInt(),
+                                    doc.get("ingredientname").toString(),
+                                    doc.get("ingredientcategory").toString()
+                                )
+                            )
+                    }
+                }
+            }
+            categoryMerge(document, ingredientList)
+        }
+
+        // Category Collection 쿼리
+        refs.get()
+            .addOnSuccessListener { documents ->
+                var sortedDocs = documents.sortedBy { it.get("categoryid").toString().toInt() }
+                for (document in sortedDocs) {
+                    ingredientQuery(document,(document.get("ingredientlist") as List<String>))
+                }
+            }
+    }
+
+
     // 검색의 결과를 받아서 출력하는 메서드
     // 첫 시작은 onCreate에서 ""의 겸색 결과를 넘기도록 코드 삽입 예정 => 전체 출력
     fun ViewPagerInit(response:ArrayList<CategoryIngrediets>) {
@@ -90,121 +173,11 @@ class AddIngredientsActivity : AppCompatActivity() {
                 tab.text = tablayerName[position]
             }.attach()
 
+
+            Log.d("adapterTT", "activity : ${this.ingredients}")
             ingredientViewPagerAdapter.submitList(ingredients)
         }
     }
-
-    fun addingredientClick(ingredient:Ingredient) {
-        if(!pickingredients.contains(ingredient)) {
-            pickingredients.add(ingredient)
-            // 추가된 재료 리사이클러뷰에 추가 후 notification  =>  submitlist
-            binding.pickingredientChip.addView(Chip(this).apply {
-                text = ingredient.ingredientName
-                isCloseIconVisible = true
-                setOnCloseIconClickListener {
-                    var ingredientNum:Int = 0
-                    run { pickingredients.forEachIndexed {
-                            i, v -> if(v.ingredientName == this.text) {
-                                ingredientNum = i
-                                return@run
-                            }
-                    }}
-                    pickingredients.removeAt(ingredientNum)
-                    binding.pickingredientChip.removeView(this)
-                    Log.d("piingredients", "P : ${pickingredients}")
-                }
-            }, 0)
-        }
-    }
-
-    // 최신 08.22
-    // 1. 쿼리를 통한 결과(Category Document List)를 반복문으로 돌림
-    // 2. 각 카테고리의 ingredientList를 가져와 ingredientQuery 메서드 에서 재료리스트의 재료들을 ingredients collection에서 불러옴
-    // 3. categoryMerge 메서드 에서 해당 재료 리스트와 Category를 결합함
-    // categoryList는 공유 변수로 두고 이용함.
-    fun getIngredientsInit() {
-        val refs = database.collection("Category")
-        var categoryList = ArrayList<CategoryIngrediets>()
-
-        // 3번
-        /*
-        fun categoryMerge(document:QueryDocumentSnapshot, doc:QuerySnapshot) {
-            var ingredientList = mutableListOf<Ingredient>()
-            doc.forEach {
-                ingredientList.add(
-                    Ingredient(
-                        it.get("ingredienticon").toString(),
-                        it.get("ingredientidx").toString().toInt(),
-                        it.get("ingredientname").toString(),
-                        it.get("ingredientcategory").toString()
-                    )
-                )
-            }
-            categoryList.add(CategoryIngrediets(
-                document.get("categoryid").toString().toInt(),
-                document.get("categoryname").toString(),
-                ingredientList as List<Ingredient>
-            ))
-            ViewPagerInit(categoryList)
-        }
-
-         */
-        fun categoryMerge(document:QueryDocumentSnapshot, ingredientList:MutableList<Ingredient>) {
-            categoryList.add(CategoryIngrediets(
-                document.get("categoryid").toString().toInt(),
-                document.get("categoryname").toString(),
-                ingredientList as List<Ingredient>
-            ))
-            ViewPagerInit(categoryList)
-        }
-        // 2번
-        fun ingredientQuery(document:QueryDocumentSnapshot, list:List<String>) {
-            var ingredientList = mutableListOf<Ingredient>()
-            for (i in 0 until list.size step 10) {
-                var temp = listOf<String>()
-                if(i/10 == list.size/10) {
-                    temp = list.subList(i,list.size)
-                }else {
-                    temp = list.subList(i,i+10)
-                }
-                database.collection("ingredients")
-                    .whereIn("ingredientname", temp)
-                    .get()
-                    .addOnSuccessListener { doc ->
-                        doc.forEach {
-                            ingredientList.add(
-                                Ingredient(
-                                    it.get("ingredienticon").toString(),
-                                    it.get("ingredientidx").toString().toInt(),
-                                    it.get("ingredientname").toString(),
-                                    it.get("ingredientcategory").toString()
-                                )
-                            )
-                        }
-                    }
-            }
-            categoryMerge(document, ingredientList)
-            /*
-            database.collection("ingredients")
-                .whereIn("ingredientname", list)
-                .get()
-                .addOnSuccessListener {
-                    categoryMerge(document, it)
-                }
-
-             */
-        }
-
-        // Category Collection 쿼리
-        refs.get()
-            .addOnSuccessListener { documents ->
-                var sortedDocs = documents.sortedBy { it.get("categoryid").toString().toInt() }
-                for (document in sortedDocs) {
-                    ingredientQuery(document,(document.get("ingredientlist") as List<String>))
-                }
-            }
-    }
-
 
     // Firetore DocumentSnapshot to Categoryingrediets
     fun getIngredients(keyword: String) {
@@ -235,6 +208,110 @@ class AddIngredientsActivity : AppCompatActivity() {
                     )
                 }
                 ViewPagerInit(temt)
+            }
+    }
+     */
+    fun getIngredientsInit() {
+        viewPager = binding.viewpagerAddIngredient
+        ingredientViewPagerAdapter = AddIngredientViewPagerAdapter(activity, activity)
+        viewPager.adapter = ingredientViewPagerAdapter
+
+        var categoriet = arrayListOf<CategoryIngrediets>()
+        CoroutineScope(Dispatchers.Main).launch {
+            var categoryList = database.collection("Category")
+                .get().await().toMutableList()
+            categoryList.forEach {
+                var list = it.data.get("ingredientlist") as List<String>
+                var responseList = mutableListOf<QueryDocumentSnapshot>()
+                Log.d("adapterTT", "foreach1 : ${it.get("ingredientlist")}")
+                for (i in 0 until list.size step 10) {
+                    var temp = listOf<String>()
+                    if (i / 10 == list.size / 10) {
+                        temp = list.subList(i, list.size)
+                    } else {
+                        temp = list.subList(i, i + 10)
+                    }
+                    responseList.addAll(
+                        database.collection("ingredients")
+                            .whereIn("ingredientname", temp)
+                            .get().await().toMutableList()
+                    )
+                }
+                Log.d(
+                    "adapterTT", "foreach2 : ${
+                        responseList.map {
+                            Ingredient(
+                                it.get("ingredienticon").toString(),
+                                it.get("ingredientidx").toString().toInt(),
+                                it.get("ingredientname").toString(),
+                                it.get("ingredientcategory").toString()
+                            )
+                        }
+                    }"
+                )
+                categoriet.add(
+                    CategoryIngrediets(
+                        it.data.get("categoryid").toString().toInt(),
+                        it.data.get("categoryname").toString(),
+                        responseList.map {
+                            Ingredient(
+                                it.get("ingredienticon").toString(),
+                                it.get("ingredientidx").toString().toInt(),
+                                it.get("ingredientname").toString(),
+                                it.get("ingredientcategory").toString()
+                            )
+                        }
+                    )
+                )
+            }
+            // 임시 카테고리 이름 데이터
+            var tablayerName = ArrayList<String>()
+
+            Log.d("adapterTT", "activity : $categoriet")
+            // 재료 리스트를 적용 및 카테고리만 추출
+            ingredients.clear()
+            if (categoriet.size == 8) {
+                ingredients.addAll(categoriet)
+                ingredients.sortBy { it.ingredientCategoryIdx }
+                tablayerName.addAll(ingredients.map { it.ingredientCategoryName } )
+                // 카테고리 적용
+                TabLayoutMediator(binding.tabLayout, viewPager) { tab, position ->
+                    tab.text = tablayerName[position]
+                }.attach()
+                ingredientViewPagerAdapter.submitList(ingredients)
+            }
+        }
+    }
+
+    // Firetore DocumentSnapshot to Categoryingrediets
+    fun getIngredients(keyword: String) {
+        val refs = database.collection("ingredients")
+        // 검색 통해 나온 레시피명을 담는 리스트
+        refs.orderBy("ingredientname").startAt(keyword).endAt(keyword+ "\uf8ff")
+            .get()
+            .addOnSuccessListener { doc ->
+                var ingredientList = mutableListOf<Ingredient>()
+                doc.forEach {
+                    ingredientList.add(
+                        Ingredient(
+                            it.get("ingredienticon").toString(),
+                            it.get("ingredientidx").toString().toInt(),
+                            it.get("ingredientname").toString(),
+                            it.get("ingredientcategory").toString()
+                        )
+                    )
+                }
+                var temt = arrayListOf<CategoryIngrediets>()
+                ingredients.forEachIndexed { i, v ->
+                    temt.add(
+                        CategoryIngrediets(
+                            v.ingredientCategoryIdx,
+                            v.ingredientCategoryName,
+                            if(i==0) ingredientList else v.ingredientList
+                        )
+                    )
+                }
+                //ViewPagerInit(temt)
             }
     }
 }
