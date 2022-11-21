@@ -64,25 +64,42 @@ class TotalIngredientsAdapter():RecyclerView.Adapter<TotalIngredientsAdapter.Vie
         }
         notifyDataSetChanged()
     }
-    fun category(categoryName: String, ingreidentName: String):String {
-        Log.d("categoryTest", "categoryName : $categoryName  /  $ingreidentName")
+    fun category(categoryName: String, ingredientname: String):String {
         return when(categoryName) {
             "채소" -> {
-                when(ingreidentName) {
-                    "배추" -> "포기"
-                    "상추", "깻잎" -> "장"
-                    "생강", "마늘" -> "쪽"
-                    "버섯" -> "송이"
+                when{
+                    ingredientname == "배추" -> "포기"
+                    ingredientname == "상추" || ingredientname == "깻잎" -> "장"
+                    ingredientname == "생강" || ingredientname == "마늘" -> "쪽"
+                    Regex("버섯").containsMatchIn(ingredientname) -> "송이"
                     else -> "개"
                 }
             }
-            "육류" -> "근"
-            "수산물" -> when(ingreidentName) {
+            "육류" -> {
+                when(ingredientname){
+                    "돼지고기" -> "근"
+                    "닭고기" -> "근"
+                    "소고기" -> "근"
+                    else -> "개"
+                }
+            }
+            "수산물" -> when(ingredientname) {
                 "생선" -> "마리"
+                "멸치" -> "포"
+                else -> "마리"
+            }
+            "과일" -> when(ingredientname) {
+                "포도", "바나나" -> "송이"
                 else -> "개"
             }
-            "과일" -> when(ingreidentName) {
-                "포도", "바나나" -> "송이"
+            "가공/유제품" -> when(ingredientname) {
+                "두부" -> "모"
+                "우유" -> "팩"
+                else -> "개"
+            }
+            "조미료" -> when {
+                ingredientname == "고춧가루" -> "근"
+                Regex("간장").containsMatchIn(ingredientname) -> "종지"
                 else -> "개"
             }
             else -> "개"
