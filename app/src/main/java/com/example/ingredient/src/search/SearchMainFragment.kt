@@ -74,6 +74,7 @@ class SearchMainFragment : Fragment() {
         var span1: Spannable = binding.mainRecommendTitle1.text as Spannable
         var span2: Spannable = binding.mainRecommendTitle2.text as Spannable
         var span3: Spannable = binding.mainRecommendTitle3.text as Spannable
+
         span1.setSpan(ForegroundColorSpan(requireActivity().getColor(R.color.orange_300)), 7, 9, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
         span1.setSpan(StyleSpan(Typeface.BOLD), 7, 9, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
         span2.setSpan(ForegroundColorSpan(requireActivity().getColor(R.color.apricot)), 12, 16, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)

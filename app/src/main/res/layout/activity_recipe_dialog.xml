@@ -134,6 +134,7 @@
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
                 android:layout_marginTop="10dp"
+                android:bufferType="spannable"
                 android:text="아보카도 / 식빵 / 버터 / 계란"
                 android:layout_marginBottom="3dp"
                 android:layout_width="match_parent"
@@ -160,8 +161,7 @@
                 android:gravity="center"
                 android:background="@drawable/button_orange"
                 android:layout_width="162dp"
-                android:layout_height="50dp"
-                android:onClick="mOnClose"/>
+                android:layout_height="50dp"/>
             <Button
                 android:id="@+id/recipe_dialog_pass_link_btn"
                 android:text="레시피링크 보러가기"

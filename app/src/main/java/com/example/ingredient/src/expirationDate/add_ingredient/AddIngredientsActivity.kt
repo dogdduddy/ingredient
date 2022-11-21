@@ -84,7 +84,6 @@ class AddIngredientsActivity : AppCompatActivity() {
                     }}
                     pickingredients.removeAt(ingredientNum)
                     binding.pickingredientChip.removeView(this)
-                    Log.d("piingredients", "P : ${pickingredients}")
                 }
             }, 0)
         }
@@ -223,7 +222,6 @@ class AddIngredientsActivity : AppCompatActivity() {
             categoryList.forEach {
                 var list = it.data.get("ingredientlist") as List<String>
                 var responseList = mutableListOf<QueryDocumentSnapshot>()
-                Log.d("adapterTT", "foreach1 : ${it.get("ingredientlist")}")
                 for (i in 0 until list.size step 10) {
                     var temp = listOf<String>()
                     if (i / 10 == list.size / 10) {
@@ -237,18 +235,6 @@ class AddIngredientsActivity : AppCompatActivity() {
                             .get().await().toMutableList()
                     )
                 }
-                Log.d(
-                    "adapterTT", "foreach2 : ${
-                        responseList.map {
-                            Ingredient(
-                                it.get("ingredienticon").toString(),
-                                it.get("ingredientidx").toString().toInt(),
-                                it.get("ingredientname").toString(),
-                                it.get("ingredientcategory").toString()
-                            )
-                        }
-                    }"
-                )
                 categoriet.add(
                     CategoryIngrediets(
                         it.data.get("categoryid").toString().toInt(),
@@ -267,7 +253,6 @@ class AddIngredientsActivity : AppCompatActivity() {
             // 임시 카테고리 이름 데이터
             var tablayerName = ArrayList<String>()
 
-            Log.d("adapterTT", "activity : $categoriet")
             // 재료 리스트를 적용 및 카테고리만 추출
             ingredients.clear()
             if (categoriet.size == 8) {

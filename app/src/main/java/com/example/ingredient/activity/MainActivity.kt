@@ -120,7 +120,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun addRecentRecipe(name:String, icon:String) {
-        Log.d("navSubmitList", recent_recipe_list.toString())
         recent_recipe_list.map { it["name"] }.forEach {
             if(it == name) {
                 return
@@ -134,7 +133,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun navSubmitList() {
-        Log.d("navSubmitList", recent_recipe_list.toString())
         nav_adapter.submitList(recent_recipe_list)
     }
 
