@@ -138,11 +138,11 @@ class RecipeDialogActivity : Activity() {
 
             var str = ""
             ingredientList.clear()
-            ingredientList = recipe["ingredients"] as MutableList<String>
 
-            var setUserIng = responseIngredients.toSet()
-            var setRecipeIng = ingredientList.toSet()
+            var setUserIng:Set<String> = responseIngredients.toSet() as Set<String>
+            var setRecipeIng = (recipe["ingredients"] as MutableList<String>).toSet()
             var textPosition = arrayListOf<ArrayList<Int>>()
+            ingredientList = (setRecipeIng - setUserIng).toMutableList()
             val intersectSize = setUserIng.intersect(setRecipeIng).size
 
             (setUserIng.intersect(setRecipeIng)).forEach {
@@ -160,6 +160,7 @@ class RecipeDialogActivity : Activity() {
             // 각 텍스트를 터치했을 때 색이 변경되는 이벤트는 movementMethod를 공부해보자.
             // https://developer.android.com/reference/android/text/method/MovementMethod
             // https://stackoverflow.com/questions/16007147/how-to-get-rid-of-the-underline-in-a-spannable-string-with-a-clickable-object
+            // ingredientList는 현재 없는 재료만 들어 있는 상태이므로, 클릭 한 재료의 추가 삭제도 구현해주어야 함
             textPosition.forEachIndexed { index, textP ->
                 span.setSpan(object : ClickableSpan() {
                     override fun updateDrawState(ds: TextPaint) {
