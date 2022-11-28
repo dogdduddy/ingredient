@@ -23,7 +23,6 @@ class AddGroupIngredientListFragment () : Fragment() {
         super.onCreate(savedInstanceState)
         arguments?.let {
             ingredients = it.getParcelable("ingredients")
-            Log.d("bundleTest","${it.get("ingredients")}")
         }
     }
 
@@ -42,7 +41,7 @@ class AddGroupIngredientListFragment () : Fragment() {
 
         binding.rvIngredient.apply {
             adapter = ingredientRecyclerViewadApter
-            layoutManager = GridLayoutManager(context, 4)
+            layoutManager = GridLayoutManager(context, 2)
         }
 
         ingredientRecyclerViewadApter.submitList(ArrayList(ingredients?.ingredientList))

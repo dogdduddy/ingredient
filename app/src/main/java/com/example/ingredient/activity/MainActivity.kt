@@ -168,8 +168,9 @@ class MainActivity : AppCompatActivity() {
 
         // 초기 화면을 Search 프래그먼트로 설정
         transection.beginTransaction().
-        add(R.id.fragment_container, mainFragment,"Search").commit()
-        binding.menuBottom.setItemSelected(R.id.search)
+        //add(R.id.fragment_container, mainFragment,"Search").commit()
+        add(R.id.fragment_container, basketFragment,"Basket").commit()
+        binding.menuBottom.setItemSelected(R.id.basket)
     }
     // 프래그먼트 전환 메서드. State는 프래그먼트를 객체로 갖고 있기에, 뷰 단에서 저장과 복구 진행함.
     private fun replaceFragment(fragment: Fragment) {

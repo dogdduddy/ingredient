@@ -5,20 +5,23 @@ import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import com.example.ingredient.databinding.FragmentBasketBinding
+import com.example.ingredient.src.basket.models.BasketGroupIngredient
 import com.example.ingredient.src.basket.models.BasketIngredient
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
-class BasketFragment : Fragment() {
+interface BasketView {
+    fun onGetFridgeSuccess(response: ArrayList<BasketIngredient>)
+    fun onGetFridgeFailure(message: String)
+}
+
+class BasketFragment : Fragment(), BasketView {
 
     private var _binding : FragmentBasketBinding? = null
     private val binding get()  = _binding!!
     private lateinit var viewPager:ViewPager2
-    private lateinit var database:FirebaseFirestore
     private lateinit var basketViewPagerAdapter:BasketViewPagerAdapter
-    private var userid:String? = null
-    private var basketData = ArrayList<BasketIngredient>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -30,7 +33,6 @@ class BasketFragment : Fragment() {
         basketViewPagerAdapter = BasketViewPagerAdapter(this)
         viewPager.adapter = basketViewPagerAdapter
 
-
         // 임시 카테고리 이름 데이터
         var tablayerName = arrayListOf("그룹", "총재료")
 
@@ -39,27 +41,8 @@ class BasketFragment : Fragment() {
             tab.text = tablayerName[position]
         }.attach()
 
+        BasketService(this@BasketFragment).getBasket()
 
-        userid = FirebaseAuth.getInstance().uid!!
-        database = FirebaseFirestore.getInstance()
-        database.collection("ListData")
-            .document(userid!!)
-            .collection("Basket")
-            .get()
-            .addOnSuccessListener { documents ->
-                basketData.clear()
-                for(document in documents) {
-                    basketData.add(BasketIngredient(
-                        document.get("ingredienticon").toString(),
-                        document.get("ingredientidx").toString().toInt(),
-                        document.get("ingredientname").toString(),
-                        document.get("ingredientcategory").toString(),
-                        document.get("groupName").toString(),
-                        document.get("ingredientquantity").toString().toInt()
-                    ))
-                }
-                UpdateData(basketData)
-            }
         return binding.root
     }
 
@@ -68,6 +51,14 @@ class BasketFragment : Fragment() {
     }
     companion object {
         fun newInstance() = BasketFragment()
+    }
+
+    override fun onGetFridgeSuccess(response: ArrayList<BasketIngredient>) {
+        UpdateData(response)
+    }
+
+    override fun onGetFridgeFailure(message: String) {
+        TODO("Not yet implemented")
     }
 }
 
