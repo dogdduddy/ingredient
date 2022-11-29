@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.ingredient.databinding.ActivityGroupAddIngredientsBinding
@@ -68,6 +69,17 @@ class GroupAddIngredientsActivity : AppCompatActivity(), BasketView {
         }
     }
 
+    override fun onStart() {
+        super.onStart()
+        binding.addgroupGroupEdittext.setOnEditorActionListener { v, actionId, event ->
+            var handled = false
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                binding.addgroupGroupsaveBtn.performClick()
+                handled = true
+            }
+            handled
+        }
+    }
     override fun onGetBasketSuccess(response: ArrayList<BasketIngredient>) {
         TODO("Not yet implemented")
     }

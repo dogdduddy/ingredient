@@ -1,10 +1,12 @@
 package com.example.ingredient.src.basket.group.addGroup.addIngredient
 
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import androidx.viewpager2.widget.ViewPager2
 import com.example.ingredient.activity.MainActivity
 import com.example.ingredient.databinding.ActivityAddGroupIngredientsBinding
@@ -13,25 +15,36 @@ import com.example.ingredient.src.expirationDate.add_ingredient.models.Ingredien
 import com.google.android.material.chip.Chip
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QueryDocumentSnapshot
+interface AddIngredientView {
+    fun onGetCategoryIngredietSuccess(response: ArrayList<CategoryIngrediets>)
+    fun onGetCategoryIngredietFailure(message: String)
 
-class AddGroupIngredientsActivity : AppCompatActivity() {
+    fun onGetSearchCategoryIngredietSuccess(response: ArrayList<CategoryIngrediets>)
+    fun onGetSearchCategoryIngredietFailure(message: String)
+}
+
+class AddGroupIngredientsActivity : AppCompatActivity(), AddIngredientView {
     private lateinit var binding: ActivityAddGroupIngredientsBinding
     private lateinit var viewPager: ViewPager2
     private lateinit var database: FirebaseFirestore
     private lateinit var ingredientViewPagerAdapter: AddGroupIngredientViewPagerAdapter
     private var pickingredients = mutableListOf<Ingredient>()
     private var ingredients = ArrayList<CategoryIngrediets>()
+    private var imm: InputMethodManager? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAddGroupIngredientsBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        imm = this.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
+
         database = FirebaseFirestore.getInstance()
 
         // Categoty 및 재료 리스트 초기화
-        getIngredientsInit()
+        IngredientService(this).GetCategoryIngrediets()
 
         // 검색 기능 구현 중
         // 타자기 검색 버튼으로 검색 버튼 클릭 효과
@@ -45,9 +58,12 @@ class AddGroupIngredientsActivity : AppCompatActivity() {
         }
         // 검색 버튼
         binding.groupAddIngredientSearchBtn.setOnClickListener {
-            var string = binding.groupAddIngredientSearch.text.toString()
-            getIngredients(string)
-            // 검색 키워드 string를 firebase로 넘겨서 검색을 진행하는 코드 삽입 or 실행하는 클래스로 넘기기
+            var input = binding.groupAddIngredientSearch.text.toString()
+            if(input.isNullOrBlank())
+                IngredientService(this).GetCategoryIngrediets()
+             else
+                IngredientService(this).GetSearchCategoryIngrediets(input, ingredients)
+            binding.groupAddIngredientSearch.setText("")
         }
 
 
@@ -137,7 +153,18 @@ class AddGroupIngredientsActivity : AppCompatActivity() {
             }
         }
     }
+    fun ViewPagerInit(response:ArrayList<CategoryIngrediets>) {
+        viewPager = binding.groupAddViewpager
+        ingredientViewPagerAdapter = AddGroupIngredientViewPagerAdapter(this, this)
+        viewPager.adapter = ingredientViewPagerAdapter
 
+        // 카테고리 적용
+        TabLayoutMediator(binding.groupAddTablayout, viewPager) { tab, position ->
+            tab.text = response[position].ingredientCategoryName
+        }.attach()
+        ingredientViewPagerAdapter.submitList(response)
+    }
+    /*
     // 검색의 결과를 받아서 출력하는 메서드
     // 첫 시작은 onCreate에서 ""의 겸색 결과를 넘기도록 코드 삽입 예정 => 전체 출력
     fun ViewPagerInit(response:ArrayList<CategoryIngrediets>) {
@@ -160,9 +187,11 @@ class AddGroupIngredientsActivity : AppCompatActivity() {
         TabLayoutMediator(binding.groupAddTablayout, viewPager) { tab, position ->
             tab.text = tablayerName[position]
         }.attach()
-
+        Log.d("test", "${ingredients}")
         ingredientViewPagerAdapter.submitList(ingredients)
     }
+
+     */
 
     fun addingredientClick(ingredient: Ingredient) {
         if(!pickingredients.contains(ingredient)) {
@@ -187,6 +216,7 @@ class AddGroupIngredientsActivity : AppCompatActivity() {
         }
     }
 
+    /*
     // 최신 08.22
     // 1. 쿼리를 통한 결과(Category Document List)를 반복문으로 돌림
     // 2. 각 카테고리의 ingredientList를 가져와 ingredientQuery 메서드 에서 재료리스트의 재료들을 ingredients collection에서 불러옴
@@ -247,7 +277,7 @@ class AddGroupIngredientsActivity : AppCompatActivity() {
     // Firetore DocumentSnapshot to Categoryingrediets
     fun getIngredients(keyword: String) {
         val refs = database.collection("ingredients")
-        // 검색 통해 나온 레시피명을 담는 리스트
+        // 검색 통해 나온 재료를 담는 리스트
         refs.orderBy("ingredientname").startAt(keyword).endAt(keyword+ "\uf8ff")
             .get()
             .addOnSuccessListener { doc ->
@@ -274,5 +304,35 @@ class AddGroupIngredientsActivity : AppCompatActivity() {
                 }
                 ViewPagerInit(temt)
             }
+    }
+
+     */
+    override fun onStart() {
+        super.onStart()
+        binding.groupAddIngredientSearch.setOnEditorActionListener { v, actionId, event ->
+            var handled = false
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                binding.groupAddIngredientSearchBtn.performClick()
+                handled = true
+            }
+            handled
+        }
+    }
+
+    override fun onGetCategoryIngredietSuccess(response: ArrayList<CategoryIngrediets>) {
+        ingredients = response
+        ViewPagerInit(response)
+    }
+
+    override fun onGetCategoryIngredietFailure(message: String) {
+        Log.d("Basket", "onGetCategoryIngredietFailure : $message")
+    }
+
+    override fun onGetSearchCategoryIngredietSuccess(response: ArrayList<CategoryIngrediets>) {
+        ViewPagerInit(response)
+    }
+
+    override fun onGetSearchCategoryIngredietFailure(message: String) {
+        Log.d("Basket", "onGetSearchCategoryIngredietFailure : $message")
     }
 }

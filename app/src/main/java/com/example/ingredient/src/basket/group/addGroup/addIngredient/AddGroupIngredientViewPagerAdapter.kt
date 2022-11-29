@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import androidx.viewpager2.adapter.FragmentViewHolder
 import com.example.ingredient.src.expirationDate.add_ingredient.models.CategoryIngrediets
 
 class AddGroupIngredientViewPagerAdapter (fa: FragmentActivity, val view: AddGroupIngredientsActivity):
@@ -22,6 +23,7 @@ class AddGroupIngredientViewPagerAdapter (fa: FragmentActivity, val view: AddGro
         }
         return listFragment
     }
+
 
     fun submitList(ingredients: ArrayList<CategoryIngrediets>) {
         this.ingredients = ingredients

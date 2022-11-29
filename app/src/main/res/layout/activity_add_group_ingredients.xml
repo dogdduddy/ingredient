@@ -20,6 +20,7 @@
         android:paddingLeft="15dp"
         android:imeOptions="actionSearch"
         android:maxLines="1"
+        android:inputType="text"
         android:privateImeOptions="defaultInputmode=korean"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
