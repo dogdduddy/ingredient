@@ -5,11 +5,8 @@ import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import com.example.ingredient.databinding.FragmentBasketBinding
-import com.example.ingredient.src.basket.models.BasketGroupIngredient
 import com.example.ingredient.src.basket.models.BasketIngredient
 import com.google.android.material.tabs.TabLayoutMediator
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
 
 
 
@@ -50,11 +47,35 @@ class BasketFragment : Fragment(), BasketView {
         fun newInstance() = BasketFragment()
     }
 
-    override fun onGetFridgeSuccess(response: ArrayList<BasketIngredient>) {
+    override fun onGetBasketSuccess(response: ArrayList<BasketIngredient>) {
         UpdateData(response)
     }
 
-    override fun onGetFridgeFailure(message: String) {
+    override fun onGetBasketFailure(message: String) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onGetBasketGroupSuccess(response: ArrayList<String>) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onGetBasketGroupFailure(message: String) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onDeleteBasketGroupListSuccess(response: String) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onDeleteBasketGroupIngredientSuccess(response: String) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onDeleteBasketGroupListFailure(message: String) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onDeleteBasketGroupIngredientFailure(message: String) {
         TODO("Not yet implemented")
     }
 }

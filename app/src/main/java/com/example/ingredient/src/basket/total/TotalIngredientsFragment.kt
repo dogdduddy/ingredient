@@ -7,15 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.example.ingredient.R
-import com.example.ingredient.databinding.FragmentBasketBinding
 import com.example.ingredient.databinding.FragmentTotalingredientsBinding
 import com.example.ingredient.src.basket.BasketService
 import com.example.ingredient.src.basket.BasketView
 import com.example.ingredient.src.basket.models.BasketIngredient
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
 
 class TotalIngredientsFragment: Fragment(), BasketView {
     private var _binding : FragmentTotalingredientsBinding? = null
@@ -45,41 +40,39 @@ class TotalIngredientsFragment: Fragment(), BasketView {
         BasketService(this@TotalIngredientsFragment).getBasket()
     }
 
-    /*
-    fun dataInit() {
-        val userid = FirebaseAuth.getInstance().uid!!
-        val database = FirebaseFirestore.getInstance()
-        database.collection("ListData")
-            .document(userid!!)
-            .collection("Basket")
-            .get()
-            .addOnSuccessListener { documents ->
-                basketList.clear()
-                for(document in documents) {
-                    basketList.add(BasketIngredient(
-                        document.get("ingredienticon").toString(),
-                        document.get("ingredientidx").toString().toInt(),
-                        document.get("ingredientname").toString(),
-                        document.get("ingredientcategory").toString(),
-                        document.get("groupName").toString(),
-                        document.get("ingredientquantity").toString().toInt()
-                    ))
-                }
-            }
-        submitList(basketList)
-    }
-
-     */
-
     fun submitList(basketData: ArrayList<BasketIngredient>) {
         this.basketList = basketData
     }
 
-    override fun onGetFridgeSuccess(response: ArrayList<BasketIngredient>) {
+    override fun onGetBasketSuccess(response: ArrayList<BasketIngredient>) {
         submitList(response)
     }
 
-    override fun onGetFridgeFailure(message: String) {
+    override fun onGetBasketFailure(message: String) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onGetBasketGroupSuccess(response: ArrayList<String>) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onGetBasketGroupFailure(message: String) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onDeleteBasketGroupListSuccess(response: String) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onDeleteBasketGroupIngredientSuccess(response: String) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onDeleteBasketGroupListFailure(message: String) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onDeleteBasketGroupIngredientFailure(message: String) {
         TODO("Not yet implemented")
     }
 }

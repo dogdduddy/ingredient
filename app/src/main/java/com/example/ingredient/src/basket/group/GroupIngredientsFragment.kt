@@ -8,12 +8,14 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.ingredient.databinding.FragmentGroupingredientsBinding
+import com.example.ingredient.src.basket.BasketService
+import com.example.ingredient.src.basket.BasketView
 import com.example.ingredient.src.basket.models.BasketIngredient
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.*
 
-class GroupIngredientsFragment: Fragment(), GroupIngredientsAdapter.onGroupDrawClickListener {
+class GroupIngredientsFragment: Fragment(), GroupIngredientsAdapter.onGroupDrawClickListener, BasketView {
     private var basketData: ArrayList<BasketIngredient>? = null
     private var basketList = arrayListOf<String>()
     private var _binding : FragmentGroupingredientsBinding? = null
@@ -36,7 +38,7 @@ class GroupIngredientsFragment: Fragment(), GroupIngredientsAdapter.onGroupDrawC
         recyclerview.adapter = adapter
         recyclerview.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
-        InitData()
+        BasketService(this@GroupIngredientsFragment).getBasketGroup()
 
         // 그룹 및 재료 추가
         binding.groupInnerBtnOrigin.setOnClickListener {
@@ -45,21 +47,6 @@ class GroupIngredientsFragment: Fragment(), GroupIngredientsAdapter.onGroupDrawC
         binding.groupInnerBtnOther.setOnClickListener {
             addIngredientBtn()
         }
-    }
-    
-    fun InitData() {
-        basketList.clear()
-        FirebaseFirestore.getInstance()
-            .collection("ListData")
-            .document(FirebaseAuth.getInstance().uid!!)
-            .collection("BasketList")
-            .get()
-            .addOnSuccessListener { documents ->
-                for(document in documents) {
-                    basketList.add(document.data["groupName"].toString())
-                }
-                adapter.submitList(basketData!!, basketList)
-            }
     }
 
     fun addIngredientBtn() {
@@ -87,6 +74,38 @@ class GroupIngredientsFragment: Fragment(), GroupIngredientsAdapter.onGroupDrawC
             }}
         }
 
+    }
+
+    override fun onGetBasketSuccess(response: ArrayList<BasketIngredient>) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onGetBasketFailure(message: String) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onGetBasketGroupSuccess(response: ArrayList<String>) {
+        adapter.submitList(basketData!!, response)
+    }
+
+    override fun onGetBasketGroupFailure(message: String) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onDeleteBasketGroupListSuccess(response: String) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onDeleteBasketGroupIngredientSuccess(response: String) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onDeleteBasketGroupListFailure(message: String) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onDeleteBasketGroupIngredientFailure(message: String) {
+        TODO("Not yet implemented")
     }
 }
 

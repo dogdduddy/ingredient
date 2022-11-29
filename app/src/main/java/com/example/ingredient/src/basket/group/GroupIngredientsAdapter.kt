@@ -12,12 +12,14 @@ import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ingredient.R
+import com.example.ingredient.src.basket.BasketService
+import com.example.ingredient.src.basket.BasketView
 import com.example.ingredient.src.basket.models.BasketIngredient
 import com.google.common.collect.ArrayTable
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
-class GroupIngredientsAdapter(mCallback:onGroupDrawClickListener) : RecyclerView.Adapter<GroupIngredientsAdapter.ViewHolder>() {
+class GroupIngredientsAdapter(mCallback:onGroupDrawClickListener) : RecyclerView.Adapter<GroupIngredientsAdapter.ViewHolder>(), BasketView {
     private var context: Context? = null
     private var basketData: ArrayList<BasketIngredient> = ArrayList()
     private var basketList = arrayListOf<String>()
@@ -104,28 +106,35 @@ class GroupIngredientsAdapter(mCallback:onGroupDrawClickListener) : RecyclerView
 
     fun groupRemove(groupName:String) {
         // 해당 그룹 재료 삭제
-        FirebaseFirestore.getInstance()
-            .collection("ListData")
-            .document(FirebaseAuth.getInstance().uid.toString())
-            .collection("Basket")
-            .whereEqualTo("groupName", groupName)
-            .get()
-            .addOnSuccessListener {
-                it.forEach { document ->
-                    document.reference.delete()
-                }
-            }
-        FirebaseFirestore.getInstance()
-            .collection("ListData")
-            .document(FirebaseAuth.getInstance().uid.toString())
-            .collection("BasketList")
-            .whereEqualTo("groupName", groupName)
-            .get()
-            .addOnSuccessListener {
-                it.forEach { document ->
-                    document.reference.delete()
-                }
-            }
+        BasketService(this).deleteBasketGroup(groupName)
+    }
+
+    interface onGroupDrawClickListener {
+        fun onGroupDrawOpen()
+        fun onGroupDrawClose()
+    }
+
+    override fun onGetBasketSuccess(response: ArrayList<BasketIngredient>) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onGetBasketFailure(message: String) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onGetBasketGroupSuccess(response: ArrayList<String>) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onGetBasketGroupFailure(message: String) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onDeleteBasketGroupListSuccess(groupName: String) {
+        Log.d("Basket", "그룹 삭제 성공")
+    }
+
+    override fun onDeleteBasketGroupIngredientSuccess(groupName : String) {
         basketData.filter { it.groupName == groupName }.let { it1 ->
             basketData.removeAll(it1)
         }
@@ -133,8 +142,11 @@ class GroupIngredientsAdapter(mCallback:onGroupDrawClickListener) : RecyclerView
         notifyDataSetChanged()
     }
 
-    interface onGroupDrawClickListener {
-        fun onGroupDrawOpen()
-        fun onGroupDrawClose()
+    override fun onDeleteBasketGroupListFailure(message: String) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onDeleteBasketGroupIngredientFailure(message: String) {
+        TODO("Not yet implemented")
     }
 }
