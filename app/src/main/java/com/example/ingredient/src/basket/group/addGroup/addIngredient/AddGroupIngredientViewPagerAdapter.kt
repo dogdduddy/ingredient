@@ -1,12 +1,10 @@
-package com.example.ingredient.src.basket.group.add_ingredient
+package com.example.ingredient.src.basket.group.addGroup.addIngredient
 
 import android.os.Bundle
 import android.util.Log
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.example.ingredient.src.expirationDate.add_ingredient.AddIngredientListFragment
 import com.example.ingredient.src.expirationDate.add_ingredient.models.CategoryIngrediets
 
 class AddGroupIngredientViewPagerAdapter (fa: FragmentActivity, val view: AddGroupIngredientsActivity):

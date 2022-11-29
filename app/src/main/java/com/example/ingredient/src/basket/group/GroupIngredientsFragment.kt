@@ -10,9 +10,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.ingredient.databinding.FragmentGroupingredientsBinding
 import com.example.ingredient.src.basket.BasketService
 import com.example.ingredient.src.basket.BasketView
+import com.example.ingredient.src.basket.group.addGroup.GroupAddIngredientsActivity
 import com.example.ingredient.src.basket.models.BasketIngredient
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.*
 
 class GroupIngredientsFragment: Fragment(), GroupIngredientsAdapter.onGroupDrawClickListener, BasketView {
@@ -85,10 +84,19 @@ class GroupIngredientsFragment: Fragment(), GroupIngredientsAdapter.onGroupDrawC
     }
 
     override fun onGetBasketGroupSuccess(response: ArrayList<String>) {
+        basketList = response
         adapter.submitList(basketData!!, response)
     }
 
     override fun onGetBasketGroupFailure(message: String) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onPostBasketGroupSuccess() {
+        TODO("Not yet implemented")
+    }
+
+    override fun onPostBasketGroupFailure(message: String) {
         TODO("Not yet implemented")
     }
 

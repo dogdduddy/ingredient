@@ -1,14 +1,10 @@
-package com.example.ingredient.src.basket.group.add_ingredient
+package com.example.ingredient.src.basket.group.addGroup.addIngredient
 
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ingredient.databinding.ItemAddGroupingredientBinding
-import com.example.ingredient.databinding.ItemAddIngredientBinding
-import com.example.ingredient.databinding.ItemGroupAddBinding
-import com.example.ingredient.src.expirationDate.add_ingredient.AddIngredientViewHolder
-import com.example.ingredient.src.expirationDate.add_ingredient.AddIngredientsActivity
 import com.example.ingredient.src.expirationDate.add_ingredient.models.Ingredient
 
 class AddGroupIngredientListAdapter(val view: AddGroupIngredientsActivity): RecyclerView.Adapter<AddGroupIngredientViewHolder>() {

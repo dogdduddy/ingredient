@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    tools:context=".src.basket.group.GroupAddIngredientsActivity">
+    tools:context=".src.basket.group.addGroup.GroupAddIngredientsActivity">
     <ImageButton
         android:id="@+id/addgroup_finish_btn"
         android:layout_width="30dp"

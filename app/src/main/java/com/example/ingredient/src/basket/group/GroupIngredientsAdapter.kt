@@ -15,9 +15,6 @@ import com.example.ingredient.R
 import com.example.ingredient.src.basket.BasketService
 import com.example.ingredient.src.basket.BasketView
 import com.example.ingredient.src.basket.models.BasketIngredient
-import com.google.common.collect.ArrayTable
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
 
 class GroupIngredientsAdapter(mCallback:onGroupDrawClickListener) : RecyclerView.Adapter<GroupIngredientsAdapter.ViewHolder>(), BasketView {
     private var context: Context? = null
@@ -37,11 +34,11 @@ class GroupIngredientsAdapter(mCallback:onGroupDrawClickListener) : RecyclerView
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.groupName.text = basketList[position]
-        (holder.recyclerView.adapter as BasketGroupAdapter).apply {
+        (holder.recyclerView.adapter as GroupAdapter).apply {
             submitList(basketData.filter { it.groupName == basketList[position] } as ArrayList<BasketIngredient>)
         }
         holder.removeBtn.setOnClickListener {
-            (holder.recyclerView.adapter as BasketGroupAdapter).apply {
+            (holder.recyclerView.adapter as GroupAdapter).apply {
                 groupRemove(basketList[position])
             }
         }
@@ -77,7 +74,7 @@ class GroupIngredientsAdapter(mCallback:onGroupDrawClickListener) : RecyclerView
             context = context
             groupName = view.findViewById(R.id.group_groupname)
             recyclerView.apply {
-                adapter = BasketGroupAdapter()
+                adapter = GroupAdapter()
                 layoutManager =
                     LinearLayoutManager(context, RecyclerView.VERTICAL, false)
 
@@ -130,6 +127,14 @@ class GroupIngredientsAdapter(mCallback:onGroupDrawClickListener) : RecyclerView
         TODO("Not yet implemented")
     }
 
+    override fun onPostBasketGroupSuccess() {
+        TODO("Not yet implemented")
+    }
+
+    override fun onPostBasketGroupFailure(message: String) {
+        TODO("Not yet implemented")
+    }
+
     override fun onDeleteBasketGroupListSuccess(groupName: String) {
         Log.d("Basket", "그룹 삭제 성공")
     }
@@ -143,10 +148,10 @@ class GroupIngredientsAdapter(mCallback:onGroupDrawClickListener) : RecyclerView
     }
 
     override fun onDeleteBasketGroupListFailure(message: String) {
-        TODO("Not yet implemented")
+        Log.d("Basket", "그룹 리스트 삭제 실패")
     }
 
     override fun onDeleteBasketGroupIngredientFailure(message: String) {
-        TODO("Not yet implemented")
+        Log.d("Basket", "그룹 재료 삭제 실패")
     }
 }

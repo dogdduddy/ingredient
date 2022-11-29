@@ -1,5 +1,6 @@
 package com.example.ingredient.src.basket
 
+import android.util.Log
 import com.example.ingredient.src.basket.models.BasketIngredient
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -50,30 +51,41 @@ class BasketService(val view:BasketView) {
 			}
 	}
 
-	fun deleteBasketGroup(groupname: String) {
+	fun deleteBasketGroup(groupName: String) {
 		database.collection("ListData")
 			.document(userid!!)
 			.collection("Basket")
-			.whereEqualTo("groupName", groupname)
+			.whereEqualTo("groupName", groupName)
 			.get()
 			.addOnSuccessListener {
 				for(document in it) {
 					document.reference.delete()
 				}
-				view.onDeleteBasketGroupListSuccess(groupname)
+				view.onDeleteBasketGroupListSuccess(groupName)
 			}
 			.addOnFailureListener { view.onDeleteBasketGroupListFailure(it.message ?: "통신오류") }
 		database.collection("ListData")
 			.document(userid!!)
 			.collection("BasketList")
-			.whereEqualTo("groupName", groupname)
+			.whereEqualTo("groupName", groupName)
 			.get()
 			.addOnSuccessListener {
 				for(document in it) {
 					document.reference.delete()
 				}
-				view.onDeleteBasketGroupIngredientSuccess(groupname)
+				view.onDeleteBasketGroupIngredientSuccess(groupName)
 			}
 			.addOnFailureListener { view.onDeleteBasketGroupIngredientFailure(it.message ?: "통신오류") }
+	}
+
+	fun postBasketGroup(groupName: String) {
+		database.collection("ListData")
+			.document(FirebaseAuth.getInstance().uid.toString())
+			.collection("BasketList")
+			.document()
+			.set(hashMapOf("groupName" to groupName))
+			.addOnSuccessListener {
+				view.onPostBasketGroupSuccess()
+			}
 	}
 }

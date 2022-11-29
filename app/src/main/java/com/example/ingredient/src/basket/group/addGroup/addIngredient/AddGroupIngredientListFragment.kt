@@ -1,8 +1,7 @@
-package com.example.ingredient.src.basket.group.add_ingredient
+package com.example.ingredient.src.basket.group.addGroup.addIngredient
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,11 +11,11 @@ import com.example.ingredient.databinding.FragmentAddIngredientListBinding
 import com.example.ingredient.src.expirationDate.add_ingredient.models.CategoryIngrediets
 
 class AddGroupIngredientListFragment () : Fragment() {
-    private var addgroupingredientView:AddGroupIngredientsActivity? = null
+    private var addgroupingredientView: AddGroupIngredientsActivity? = null
     private var _binding: FragmentAddIngredientListBinding? = null
     private val binding get() = _binding!!
     private var ingredients:CategoryIngrediets? = null
-    private lateinit var ingredientRecyclerViewadApter:AddGroupIngredientListAdapter
+    private lateinit var ingredientRecyclerViewadApter: AddGroupIngredientListAdapter
     //var ingredients: CategoryIngrediets? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -1,4 +1,4 @@
-package com.example.ingredient.src.basket.group.add_ingredient
+package com.example.ingredient.src.basket.group.addGroup.addIngredient
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -15,7 +15,6 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QueryDocumentSnapshot
-import com.google.firebase.firestore.QuerySnapshot
 
 class AddGroupIngredientsActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAddGroupIngredientsBinding

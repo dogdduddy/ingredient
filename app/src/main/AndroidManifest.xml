@@ -30,14 +30,14 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".src.basket.group.add_ingredient.AddGroupIngredientsActivity"
+            android:name=".src.basket.group.addGroup.addIngredient.AddGroupIngredientsActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".src.basket.group.GroupAddIngredientsActivity"
+            android:name=".src.basket.group.addGroup.GroupAddIngredientsActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"

@@ -15,7 +15,7 @@ import com.example.ingredient.src.basket.models.BasketIngredient
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
-class BasketGroupAdapter: RecyclerView.Adapter<BasketGroupAdapter.ViewHolder>() {
+class GroupAdapter: RecyclerView.Adapter<GroupAdapter.ViewHolder>() {
     private var context: Context? = null
     private lateinit var DataList: ArrayList<BasketIngredient>
 

@@ -60,6 +60,14 @@ class TotalIngredientsFragment: Fragment(), BasketView {
         TODO("Not yet implemented")
     }
 
+    override fun onPostBasketGroupSuccess() {
+        TODO("Not yet implemented")
+    }
+
+    override fun onPostBasketGroupFailure(message: String) {
+        TODO("Not yet implemented")
+    }
+
     override fun onDeleteBasketGroupListSuccess(response: String) {
         TODO("Not yet implemented")
     }

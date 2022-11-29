@@ -1,12 +1,8 @@
-package com.example.ingredient.src.basket.group
+package com.example.ingredient.src.basket.group.addGroup
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.RadioButton
 import androidx.recyclerview.widget.RecyclerView
-import com.example.ingredient.R
-import com.example.ingredient.databinding.ActivityGroupAddIngredientsBinding
 import com.example.ingredient.databinding.ItemGroupAddBinding
 
 class GroupAddIngredientsAdapter: RecyclerView.Adapter<GroupAddIngredientsAdapter.ViewHolder>() {
@@ -16,7 +12,7 @@ class GroupAddIngredientsAdapter: RecyclerView.Adapter<GroupAddIngredientsAdapte
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): GroupAddIngredientsAdapter.ViewHolder {
+    ): ViewHolder {
         val binding = ItemGroupAddBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(binding)
     }

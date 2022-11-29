@@ -1,4 +1,4 @@
-package com.example.ingredient.src.basket.group.add_ingredient
+package com.example.ingredient.src.basket.group.addGroup.addIngredient
 
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide

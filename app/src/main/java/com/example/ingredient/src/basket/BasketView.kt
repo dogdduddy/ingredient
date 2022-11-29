@@ -7,6 +7,8 @@ interface BasketView {
 
 	fun onGetBasketGroupSuccess(response: ArrayList<String>)
 	fun onGetBasketGroupFailure(message: String)
+	fun onPostBasketGroupSuccess()
+	fun onPostBasketGroupFailure(message: String)
 
 	fun onDeleteBasketGroupListSuccess(response: String)
 	fun onDeleteBasketGroupIngredientSuccess(response: String)
