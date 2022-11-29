@@ -14,7 +14,6 @@ class BasketService(val view:BasketView) {
 			.collection("Basket")
 			.get()
 			.addOnSuccessListener { documents ->
-				basketData.clear()
 				for(document in documents) {
 					basketData.add(
 						BasketIngredient(

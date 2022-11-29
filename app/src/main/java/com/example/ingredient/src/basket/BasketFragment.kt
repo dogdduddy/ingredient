@@ -11,10 +11,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
-interface BasketView {
-    fun onGetFridgeSuccess(response: ArrayList<BasketIngredient>)
-    fun onGetFridgeFailure(message: String)
-}
+
 
 class BasketFragment : Fragment(), BasketView {
 
