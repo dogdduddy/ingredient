@@ -24,6 +24,8 @@ interface AddIngredientView {
 
     fun onGetSearchCategoryIngredietSuccess(response: ArrayList<CategoryIngrediets>)
     fun onGetSearchCategoryIngredietFailure(message: String)
+
+    fun test(response: ArrayList<CategoryIngrediets>)
 }
 
 class AddGroupIngredientsActivity : AppCompatActivity(), AddIngredientView {
@@ -162,36 +164,9 @@ class AddGroupIngredientsActivity : AppCompatActivity(), AddIngredientView {
         TabLayoutMediator(binding.groupAddTablayout, viewPager) { tab, position ->
             tab.text = response[position].ingredientCategoryName
         }.attach()
+        Log.d("testT", "viewpagerInit : ${response}")
         ingredientViewPagerAdapter.submitList(response)
     }
-    /*
-    // 검색의 결과를 받아서 출력하는 메서드
-    // 첫 시작은 onCreate에서 ""의 겸색 결과를 넘기도록 코드 삽입 예정 => 전체 출력
-    fun ViewPagerInit(response:ArrayList<CategoryIngrediets>) {
-        viewPager = binding.groupAddViewpager
-        ingredientViewPagerAdapter = AddGroupIngredientViewPagerAdapter(this, this)
-        viewPager.adapter = ingredientViewPagerAdapter
-
-        // 임시 카테고리 이름 데이터
-        var tablayerName = ArrayList<String>()
-
-        // 재료 리스트를 적용 및 카테고리만 추출
-        ingredients.clear()
-
-        response.forEach {
-            ingredients.add(it)
-            tablayerName.add(it.ingredientCategoryName)
-        }
-
-        // 카테고리 적용
-        TabLayoutMediator(binding.groupAddTablayout, viewPager) { tab, position ->
-            tab.text = tablayerName[position]
-        }.attach()
-        Log.d("test", "${ingredients}")
-        ingredientViewPagerAdapter.submitList(ingredients)
-    }
-
-     */
 
     fun addingredientClick(ingredient: Ingredient) {
         if(!pickingredients.contains(ingredient)) {
@@ -215,98 +190,6 @@ class AddGroupIngredientsActivity : AppCompatActivity(), AddIngredientView {
             }, 0)
         }
     }
-
-    /*
-    // 최신 08.22
-    // 1. 쿼리를 통한 결과(Category Document List)를 반복문으로 돌림
-    // 2. 각 카테고리의 ingredientList를 가져와 ingredientQuery 메서드 에서 재료리스트의 재료들을 ingredients collection에서 불러옴
-    // 3. categoryMerge 메서드 에서 해당 재료 리스트와 Category를 결합함
-    // categoryList는 공유 변수로 두고 이용함.
-    fun getIngredientsInit() {
-        val refs = database.collection("Category")
-        var categoryList = ArrayList<CategoryIngrediets>()
-
-        // 3번
-        fun categoryMerge(document:QueryDocumentSnapshot, ingredientList:MutableList<Ingredient>) {
-            categoryList.add(CategoryIngrediets(
-                document.get("categoryid").toString().toInt(),
-                document.get("categoryname").toString(),
-                ingredientList as List<Ingredient>
-            ))
-            ViewPagerInit(categoryList)
-        }
-        // 2번
-        fun ingredientQuery(document:QueryDocumentSnapshot, list:List<String>) {
-            var ingredientList = mutableListOf<Ingredient>()
-            for (i in 0 until list.size step 10) {
-                var temp = listOf<String>()
-                if(i/10 == list.size/10) {
-                    temp = list.subList(i,list.size)
-                }else {
-                    temp = list.subList(i,i+10)
-                }
-                database.collection("ingredients")
-                    .whereIn("ingredientname", temp)
-                    .get()
-                    .addOnSuccessListener { doc ->
-                        doc.forEach {
-                            ingredientList.add(
-                                Ingredient(
-                                    it.get("ingredienticon").toString(),
-                                    it.get("ingredientidx").toString().toInt(),
-                                    it.get("ingredientname").toString(),
-                                    it.get("ingredientcategory").toString()
-                                )
-                            )
-                        }
-                    }
-            }
-            categoryMerge(document, ingredientList)
-        }
-
-        // Category Collection 쿼리
-        refs.get()
-            .addOnSuccessListener { documents ->
-                var sortedDocs = documents.sortedBy { it.get("categoryid").toString().toInt() }
-                for (document in sortedDocs) {
-                    ingredientQuery(document,(document.get("ingredientlist") as List<String>))
-                }
-            }
-    }
-
-    // Firetore DocumentSnapshot to Categoryingrediets
-    fun getIngredients(keyword: String) {
-        val refs = database.collection("ingredients")
-        // 검색 통해 나온 재료를 담는 리스트
-        refs.orderBy("ingredientname").startAt(keyword).endAt(keyword+ "\uf8ff")
-            .get()
-            .addOnSuccessListener { doc ->
-                var ingredientList = mutableListOf<Ingredient>()
-                doc.forEach {
-                    ingredientList.add(
-                        Ingredient(
-                            it.get("ingredienticon").toString(),
-                            it.get("ingredientidx").toString().toInt(),
-                            it.get("ingredientname").toString(),
-                            it.get("ingredientcategory").toString()
-                        )
-                    )
-                }
-                var temt = arrayListOf<CategoryIngrediets>()
-                ingredients.forEachIndexed { i, v ->
-                    temt.add(
-                        CategoryIngrediets(
-                            v.ingredientCategoryIdx,
-                            v.ingredientCategoryName,
-                            if(i==0) ingredientList else v.ingredientList
-                        )
-                    )
-                }
-                ViewPagerInit(temt)
-            }
-    }
-
-     */
     override fun onStart() {
         super.onStart()
         binding.groupAddIngredientSearch.setOnEditorActionListener { v, actionId, event ->
@@ -334,5 +217,10 @@ class AddGroupIngredientsActivity : AppCompatActivity(), AddIngredientView {
 
     override fun onGetSearchCategoryIngredietFailure(message: String) {
         Log.d("Basket", "onGetSearchCategoryIngredietFailure : $message")
+    }
+
+    override fun test(response: ArrayList<CategoryIngrediets>) {
+        Log.d("testT", "test : ${response}")
+        ingredientViewPagerAdapter.submitList(response)
     }
 }
