@@ -5,6 +5,7 @@ import com.example.ingredient.src.expirationDate.add_ingredient.AddIngredientVie
 import com.example.ingredient.src.expirationDate.add_ingredient.models.CategoryIngrediets
 import com.example.ingredient.src.expirationDate.add_ingredient.models.Ingredient
 import com.google.android.material.tabs.TabLayoutMediator
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.*
 import com.google.firebase.firestore.ktx.toObject
 import kotlinx.coroutines.CoroutineScope
@@ -15,11 +16,10 @@ import kotlinx.coroutines.tasks.await
 
 class IngredientService(val view: AddIngredientView) {
 	private val database = FirebaseFirestore.getInstance()
-
+	private val uid = FirebaseAuth.getInstance().uid!!
+	// Category Init
 	fun GetCategoryIngrediets() {
-		// 검색 통해 나온 레시피명을 담는 리스트
 		database.collection("Category").get().addOnSuccessListener { documents ->
-			Log.d("testT", "inGetCategoryIngrediets")
 			var response = ArrayList<CategoryIngrediets>()
 			var sortedDocs = documents.sortedBy { it.get("categoryid").toString().toInt() }
 
@@ -72,13 +72,12 @@ class IngredientService(val view: AddIngredientView) {
 						response[index].ingredientList = ingredientlist
 					}
 				}.join()
-
-				Log.d("testT", "testResponse: $response")
-				view.test(response)
+				view.onGetCategoryIngredietListSuccess(response)
 			}
 		}
 	}
 
+	// 재료 검색
 	fun GetSearchCategoryIngrediets(keyword: String, ingredients: ArrayList<CategoryIngrediets>) {
 		//database.collection("ingredients").orderBy("ingredientname").startAt(keyword).endAt(keyword+ "\uf8ff")
 		database.collection("ingredients").whereEqualTo("ingredientname", keyword)
@@ -107,6 +106,85 @@ class IngredientService(val view: AddIngredientView) {
 					)
 				}
 				view.onGetSearchCategoryIngredietSuccess(response)
+			}
+	}
+	fun PostIngredients(group:String, pickingredients: MutableList<Ingredient>) {
+		database.collection("ListData")
+			.document(uid)
+			.collection("Basket")
+			.whereEqualTo("groupName", group)
+			.get()
+			.addOnSuccessListener { documents ->
+				// 해당 그룹에 재료가 없을 때
+				if(documents.isEmpty()) {
+					pickingredients.forEach {
+						var hash = hashMapOf(
+							"ingredienticon" to it.ingredientIcon,
+							"ingredientidx" to it.ingredientIdx,
+							"ingredientname" to it.ingredientName,
+							"ingredientcategory" to it.ingredientCategory,
+							"groupName" to group,
+							"ingredientquantity" to 1
+						)
+						database.collection("ListData")
+							.document(FirebaseAuth.getInstance().uid!!)
+							.collection("Basket")
+							.document()
+							.set(hash)
+					}
+				}
+				// 해당 그룹에 재료가 있을 때
+				else {
+					var values = arrayListOf<Ingredient>()
+					for (document in documents) {
+						document.data.apply {
+							values.add(
+								Ingredient(
+									get("ingredienticon").toString(),
+									get("ingredientidx").toString().toInt(),
+									get("ingredientname").toString(),
+									get("ingredientcategory").toString()
+								)
+							)
+						}
+					}
+					pickingredients.forEachIndexed { index, ingredient ->
+						var number = values.indexOf(ingredient)
+						// 중복 재료가 있을 때
+						if(number != -1) {
+							Log.d("AddTest", "Match Data")
+							database.collection("ListData")
+								.document(uid)
+								.collection("Basket")
+								.document(documents.documents[number].reference.id)
+								.update(
+									mapOf(
+										"ingredientquantity" to documents.documents[number].data!!.get(
+											"ingredientquantity"
+										).toString().toInt() + 1
+									)
+								)
+						}
+						// 중복 재료가 없을 때
+						else {
+							var ingredient = pickingredients[index]
+							var hash = hashMapOf(
+								"ingredienticon" to ingredient.ingredientIcon,
+								"ingredientidx" to ingredient.ingredientIdx,
+								"ingredientname" to ingredient.ingredientName,
+								"ingredientcategory" to ingredient.ingredientCategory,
+								"groupName" to group,
+								"ingredientquantity" to 1
+							)
+							database.collection("ListData")
+								.document(uid)
+								.collection("Basket")
+								.document()
+								.set(hash)
+						}
+					}
+				}
+				view.onPostGroupIngredientSuccess()
 			}
 	}
 }

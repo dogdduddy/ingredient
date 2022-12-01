@@ -51,7 +51,7 @@ class BasketService(val view:BasketView) {
 			}
 	}
 
-	fun deleteBasketGroup(groupName: String) {
+	fun deleteBasketGroup(groupName: String, position: Int) {
 		database.collection("ListData")
 			.document(userid!!)
 			.collection("Basket")
@@ -73,7 +73,7 @@ class BasketService(val view:BasketView) {
 				for(document in it) {
 					document.reference.delete()
 				}
-				view.onDeleteBasketGroupIngredientSuccess(groupName)
+				view.onDeleteBasketGroupIngredientSuccess(groupName, position)
 			}
 			.addOnFailureListener { view.onDeleteBasketGroupIngredientFailure(it.message ?: "통신오류") }
 	}

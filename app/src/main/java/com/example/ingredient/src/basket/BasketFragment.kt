@@ -1,13 +1,13 @@
 package com.example.ingredient.src.basket
 
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import com.example.ingredient.databinding.FragmentBasketBinding
 import com.example.ingredient.src.basket.models.BasketIngredient
 import com.google.android.material.tabs.TabLayoutMediator
-
 
 
 class BasketFragment : Fragment(), BasketView {
@@ -24,7 +24,7 @@ class BasketFragment : Fragment(), BasketView {
     ): View? {
         _binding = FragmentBasketBinding.inflate(layoutInflater, container, false)
         viewPager = binding.basketViewpager
-        basketViewPagerAdapter = BasketViewPagerAdapter(this)
+        basketViewPagerAdapter = BasketViewPagerAdapter(this, this)
         viewPager.adapter = basketViewPagerAdapter
 
         // 임시 카테고리 이름 데이터
@@ -43,16 +43,23 @@ class BasketFragment : Fragment(), BasketView {
     fun UpdateData(data : ArrayList<BasketIngredient>) {
         basketViewPagerAdapter.submitList(data)
     }
+
     companion object {
         fun newInstance() = BasketFragment()
     }
 
     override fun onGetBasketSuccess(response: ArrayList<BasketIngredient>) {
+        Log.d("testT", "onGetBasketSuccess")
         UpdateData(response)
     }
 
     override fun onGetBasketFailure(message: String) {
         TODO("Not yet implemented")
+    }
+
+    override fun itemDeleteListener() {
+        Log.d("testT", "groupRemove 2")
+        BasketService(this@BasketFragment).getBasket()
     }
 
     override fun onGetBasketGroupSuccess(response: ArrayList<String>) {
@@ -75,7 +82,7 @@ class BasketFragment : Fragment(), BasketView {
         TODO("Not yet implemented")
     }
 
-    override fun onDeleteBasketGroupIngredientSuccess(response: String) {
+    override fun onDeleteBasketGroupIngredientSuccess(response: String, position: Int) {
         TODO("Not yet implemented")
     }
 

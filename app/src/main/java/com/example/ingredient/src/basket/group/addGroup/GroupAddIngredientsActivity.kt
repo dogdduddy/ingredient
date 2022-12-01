@@ -88,6 +88,10 @@ class GroupAddIngredientsActivity : AppCompatActivity(), BasketView {
         TODO("Not yet implemented")
     }
 
+    override fun itemDeleteListener() {
+        TODO("Not yet implemented")
+    }
+
     override fun onGetBasketGroupSuccess(response: ArrayList<String>) {
         groupList.clear()
         groupList.addAll(response)
@@ -111,7 +115,7 @@ class GroupAddIngredientsActivity : AppCompatActivity(), BasketView {
         TODO("Not yet implemented")
     }
 
-    override fun onDeleteBasketGroupIngredientSuccess(response: String) {
+    override fun onDeleteBasketGroupIngredientSuccess(response: String, position: Int) {
         TODO("Not yet implemented")
     }
 

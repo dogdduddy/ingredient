@@ -9,6 +9,7 @@ import android.widget.FrameLayout
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ingredient.R
@@ -23,6 +24,8 @@ class GroupIngredientsAdapter(mCallback:onGroupDrawClickListener) : RecyclerView
     private var basketDataList = ArrayList<ArrayList<Any>>()
     private var click = true
     private val mCallback = mCallback
+    private lateinit var listener : BasketView
+    private var fa: Fragment? = null
     override fun getItemCount(): Int = basketList.size
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -39,7 +42,7 @@ class GroupIngredientsAdapter(mCallback:onGroupDrawClickListener) : RecyclerView
         }
         holder.removeBtn.setOnClickListener {
             (holder.recyclerView.adapter as GroupAdapter).apply {
-                groupRemove(basketList[position])
+                groupRemove(position)
             }
         }
         holder.drawBtn.setOnClickListener {
@@ -92,6 +95,10 @@ class GroupIngredientsAdapter(mCallback:onGroupDrawClickListener) : RecyclerView
         notifyDataSetChanged()
     }
 
+    fun submitListener(listener: BasketView) {
+        this.listener = listener
+    }
+
     fun dataGrouping() {
         basketDataList.clear()
         basketList.forEach { groupName ->
@@ -101,9 +108,10 @@ class GroupIngredientsAdapter(mCallback:onGroupDrawClickListener) : RecyclerView
         }
     }
 
-    fun groupRemove(groupName:String) {
+    fun groupRemove(position:Int) {
         // 해당 그룹 재료 삭제
-        BasketService(this).deleteBasketGroup(groupName)
+        Log.d("testT", "groupRemove 1")
+        BasketService(this).deleteBasketGroup(basketList[position], position)
     }
 
     interface onGroupDrawClickListener {
@@ -116,6 +124,10 @@ class GroupIngredientsAdapter(mCallback:onGroupDrawClickListener) : RecyclerView
     }
 
     override fun onGetBasketFailure(message: String) {
+        TODO("Not yet implemented")
+    }
+
+    override fun itemDeleteListener() {
         TODO("Not yet implemented")
     }
 
@@ -137,14 +149,15 @@ class GroupIngredientsAdapter(mCallback:onGroupDrawClickListener) : RecyclerView
 
     override fun onDeleteBasketGroupListSuccess(groupName: String) {
         Log.d("Basket", "그룹 삭제 성공")
+        listener.itemDeleteListener()
     }
 
-    override fun onDeleteBasketGroupIngredientSuccess(groupName : String) {
+    override fun onDeleteBasketGroupIngredientSuccess(groupName : String, position: Int) {
         basketData.filter { it.groupName == groupName }.let { it1 ->
             basketData.removeAll(it1)
         }
         basketList.remove(groupName)
-        notifyDataSetChanged()
+        notifyItemRemoved(position)
     }
 
     override fun onDeleteBasketGroupListFailure(message: String) {

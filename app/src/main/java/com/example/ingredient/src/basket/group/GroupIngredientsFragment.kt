@@ -54,9 +54,10 @@ class GroupIngredientsFragment: Fragment(), GroupIngredientsAdapter.onGroupDrawC
         startActivity(intent)
     }
 
-    fun submitList(basketData: ArrayList<BasketIngredient>) {
+    fun submitList(basketData: ArrayList<BasketIngredient>, listener: BasketView) {
         this.basketData = basketData
         adapter.submitList(basketData, basketList)
+        adapter.submitListener(listener)
     }
 
     override fun onGroupDrawOpen() {
@@ -83,6 +84,10 @@ class GroupIngredientsFragment: Fragment(), GroupIngredientsAdapter.onGroupDrawC
         TODO("Not yet implemented")
     }
 
+    override fun itemDeleteListener() {
+        TODO("Not yet implemented")
+    }
+
     override fun onGetBasketGroupSuccess(response: ArrayList<String>) {
         basketList = response
         adapter.submitList(basketData!!, response)
@@ -104,7 +109,7 @@ class GroupIngredientsFragment: Fragment(), GroupIngredientsAdapter.onGroupDrawC
         TODO("Not yet implemented")
     }
 
-    override fun onDeleteBasketGroupIngredientSuccess(response: String) {
+    override fun onDeleteBasketGroupIngredientSuccess(response: String, position: Int) {
         TODO("Not yet implemented")
     }
 

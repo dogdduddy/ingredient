@@ -16,6 +16,7 @@ class TotalIngredientsFragment: Fragment(), BasketView {
     private var _binding : FragmentTotalingredientsBinding? = null
     private val binding get()  = _binding!!
     private var basketList = ArrayList<BasketIngredient>()
+    private var adapter = TotalIngredientsAdapter()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -23,7 +24,6 @@ class TotalIngredientsFragment: Fragment(), BasketView {
     ): View? {
         _binding = FragmentTotalingredientsBinding.inflate(layoutInflater, container, false)
         var recyclerView = binding.totalRecyclerview
-        var adapter = TotalIngredientsAdapter()
         recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         recyclerView.adapter = adapter
 
@@ -42,6 +42,7 @@ class TotalIngredientsFragment: Fragment(), BasketView {
 
     fun submitList(basketData: ArrayList<BasketIngredient>) {
         this.basketList = basketData
+        adapter.submitList(basketList)
     }
 
     override fun onGetBasketSuccess(response: ArrayList<BasketIngredient>) {
@@ -49,6 +50,10 @@ class TotalIngredientsFragment: Fragment(), BasketView {
     }
 
     override fun onGetBasketFailure(message: String) {
+        TODO("Not yet implemented")
+    }
+
+    override fun itemDeleteListener() {
         TODO("Not yet implemented")
     }
 
@@ -72,7 +77,7 @@ class TotalIngredientsFragment: Fragment(), BasketView {
         TODO("Not yet implemented")
     }
 
-    override fun onDeleteBasketGroupIngredientSuccess(response: String) {
+    override fun onDeleteBasketGroupIngredientSuccess(response: String, position: Int) {
         TODO("Not yet implemented")
     }
 

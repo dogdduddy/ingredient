@@ -25,7 +25,11 @@ interface AddIngredientView {
     fun onGetSearchCategoryIngredietSuccess(response: ArrayList<CategoryIngrediets>)
     fun onGetSearchCategoryIngredietFailure(message: String)
 
-    fun test(response: ArrayList<CategoryIngrediets>)
+    fun onGetCategoryIngredietListSuccess(response: ArrayList<CategoryIngrediets>)
+    fun onGetCategoryIngredietListFailure(message: String)
+
+    fun onPostGroupIngredientSuccess()
+    fun onPostGroupIngredientFailure(message: String)
 }
 
 class AddGroupIngredientsActivity : AppCompatActivity(), AddIngredientView {
@@ -62,7 +66,7 @@ class AddGroupIngredientsActivity : AppCompatActivity(), AddIngredientView {
         binding.groupAddIngredientSearchBtn.setOnClickListener {
             var input = binding.groupAddIngredientSearch.text.toString()
             if(input.isNullOrBlank())
-                IngredientService(this).GetCategoryIngrediets()
+                ViewPagerInit(ingredients)
              else
                 IngredientService(this).GetSearchCategoryIngrediets(input, ingredients)
             binding.groupAddIngredientSearch.setText("")
@@ -73,85 +77,7 @@ class AddGroupIngredientsActivity : AppCompatActivity(), AddIngredientView {
         binding.groupAddPickingredientsave.setOnClickListener {
             if(pickingredients.isNotEmpty()) {
                 var group = intent.extras!!.get("groupName").toString()
-                database.collection("ListData")
-                    .document(FirebaseAuth.getInstance().uid!!)
-                    .collection("Basket")
-                    .whereEqualTo("groupName", group)
-                    .get()
-                    .addOnSuccessListener { documents ->
-                        // 해당 그룹에 재료가 없을 때
-                        if(documents.isEmpty()) {
-                            pickingredients.forEach {
-                                var hash = hashMapOf(
-                                    "ingredienticon" to it.ingredientIcon,
-                                    "ingredientidx" to it.ingredientIdx,
-                                    "ingredientname" to it.ingredientName,
-                                    "ingredientcategory" to it.ingredientCategory,
-                                    "groupName" to group,
-                                    "ingredientquantity" to 1
-                                )
-                                database.collection("ListData")
-                                    .document(FirebaseAuth.getInstance().uid!!)
-                                    .collection("Basket")
-                                    .document()
-                                    .set(hash)
-                            }
-                        }
-                        // 해당 그룹에 재료가 있을 때
-                        else {
-                            var values = arrayListOf<Ingredient>()
-                            for (document in documents) {
-                                document.data.apply {
-                                    values.add(
-                                        Ingredient(
-                                            get("ingredienticon").toString(),
-                                            get("ingredientidx").toString().toInt(),
-                                            get("ingredientname").toString(),
-                                            get("ingredientcategory").toString()
-                                        )
-                                    )
-                                }
-                            }
-                            pickingredients.forEachIndexed { index, ingredient ->
-                                var number = values.indexOf(ingredient)
-                                // 중복 재료가 있을 때
-                                if(number != -1) {
-                                    Log.d("AddTest", "Match Data")
-                                    database.collection("ListData")
-                                        .document(FirebaseAuth.getInstance().uid!!)
-                                        .collection("Basket")
-                                        .document(documents.documents[number].reference.id)
-                                        .update(
-                                            mapOf(
-                                                "ingredientquantity" to documents.documents[number].data!!.get(
-                                                    "ingredientquantity"
-                                                ).toString().toInt() + 1
-                                            )
-                                        )
-                                }
-                                // 중복 재료가 없을 때
-                                else {
-                                    var ingredient = pickingredients[index]
-                                    var hash = hashMapOf(
-                                        "ingredienticon" to ingredient.ingredientIcon,
-                                        "ingredientidx" to ingredient.ingredientIdx,
-                                        "ingredientname" to ingredient.ingredientName,
-                                        "ingredientcategory" to ingredient.ingredientCategory,
-                                        "groupName" to group,
-                                        "ingredientquantity" to 1
-                                    )
-                                    database.collection("ListData")
-                                        .document(FirebaseAuth.getInstance().uid!!)
-                                        .collection("Basket")
-                                        .document()
-                                        .set(hash)
-                                }
-                            }
-                        }
-                    }
-                intent = Intent(this, MainActivity::class.java)
-                intent.putExtra("fragment", "basket")
-                startActivity(intent)
+                IngredientService(this).PostIngredients(group, pickingredients)
             }
         }
     }
@@ -219,8 +145,22 @@ class AddGroupIngredientsActivity : AppCompatActivity(), AddIngredientView {
         Log.d("Basket", "onGetSearchCategoryIngredietFailure : $message")
     }
 
-    override fun test(response: ArrayList<CategoryIngrediets>) {
-        Log.d("testT", "test : ${response}")
+    override fun onGetCategoryIngredietListSuccess(response: ArrayList<CategoryIngrediets>) {
         ingredientViewPagerAdapter.submitList(response)
     }
+
+    override fun onGetCategoryIngredietListFailure(message: String) {
+        Log.d("Basket", "onGetCategoryIngredietListFailure : $message")
+    }
+
+    override fun onPostGroupIngredientSuccess() {
+        intent = Intent(this, MainActivity::class.java)
+        intent.putExtra("fragment", "basket")
+        startActivity(intent)
+    }
+
+    override fun onPostGroupIngredientFailure(message: String) {
+    Log.d("Basket", "onPostGroupIngredientFailure : $message")
+    }
+
 }
