@@ -44,9 +44,13 @@ class GroupAddIngredientsActivity : AppCompatActivity(), BasketView {
         }
         // 재료 추가 (선택 그룹 넘기기)
         binding.addgroupRadioBtn.setOnClickListener {
-            var intent = Intent(context, AddGroupIngredientsActivity::class.java)
-            intent.putExtra("groupName", groupList[adapter.selecCheck().indexOf(1)])
-            startActivity(intent)
+            if(groupList.isNullOrEmpty()) {
+                Toast.makeText(context, "그룹을 추가해주세요.", Toast.LENGTH_SHORT).show()
+            } else {
+                var intent = Intent(context, AddGroupIngredientsActivity::class.java)
+                intent.putStringArrayListExtra("groupList", groupList)
+                startActivity(intent)
+            }
         }
 
         // 새그룹 추가
