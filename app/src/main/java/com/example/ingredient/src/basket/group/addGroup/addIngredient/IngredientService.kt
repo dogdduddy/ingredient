@@ -1,11 +1,11 @@
 package com.example.ingredient.src.basket.group.addGroup.addIngredient
 
 import android.util.Log
+import com.example.ingredient.src.expirationDate.add_ingredient.AddIngredientViewPagerAdapter
 import com.example.ingredient.src.expirationDate.add_ingredient.models.CategoryIngrediets
 import com.example.ingredient.src.expirationDate.add_ingredient.models.Ingredient
-import com.google.firebase.firestore.DocumentReference
-import com.google.firebase.firestore.DocumentSnapshot
-import com.google.firebase.firestore.FirebaseFirestore
+import com.google.android.material.tabs.TabLayoutMediator
+import com.google.firebase.firestore.*
 import com.google.firebase.firestore.ktx.toObject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -15,6 +15,7 @@ import kotlinx.coroutines.tasks.await
 
 class IngredientService(val view: AddIngredientView) {
 	private val database = FirebaseFirestore.getInstance()
+
 	fun GetCategoryIngrediets() {
 		// 검색 통해 나온 레시피명을 담는 리스트
 		database.collection("Category").get().addOnSuccessListener { documents ->
@@ -35,24 +36,38 @@ class IngredientService(val view: AddIngredientView) {
 					response.add(category)
 				}
 			}
+			var ingredientListDocID = ArrayList<List<String>>()
+			ingredientListRef.forEachIndexed { index, v ->
+				ingredientListDocID.add(v.map { it.id })
+			}
 			view.onGetCategoryIngredietSuccess(response)
 			CoroutineScope(Dispatchers.Main).launch {
 				launch {
-					ingredientListRef.forEachIndexed { index, documentReferences ->
+					ingredientListDocID.forEachIndexed { index, documents ->
+						var responseList = mutableListOf<QueryDocumentSnapshot>()
+						for (i in 0 until documents.size step 10) {
+							var temp = listOf<String>()
+							if (i / 10 == documents.size / 10) {
+								temp = documents.subList(i, documents.size)
+							} else {
+								temp = documents.subList(i, i + 10)
+							}
+							responseList.addAll(
+								database.collection("ingredients")
+									.whereIn(FieldPath.documentId(), temp)
+									.get().await().toMutableList()
+							)
+						}
 						var ingredientlist = arrayListOf<Ingredient>()
-						documentReferences.forEach { documentReference ->
-							Log.d("testT", "Next - in forEach")
-							documentReference.get().addOnSuccessListener { documentSnapshot ->
-								ingredientlist.add(
-									Ingredient(
-										documentSnapshot.get("ingredienticon").toString(),
-										documentSnapshot.get("ingredientidx").toString().toInt(),
-										documentSnapshot.get("ingredientname").toString(),
-										documentSnapshot.get("ingredientcategory").toString()
-									)
+						responseList.forEach { doc ->
+							ingredientlist.add(
+								Ingredient(
+									doc.get("ingredienticon").toString(),
+									doc.get("ingredientidx").toString().toInt(),
+									doc.get("ingredientname").toString(),
+									doc.get("ingredientcategory").toString()
 								)
-							}.await()
-							Log.d("testT", "Next - in forEach Data ${ingredientlist}")
+							)
 						}
 						response[index].ingredientList = ingredientlist
 					}
@@ -63,46 +78,7 @@ class IngredientService(val view: AddIngredientView) {
 			}
 		}
 	}
-	/*
-	fun GetCategoryIngrediets() {
-		// 검색 통해 나온 레시피명을 담는 리스트
-		database.collection("Category").get().addOnSuccessListener { documents ->
-			Log.d("testT", "inGetCategoryIngrediets")
-				var response = ArrayList<CategoryIngrediets>()
-				var sortedDocs = documents.sortedBy { it.get("categoryid").toString().toInt() }
-				for (document in sortedDocs) {
-					Log.d("testT", "insortedDocs")
-					var ingredientlist = arrayListOf<Ingredient>()
-					document.data.apply {
 
-						(get("ingredientlist") as List<DocumentReference>).forEach {
-							it.get().addOnSuccessListener { document ->
-								ingredientlist.add(
-									Ingredient(
-										document.get("ingredienticon").toString(),
-										document.get("ingredientidx").toString().toInt(),
-										document.get("ingredientname").toString(),
-										document.get("ingredientcategory").toString()
-									)
-								)
-							}
-						}
-						var category = CategoryIngrediets(
-							get("categoryid").toString().toInt(),
-							get("categoryname").toString(),
-							ingredientlist
-						)
-						response.add(category)
-
-
-					}
-				}
-				Log.d("testT", "Service : $response")
-				view.onGetCategoryIngredietSuccess(response)
-			}
-	}
-
-	 */
 	fun GetSearchCategoryIngrediets(keyword: String, ingredients: ArrayList<CategoryIngrediets>) {
 		//database.collection("ingredients").orderBy("ingredientname").startAt(keyword).endAt(keyword+ "\uf8ff")
 		database.collection("ingredients").whereEqualTo("ingredientname", keyword)
