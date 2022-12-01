@@ -23,7 +23,6 @@ import com.google.firebase.firestore.QueryDocumentSnapshot
 class AddGroupIngredientsActivity : AppCompatActivity(), AddIngredientView {
     private lateinit var binding: ActivityAddGroupIngredientsBinding
     private lateinit var viewPager: ViewPager2
-    private lateinit var database: FirebaseFirestore
     private lateinit var ingredientViewPagerAdapter: AddGroupIngredientViewPagerAdapter
     private var pickingredients = mutableListOf<Ingredient>()
     private var ingredients = ArrayList<CategoryIngrediets>()
@@ -34,8 +33,6 @@ class AddGroupIngredientsActivity : AppCompatActivity(), AddIngredientView {
         binding = ActivityAddGroupIngredientsBinding.inflate(layoutInflater)
         setContentView(binding.root)
         imm = this.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
-
-        database = FirebaseFirestore.getInstance()
 
         // Categoty 및 재료 리스트 초기화
         IngredientService(this).GetCategoryIngrediets()
@@ -148,7 +145,7 @@ class AddGroupIngredientsActivity : AppCompatActivity(), AddIngredientView {
     }
 
     override fun onPostGroupIngredientFailure(message: String) {
-    Log.d("Basket", "onPostGroupIngredientFailure : $message")
+        Log.d("Basket", "onPostGroupIngredientFailure : $message")
     }
 
 }
