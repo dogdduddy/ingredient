@@ -18,19 +18,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QueryDocumentSnapshot
-interface AddIngredientView {
-    fun onGetCategoryIngredietSuccess(response: ArrayList<CategoryIngrediets>)
-    fun onGetCategoryIngredietFailure(message: String)
 
-    fun onGetSearchCategoryIngredietSuccess(response: ArrayList<CategoryIngrediets>)
-    fun onGetSearchCategoryIngredietFailure(message: String)
-
-    fun onGetCategoryIngredietListSuccess(response: ArrayList<CategoryIngrediets>)
-    fun onGetCategoryIngredietListFailure(message: String)
-
-    fun onPostGroupIngredientSuccess()
-    fun onPostGroupIngredientFailure(message: String)
-}
 
 class AddGroupIngredientsActivity : AppCompatActivity(), AddIngredientView {
     private lateinit var binding: ActivityAddGroupIngredientsBinding
