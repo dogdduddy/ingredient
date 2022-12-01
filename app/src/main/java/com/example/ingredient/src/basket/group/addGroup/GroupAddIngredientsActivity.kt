@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.ingredient.databinding.ActivityGroupAddIngredientsBinding
@@ -20,12 +21,14 @@ class GroupAddIngredientsActivity : AppCompatActivity(), BasketView {
     private var groupList = arrayListOf<String>()
     private var context: Context? = null
     private var adapter = GroupAddIngredientsAdapter()
+    private var imm: InputMethodManager? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityGroupAddIngredientsBinding.inflate(layoutInflater)
         setContentView(binding.root)
         context = this
+        imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
 
         groupList = intent.extras!!.getStringArrayList("groupList") as ArrayList<String>
 
@@ -51,6 +54,9 @@ class GroupAddIngredientsActivity : AppCompatActivity(), BasketView {
             binding.addgroupAddgroupBtn.visibility = View.GONE
             binding.addgroupGroupEdittext.visibility = View.VISIBLE
             binding.addgroupGroupsaveBtn.visibility = View.VISIBLE
+
+            IniteditTextFocus()
+            showKeyboard()
         }
 
         // 추가 새그룹 저장
@@ -80,6 +86,15 @@ class GroupAddIngredientsActivity : AppCompatActivity(), BasketView {
             handled
         }
     }
+
+    fun showKeyboard() {
+        imm?.showSoftInput(binding.addgroupGroupEdittext,0)
+    }
+
+    fun IniteditTextFocus() {
+        binding.addgroupGroupEdittext.requestFocus()
+    }
+
     override fun onGetBasketSuccess(response: ArrayList<BasketIngredient>) {
         TODO("Not yet implemented")
     }

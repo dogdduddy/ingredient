@@ -49,7 +49,6 @@ class BasketFragment : Fragment(), BasketView {
     }
 
     override fun onGetBasketSuccess(response: ArrayList<BasketIngredient>) {
-        Log.d("testT", "onGetBasketSuccess")
         UpdateData(response)
     }
 
@@ -58,7 +57,6 @@ class BasketFragment : Fragment(), BasketView {
     }
 
     override fun itemDeleteListener() {
-        Log.d("testT", "groupRemove 2")
         BasketService(this@BasketFragment).getBasket()
     }
 

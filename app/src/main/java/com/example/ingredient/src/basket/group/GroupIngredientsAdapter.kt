@@ -110,7 +110,6 @@ class GroupIngredientsAdapter(mCallback:onGroupDrawClickListener) : RecyclerView
 
     fun groupRemove(position:Int) {
         // 해당 그룹 재료 삭제
-        Log.d("testT", "groupRemove 1")
         BasketService(this).deleteBasketGroup(basketList[position], position)
     }
 
@@ -148,7 +147,6 @@ class GroupIngredientsAdapter(mCallback:onGroupDrawClickListener) : RecyclerView
     }
 
     override fun onDeleteBasketGroupListSuccess(groupName: String) {
-        Log.d("Basket", "그룹 삭제 성공")
         listener.itemDeleteListener()
     }
 

@@ -1,10 +1,12 @@
 package com.example.ingredient.src.basket.group
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.ingredient.databinding.FragmentGroupingredientsBinding
@@ -20,12 +22,14 @@ class GroupIngredientsFragment: Fragment(), GroupIngredientsAdapter.onGroupDrawC
     private var _binding : FragmentGroupingredientsBinding? = null
     private val binding get()  = _binding!!
     private val adapter = GroupIngredientsAdapter(this)
+    private var imm: InputMethodManager? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentGroupingredientsBinding.inflate(layoutInflater, container, false)
+        imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
 
         return binding.root
     }
@@ -47,7 +51,6 @@ class GroupIngredientsFragment: Fragment(), GroupIngredientsAdapter.onGroupDrawC
             addIngredientBtn()
         }
     }
-
     fun addIngredientBtn() {
         var intent = Intent(context, GroupAddIngredientsActivity::class.java)
         intent.putStringArrayListExtra("groupList", basketList)
