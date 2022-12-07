@@ -14,8 +14,8 @@ class AddIngredientViewHolder(val binding:ItemAddIngredientBinding)
 
     fun bindWithView(ingredient:Ingredient) {
         Glide.with(itemView)
-            .load(ingredient.ingredientIcon)
+            .load(ingredient.ingredienticon)
             .into(binding.icIngredientIcon)
-        binding.tvIngredientName.text = ingredient.ingredientName
+        binding.tvIngredientName.text = ingredient.ingredientname
     }
 }

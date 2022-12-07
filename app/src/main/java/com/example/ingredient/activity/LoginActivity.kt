@@ -337,6 +337,8 @@ class LoginActivity : AppCompatActivity() {
         intent.putExtra("email",user.email.toString())
         intent.putExtra("photo",user.photoUrl.toString())
         startActivity(intent)
+        //val intent2 = Intent(this, MainActivity2::class.java)
+        //startActivity(intent2)
         finish()
     }
     override fun onDestroy() {

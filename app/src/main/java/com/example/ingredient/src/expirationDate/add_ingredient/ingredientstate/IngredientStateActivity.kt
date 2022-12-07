@@ -42,9 +42,9 @@ class IngredientStateActivity : AppCompatActivity() {
                 Log.d("ExpiryList", ExpiryList.toString())
                 for(i in 0 until ExpiryList.size) {
                     var hashData = hashMapOf(
-                        "ingredienticon" to ExpiryList[i]!!.ingredient.ingredientIcon,
-                        "ingredientidx" to ExpiryList[i]!!.ingredient.ingredientIdx,
-                        "ingredientname" to ExpiryList[i]!!.ingredient.ingredientName,
+                        "ingredienticon" to ExpiryList[i]!!.ingredient.ingredienticon,
+                        "ingredientidx" to ExpiryList[i]!!.ingredient.ingredientidx,
+                        "ingredientname" to ExpiryList[i]!!.ingredient.ingredientname,
                         "expirydate" to ExpiryList[i]!!.expirydate,
                         "ingredientstatus" to ExpiryList[i]!!.ingredientstatus,
                         "storagestatus" to ExpiryList[i]!!.storagestatus,

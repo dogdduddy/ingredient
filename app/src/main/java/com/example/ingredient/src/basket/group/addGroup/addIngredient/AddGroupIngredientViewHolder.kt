@@ -10,8 +10,8 @@ class AddGroupIngredientViewHolder(val binding: ItemAddGroupingredientBinding)
 
     fun bindWithView(ingredient: Ingredient) {
         Glide.with(itemView)
-            .load(ingredient.ingredientIcon)
+            .load(ingredient.ingredienticon)
             .into(binding.groupAddIngredientIcon)
-        binding.groupAddIngredientName.text = ingredient.ingredientName
+        binding.groupAddIngredientName.text = ingredient.ingredientname
     }
 }

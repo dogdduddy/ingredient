@@ -32,9 +32,9 @@ class IngredientStateAdapter(val ingredients:ArrayList<Ingredient>, val activity
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.registerddate.text = "등록날짜 ${SimpleDateFormat("yyyy.MM.dd").format(Date())}"
-        holder.ingredientName.text = ingredients[position].ingredientName
+        holder.ingredientName.text = ingredients[position].ingredientname
         Glide.with(holder.itemView)
-            .load(ingredients[position].ingredientIcon)
+            .load(ingredients[position].ingredienticon)
             .into(holder.ingredientIcon)
         holder.ingredientGroup.setOnCheckedChangeListener { group, checkedId ->
             if(holder.storageGroup.checkedRadioButtonId != -1) {

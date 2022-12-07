@@ -85,12 +85,12 @@ class AddIngredientsActivity : AppCompatActivity(), AddIngredientView {
             pickingredients.add(ingredient)
             // 추가된 재료 리사이클러뷰에 추가 후 notification  =>  submitlist
             binding.pickingredientChip.addView(Chip(this).apply {
-                text = ingredient.ingredientName
+                text = ingredient.ingredientname
                 isCloseIconVisible = true
                 setOnCloseIconClickListener {
                     var ingredientNum:Int = 0
                     run { pickingredients.forEachIndexed {
-                            i, v -> if(v.ingredientName == this.text) {
+                            i, v -> if(v.ingredientname == this.text) {
                                 ingredientNum = i
                                 return@run
                             }
@@ -108,7 +108,7 @@ class AddIngredientsActivity : AppCompatActivity(), AddIngredientView {
 
         // 카테고리 적용
         TabLayoutMediator(binding.tabLayout, viewPager) { tab, position ->
-            tab.text = response[position].ingredientCategoryName
+            tab.text = response[position].categoryname
         }.attach()
 
         ingredientViewPagerAdapter.submitList(response)

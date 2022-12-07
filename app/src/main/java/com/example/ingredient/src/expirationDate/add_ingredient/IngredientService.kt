@@ -18,61 +18,14 @@ class IngredientService(val view: AddIngredientView) {
 	private val uid = FirebaseAuth.getInstance().uid!!
 	// Category Init
 	fun GetCategoryIngrediets() {
-		database.collection("Category").get().addOnSuccessListener { documents ->
-			var response = ArrayList<CategoryIngrediets>()
-			var sortedDocs = documents.sortedBy { it.get("categoryid").toString().toInt() }
-
-			var ingredientListRef = ArrayList<List<DocumentReference>>()
-			for (document in sortedDocs) {
-				var ingredientlist = arrayListOf<Ingredient>()
-				document.data.apply {
-					ingredientListRef.add(get("ingredientlist") as List<DocumentReference>)
-					var category = CategoryIngrediets(
-						get("categoryid").toString().toInt(),
-						get("categoryname").toString(),
-						ingredientlist
-					)
-					response.add(category)
-				}
-			}
-			var ingredientListDocID = ArrayList<List<String>>()
-			ingredientListRef.forEachIndexed { index, v ->
-				ingredientListDocID.add(v.map { it.id })
-			}
+		CoroutineScope(Dispatchers.Main ).launch {
+			var result = database.collection("Category")
+				.get()
+				.await()
+				.toObjects(CategoryIngrediets::class.java)
+			var response = arrayListOf<CategoryIngrediets>()
+			response.addAll(result.sortedBy { it.categoryid })
 			view.onGetCategoryIngredietSuccess(response)
-			CoroutineScope(Dispatchers.Main).launch {
-				launch {
-					ingredientListDocID.forEachIndexed { index, documents ->
-						var responseList = mutableListOf<QueryDocumentSnapshot>()
-						for (i in 0 until documents.size step 10) {
-							var temp = listOf<String>()
-							if (i / 10 == documents.size / 10) {
-								temp = documents.subList(i, documents.size)
-							} else {
-								temp = documents.subList(i, i + 10)
-							}
-							responseList.addAll(
-								database.collection("ingredients")
-									.whereIn(FieldPath.documentId(), temp)
-									.get().await().toMutableList()
-							)
-						}
-						var ingredientlist = arrayListOf<Ingredient>()
-						responseList.forEach { doc ->
-							ingredientlist.add(
-								Ingredient(
-									doc.get("ingredienticon").toString(),
-									doc.get("ingredientidx").toString().toInt(),
-									doc.get("ingredientname").toString(),
-									doc.get("ingredientcategory").toString()
-								)
-							)
-						}
-						response[index].ingredientList = ingredientlist
-					}
-				}.join()
-				view.onGetCategoryIngredietListSuccess(response)
-			}
 		}
 	}
 	// 재료 검색
@@ -97,9 +50,9 @@ class IngredientService(val view: AddIngredientView) {
 				ingredients.forEachIndexed { i, v ->
 					response.add(
 						CategoryIngrediets(
-							v.ingredientCategoryIdx,
-							v.ingredientCategoryName,
-							if(i==0) ingredientList else v.ingredientList
+							v.categoryid,
+							v.categoryname,
+							if(i==0) ingredientList else v.ingredientlist
 						)
 					)
 				}

@@ -69,7 +69,7 @@ class IngredientService(val view: AddIngredientView) {
 								)
 							)
 						}
-						response[index].ingredientList = ingredientlist
+						response[index].ingredientlist = ingredientlist
 					}
 				}.join()
 				view.onGetCategoryIngredietListSuccess(response)
@@ -99,9 +99,9 @@ class IngredientService(val view: AddIngredientView) {
 				ingredients.forEachIndexed { i, v ->
 					response.add(
 						CategoryIngrediets(
-							v.ingredientCategoryIdx,
-							v.ingredientCategoryName,
-							if(i==0) ingredientList else v.ingredientList
+							v.categoryid,
+							v.categoryname,
+							if(i==0) ingredientList else v.ingredientlist
 						)
 					)
 				}
@@ -119,10 +119,10 @@ class IngredientService(val view: AddIngredientView) {
 				if(documents.isEmpty()) {
 					pickingredients.forEach {
 						var hash = hashMapOf(
-							"ingredienticon" to it.ingredientIcon,
-							"ingredientidx" to it.ingredientIdx,
-							"ingredientname" to it.ingredientName,
-							"ingredientcategory" to it.ingredientCategory,
+							"ingredienticon" to it.ingredienticon,
+							"ingredientidx" to it.ingredientidx,
+							"ingredientname" to it.ingredientname,
+							"ingredientcategory" to it.ingredientcategory,
 							"groupName" to group,
 							"ingredientquantity" to 1
 						)
@@ -169,10 +169,10 @@ class IngredientService(val view: AddIngredientView) {
 						else {
 							var ingredient = pickingredients[index]
 							var hash = hashMapOf(
-								"ingredienticon" to ingredient.ingredientIcon,
-								"ingredientidx" to ingredient.ingredientIdx,
-								"ingredientname" to ingredient.ingredientName,
-								"ingredientcategory" to ingredient.ingredientCategory,
+								"ingredienticon" to ingredient.ingredienticon,
+								"ingredientidx" to ingredient.ingredientidx,
+								"ingredientname" to ingredient.ingredientname,
+								"ingredientcategory" to ingredient.ingredientcategory,
 								"groupName" to group,
 								"ingredientquantity" to 1
 							)
