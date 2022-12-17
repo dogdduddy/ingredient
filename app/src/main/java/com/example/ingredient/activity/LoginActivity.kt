@@ -250,6 +250,7 @@ class LoginActivity : AppCompatActivity() {
 
     private fun googleLogin() {
         val signInIntent = googleSignInClient.signInIntent
+        Log.d("googleLogin", "googleLogin() called $signInIntent")
         // 로그인 팝업에서의 진행 결과를 이어 받을 수 있는 startActivityForResult
         startActivityForResult(signInIntent, RC_SIGN_IN)
     }
@@ -295,7 +296,7 @@ class LoginActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
 
         Log.d(TAG, "In Result method")
-        Log.d(TAG, "$requestCode / $resultCode / $data")
+        Log.d(TAG, "$requestCode / ${resultCode} / ${data!!}")
 
         // GoogleSignInApi.getSignInIntent(...)의 결과를 받음.
         if (requestCode === RC_SIGN_IN) {

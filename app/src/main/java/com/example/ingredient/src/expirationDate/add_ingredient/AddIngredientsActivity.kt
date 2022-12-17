@@ -7,6 +7,8 @@ import android.os.Bundle
 import android.util.Log
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelStoreOwner
 import androidx.viewpager2.widget.ViewPager2
 import com.example.ingredient.activity.MainActivity
 import com.example.ingredient.databinding.ActivityAddingredientsBinding
