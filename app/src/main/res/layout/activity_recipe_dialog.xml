@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/recipe_dialog_cardview"
+    android:layout_width="361dp"
+    android:layout_height="570dp"
+    app:cardCornerRadius="20dp"
+    android:background="@color/white"
+    tools:context=".common.RecipeDialogActivity">
+    <RelativeLayout
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ImageView
+            android:id="@+id/recipe_dialog_image"
+            android:layout_width="match_parent"
+            android:layout_height="290dp"
+            android:scaleType="centerCrop"
+            android:background="@color/grey_300"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true"/>
+    <!-- 타이틀바 -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/recipe_dialog_content_box"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/recipe_dialog_image"
+            android:orientation="horizontal"
+            android:background="@color/white"
+            android:elevation="5dp"
+            app:cardCornerRadius="8dp"
+            android:layout_marginTop="-30dp"
+            android:layout_width="260dp"
+            android:layout_height="120dp">
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/white">
+                <TextView
+                    android:id="@+id/recipe_dialog_content_box_title"
+                    android:textSize="20sp"
+                    android:gravity="center"
+                    android:textColor="@color/grey_1000"
+                    android:textStyle="bold"
+                    android:text="아보카도 토스트"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_width="match_parent"
+                    android:layout_height="53dp" />
+                <View
+                    android:id="@+id/recipe_dialog_content_box_time"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/recipe_dialog_content_box_count"
+                    app:layout_constraintTop_toBottomOf="@+id/recipe_dialog_content_box_title"
+                    android:background="#D9D9D9"/>
+                <TextView
+                    android:id="@+id/recipe_dialog_content_box_time_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:textStyle="bold"
+                    android:textColor="@android:color/black"
+                    app:layout_constraintTop_toBottomOf="@+id/recipe_dialog_content_box_time"
+                    app:layout_constraintStart_toStartOf="@+id/recipe_dialog_content_box_time"
+                    app:layout_constraintEnd_toEndOf="@+id/recipe_dialog_content_box_time"
+                    android:text="10min"/>
+
+                <View
+                    android:id="@+id/recipe_dialog_content_box_count"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    app:layout_constraintTop_toBottomOf="@+id/recipe_dialog_content_box_title"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:background="#D9D9D9"/>
+                <TextView
+                    android:id="@+id/recipe_dialog_content_box_count_text"
+                    android:text="4가지"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:textStyle="bold"
+                    android:textColor="@android:color/black"
+                    app:layout_constraintTop_toBottomOf="@+id/recipe_dialog_content_box_count"
+                    app:layout_constraintStart_toStartOf="@+id/recipe_dialog_content_box_count"
+                    app:layout_constraintEnd_toEndOf="@+id/recipe_dialog_content_box_count"/>
+                <View
+                    android:id="@+id/recipe_dialog_content_box_level"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    app:layout_constraintStart_toEndOf="@+id/recipe_dialog_content_box_count"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/recipe_dialog_content_box_title"
+                    android:background="#D9D9D9"/>
+                <TextView
+                    android:id="@+id/recipe_dialog_content_box_level_text"
+                    android:text="Easy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:textStyle="bold"
+                    android:textColor="@android:color/black"
+                    app:layout_constraintTop_toBottomOf="@+id/recipe_dialog_content_box_level"
+                    app:layout_constraintStart_toStartOf="@+id/recipe_dialog_content_box_level"
+                    app:layout_constraintEnd_toEndOf="@+id/recipe_dialog_content_box_level"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
+        <LinearLayout
+            android:id="@+id/recipe_dialog_ing_box"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="160dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/white"
+            android:layout_below="@+id/recipe_dialog_content_box">
+            <TextView
+                android:id="@+id/recipe_dialog_ing_box_sub"
+                android:textSize="13sp"
+                android:gravity="center"
+                android:textColor="@color/grey_800"
+                android:layout_marginTop="10dp"
+                android:text="이런 재료들이 필요해요!"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/recipe_dialog_ing_box_ingredients"
+                android:textSize="16sp"
+                android:textColor="#000"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:layout_marginTop="10dp"
+                android:bufferType="spannable"
+                android:text="아보카도 / 식빵 / 버터 / 계란"
+                android:layout_marginBottom="3dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <!-- 닫기 버튼 -->
+        <LinearLayout
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_alignParentBottom="true"
+            android:background="@color/white"
+            android:paddingBottom="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <Button
+                android:id="@+id/recipe_dialog_pass_basket_btn"
+                android:text="미소지 장바구니 넣기"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:layout_marginRight="10dp"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center"
+                android:background="@drawable/button_orange"
+                android:layout_width="162dp"
+                android:layout_height="50dp"/>
+            <Button
+                android:id="@+id/recipe_dialog_pass_link_btn"
+                android:text="레시피링크 보러가기"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:textColor="#F55800"
+                android:gravity="center"
+                android:background="@drawable/selector_radio_button"
+                android:layout_width="162dp"
+                android:layout_height="50dp"
+                android:onClick="mOnClose"/>
+        </LinearLayout>
+    </RelativeLayout>
+
+
+</androidx.cardview.widget.CardView>

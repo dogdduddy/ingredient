@@ -10,7 +10,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.example.ingredient.databinding.ItemIngredientBinding
+import com.example.ingredient.databinding.ItemAddIngredientBinding
 import com.example.ingredient.databinding.ItemRecipeBinding
 import com.example.ingredient.src.expirationDate.add_ingredient.models.CategoryIngrediets
 import com.example.ingredient.src.expirationDate.add_ingredient.models.Ingredient
@@ -19,7 +19,7 @@ class AddIngredientListAdapter(val view:AddIngredientsActivity): RecyclerView.Ad
     private var ingredients = ArrayList<Ingredient>()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AddIngredientViewHolder {
         return AddIngredientViewHolder(
-            ItemIngredientBinding.inflate(
+            ItemAddIngredientBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false

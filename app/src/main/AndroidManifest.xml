@@ -15,11 +15,38 @@
         android:theme="@style/Theme.MaterialComponents.Light.NoActionBar.Bridge"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".IngredientStateActivity"
-            android:exported="false" />
+            android:name=".activity.MainActivity2"
+            android:exported="true">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+
+        </activity>
         <activity
-            android:name=".activity.TestActivity"
-            android:exported="true" />
+            android:name=".common.RecipeDialogActivity"
+            android:exported="false"
+            android:theme="@style/MyPopupMenu">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".src.basket.group.addGroup.addIngredient.AddGroupIngredientsActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".src.basket.group.addGroup.GroupAddIngredientsActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".src.expirationDate.add_ingredient.ingredientstate.IngredientStateActivity"
+            android:exported="false" />
         <activity
             android:name=".src.expirationDate.add_ingredient.AddIngredientsActivity"
             android:exported="false" />
@@ -53,6 +80,7 @@
         <activity
             android:name=".activity.LoginActivity"
             android:exported="true">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -62,9 +90,10 @@
         <activity
             android:name=".activity.MainActivity"
             android:exported="true"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".src.expirationDate.add_ingredient.ingredientstate.IngredientStateActivity"
-            android:exported="true"/>
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustNothing">
+
+        </activity>
     </application>
+
 </manifest>

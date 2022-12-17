@@ -2,8 +2,8 @@
 <layer-list xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:drawable="@drawable/search_img"
-        android:width="20dp"
-        android:height="20dp"
+        android:drawable="@drawable/ic_search_s"
+        android:width="30dp"
+        android:height="30dp"
         tools:ignore="ResourceCycle" />
 </layer-list>
