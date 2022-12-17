@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
+import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import com.android.volley.DefaultRetryPolicy
 import com.android.volley.Request
@@ -69,14 +70,6 @@ class LoginActivity : AppCompatActivity() {
             .requestEmail()
             .build()
 
-        /*
-        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(getString(R.string.my_web_client_id))
-            .requestEmail()
-            .build()
-
-         */
-
         googleSignInClient = GoogleSignIn.getClient(this, gso)
 
         // setGoogleIdTokenRequestOptions에 서버 Client ID를 전달
@@ -138,18 +131,15 @@ class LoginActivity : AppCompatActivity() {
                     //페이스북 로그인 성공
                     handleFacebookAccessToken(result?.accessToken)
                     Log.d("FaceBookLogin", "Login Success")
-                    toast("로그인 성공")
                 }
                 override fun onCancel() {
                     //페이스북 로그인 취소
-                    toast("로그인 취소")
                     Log.d("FaceBookLogin", "Login Cancle")
                     updateUI(null)
                 }
 
                 override fun onError(error: FacebookException?) {
                     //페이스북 로그인 실패
-                    toast("페이스북 로그인 실패")
                     Log.d("FaceBookLogin", "Login Fail : $error")
                     updateUI(null)
                 }
@@ -170,7 +160,6 @@ class LoginActivity : AppCompatActivity() {
                     } else {
                         // If sign in fails, display a message to the user.
                         Log.w("MainActivity", "signInWithCredential:failure", task.exception)
-                        toast("Authentication failed.")
                         updateUI(null)
                     }
                 }
@@ -202,9 +191,6 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    fun toast(sentence:String) {
-        //Toast.makeText(this.applicationContext,sentence, Toast.LENGTH_SHORT).show()
-    }
 
     open fun getFirebaseJwt(kakaoAccessToken:String): com.google.android.gms.tasks.Task<String> {
         val source = com.google.android.gms.tasks.TaskCompletionSource<String>()
@@ -255,36 +241,6 @@ class LoginActivity : AppCompatActivity() {
         startActivityForResult(signInIntent, RC_SIGN_IN)
     }
 
-    /*
-    private fun googleSignIn(){
-        Log.w("signinTest", "googlesignin")
-        val signInIntent = googleSignInClient.signInIntent
-        resultLauncher.launch(signInIntent)
-    }
-    private var resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-        Log.w("signinTest", "resultLauncher : result : ${result.resultCode}")
-        if (result.resultCode == RC_SIGN_IN) {
-            Log.w("signinTest", "resultCode")
-            val data: Intent? = result.data
-            val task: Task<GoogleSignInAccount> =
-                GoogleSignIn.getSignedInAccountFromIntent(data)
-            handleSignInResult(task)
-        }
-    }
-    private fun handleSignInResult(completedTask: Task<GoogleSignInAccount>){
-        try {
-            Log.w("signinTest", "handler")
-            val account:GoogleSignInAccount = completedTask.getResult(ApiException::class.java)
-            val email = account?.email.toString()
-            val familyName = account?.familyName.toString()
-            firebaseAuthWithGoogle(account)
-        } catch (e: ApiException){
-            Log.w("failed", "signInResult:failed code=" + e.statusCode)
-        }
-    }
-
-     */
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         callbackManager?.onActivityResult(requestCode, resultCode, data)
         //onActivityResult에서는 callbackManager에 로그인 결과를 넘겨줍니다
@@ -294,9 +250,6 @@ class LoginActivity : AppCompatActivity() {
             return
         }
         super.onActivityResult(requestCode, resultCode, data)
-
-        Log.d(TAG, "In Result method")
-        Log.d(TAG, "$requestCode / ${resultCode} / ${data!!}")
 
         // GoogleSignInApi.getSignInIntent(...)의 결과를 받음.
         if (requestCode === RC_SIGN_IN) {
@@ -348,5 +301,10 @@ class LoginActivity : AppCompatActivity() {
     }
     companion object {
         private const val RC_SIGN_IN = 9001
+    }
+
+
+    fun toast(sentence:String) {
+        Toast.makeText(this.applicationContext,sentence, Toast.LENGTH_SHORT).show()
     }
 }

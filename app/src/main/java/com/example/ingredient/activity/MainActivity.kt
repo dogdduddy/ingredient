@@ -89,6 +89,9 @@ class MainActivity : AppCompatActivity() {
                 R.id.food_book -> setFoodBookFragment()
             }
         }
+        Log.d("LoginTest", "name : ${intent.extras?.get("user").toString()}")
+        Log.d("LoginTest", "email : ${intent.extras?.get("email").toString()}")
+        Log.d("LoginTest", "photo : ${intent.extras?.get("photo").toString()}")
         var navi_header = binding.navigationView.getHeaderView(0)
         navi_header.findViewById<ImageView>(R.id.nav_setting).setOnClickListener {
             Toast.makeText(this,"설정", Toast.LENGTH_SHORT).show()
@@ -97,19 +100,21 @@ class MainActivity : AppCompatActivity() {
         if(!intent.extras?.get("user").toString().isNullOrBlank()) {
             navi_header.findViewById<TextView>(R.id.nav_profile_nickname).text = intent.extras?.get("user").toString()
         } else {
-            navi_header.findViewById<TextView>(R.id.nav_profile_nickname).text = "귀여운 텀보"
+            navi_header.findViewById<TextView>(R.id.nav_profile_nickname).text = "defaultName"
         }
 
         if(intent.extras?.get("email").toString() != "null") {
             navi_header.findViewById<TextView>(R.id.nav_profile_email).text = intent.extras?.get("email").toString()
         } else {
-            navi_header.findViewById<TextView>(R.id.nav_profile_email).text = "dogdduddy@gmail.com"
+            navi_header.findViewById<TextView>(R.id.nav_profile_email).text = "defaultEmail"
         }
 
         // 이미지 로드
         if(!intent.extras?.get("photo").toString().isNullOrBlank()) {
-            Glide.with(this).load(intent.extras?.get("photo")).into(navi_header.findViewById<ImageView>(R.id.nav_profile_image)).onLoadFailed(ResourcesCompat.getDrawable(resources,R.drawable.profile_defalut_1, null))
+            Log.d("LoginTest", "photo notNull : ${intent.extras?.get("photo").toString()}")
+            Glide.with(this).load(intent.extras?.get("photo")).into(navi_header.findViewById<ImageView>(R.id.nav_profile_image))
         }else {
+            Log.d("LoginTest", "photo null : ${intent.extras?.get("photo").toString()}")
             navi_header.findViewById<ImageView>(R.id.nav_profile_image).setImageResource(R.drawable.profile_defalut_1)
         }
 
@@ -239,12 +244,16 @@ class MainActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
     fun logout() {
+        FirebaseAuth.getInstance().signOut()
+        /*
         LoginManager.getInstance().logOut()
         UserManagement.getInstance().requestLogout(object : LogoutResponseCallback() {
             override fun onCompleteLogout() {
                 FirebaseAuth.getInstance().signOut()
             }
         })
+
+         */
         val intent = Intent(this, LoginActivity::class.java)
         startActivity(intent)
         finish()
