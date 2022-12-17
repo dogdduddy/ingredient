@@ -10,17 +10,17 @@
         app:cnb_iconColor="@color/search" />
     <item
         android:id="@+id/expiration_date"
-        android:icon="@drawable/ic_love"
+        android:icon="@drawable/ic_expiry"
         android:title="유통기한"
         app:cnb_iconColor="@color/expiration_date" />
     <item
-        android:id="@+id/tips"
-        android:icon="@drawable/ic_search"
+        android:id="@+id/basket"
+        android:icon="@drawable/ic_chopping"
         android:title="장바구니"
         app:cnb_iconColor="@color/tips" />
     <item
         android:id="@+id/food_book"
-        android:icon="@drawable/ic_profile"
+        android:icon="@drawable/ic_foodbook"
         android:title="음식사전"
         app:cnb_iconColor="@color/food_book" />
 

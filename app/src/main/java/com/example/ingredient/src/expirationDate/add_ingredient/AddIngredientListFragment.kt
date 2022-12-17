@@ -49,7 +49,7 @@ class AddIngredientListFragment() : Fragment() {
             layoutManager = GridLayoutManager(context, 4)
         }
 
-        ingredientRecyclerViewadApter.submitList(ArrayList(ingredients?.ingredientList))
+        ingredientRecyclerViewadApter.submitList(ArrayList(ingredients?.ingredientlist))
     }
 
     override fun onAttach(context: Context) {

@@ -12,7 +12,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.ingredient"
-        minSdk 26
+        minSdk 24
         targetSdk 31
         versionCode 1
         versionName "1.0"
@@ -69,12 +69,21 @@ dependencies {
     implementation 'androidx.room:room-ktx:2.4.2'
     kapt 'androidx.room:room-compiler:2.4.2'
 
+    //Coroutines
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.0'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.0'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.5.1'
+
     //Android Navigation Architecture
     implementation 'androidx.navigation:navigation-fragment-ktx:2.3.5'
     implementation 'androidx.navigation:navigation-ui-ktx:2.3.5'
 
     //Android Chip
     implementation 'com.github.ismaeldivita:chip-navigation-bar:1.4.0'
+
+    //CardView
+    implementation 'androidx.cardview:cardview:1.0.0'
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
 
     //ViewPager2
     implementation "androidx.viewpager2:viewpager2:1.0.0"

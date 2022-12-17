@@ -8,12 +8,14 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class Ingredient(
-    @SerializedName("ingredientIcon")
-    val ingredientIcon: String,
-    @SerializedName("ingredientIdx")
-    val ingredientIdx: Int,
-    @SerializedName("ingredientName")
-    val ingredientName: String
+    @SerializedName("ingredienticon")
+    val ingredienticon: String = "",
+    @SerializedName("ingredientidx")
+    val ingredientidx: Int = 0,
+    @SerializedName("ingredientname")
+    val ingredientname: String = "",
+    @SerializedName("ingredientcategory")
+    val ingredientcategory: String = ""
 ): Parcelable
 
 

@@ -8,11 +8,13 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.ingredient.R
 
-class SearchAdapter (private val recipeList: MutableList<Array<String>>)
+class SearchAdapter ()
     : RecyclerView.Adapter<SearchAdapter.ViewHolder>()
     {
+        private val recipeList: ArrayList<MutableMap<String, String>>  = arrayListOf()
         private var context:Context? = null
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
             val view =
@@ -23,43 +25,41 @@ class SearchAdapter (private val recipeList: MutableList<Array<String>>)
 
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
             val recipe = recipeList[position]
-            Log.d("Data Test : ","$position, $recipe")
-            /*
-            when (position % 5) {
-                0 -> holder.food.setImageResource(R.drawable.buckwheat)
-                1 -> holder.food.setImageResource(R.drawable.bibim)
-                2 -> holder.food.setImageResource(R.drawable.ham)
-                3 -> holder.food.setImageResource(R.drawable.salad)
-                4 -> holder.food.setImageResource(R.drawable.steak)
-            }
+            holder.itemView.setOnClickListener { itemCLickListener.onClick(it, position) }
+            holder.like.text = recipe["like"]
+            holder.subscribe.text = recipe["subscribe"]
+            holder.title.text = recipe["name"]
 
-             */
-            holder.itemView.setOnClickListener {
-                itemCLickListener.onClick(it, position)
-            }
-            holder!!.title.text = recipe[0].toString()
-            holder.content.text = "재료 : " + recipe[1]
-            holder.time.text = recipe[2].toString()
+            // 이미지 로드
+            holder.food.clipToOutline = true
+            Glide.with(holder.itemView)
+                .load(recipe["icon"])
+                .into(holder.food)
         }
 
         override fun getItemCount(): Int {
             return recipeList.size
         }
 
+        fun submitList(recipeList: ArrayList<MutableMap<String, String>>) {
+            this.recipeList.clear()
+            this.recipeList.addAll(recipeList)
+            notifyDataSetChanged()
+        }
+
         inner class ViewHolder internal constructor(view: View) : RecyclerView.ViewHolder(view) {
             internal var title: TextView
-            internal var content: TextView
-            internal var time: TextView
             internal var food: ImageView
+            internal var like: TextView
+            internal var subscribe: TextView
             init {
                 var context = context
             }
             init {
                 title = view.findViewById(R.id.findTitle)
-                content = view.findViewById(R.id.findContent)
-                time = view.findViewById(R.id.findTime)
                 food = view.findViewById(R.id.foodimg)
-
+                like = view.findViewById(R.id.recipe_like)
+                subscribe = view.findViewById(R.id.recipe_subscribe)
             }
         }
         // 마지막 chip 삭제했을 때는 값이 없으므로 쿼리가 불가능 => recyclerview 아이템 직접 삭제

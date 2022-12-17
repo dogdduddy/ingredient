@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
@@ -15,6 +16,7 @@ import com.example.ingredient.R
 import com.example.ingredient.src.expirationDate.add_ingredient.ingredientstate.IngredientStateAdapter
 import com.example.ingredient.src.expirationDate.add_ingredient.models.ExpiryDateIngredient
 import com.google.firebase.firestore.FirebaseFirestore
+import java.text.SimpleDateFormat
 
 class ExpirationDateAdapter(
     private val showBtnDelete: (Boolean) -> Unit
@@ -34,18 +36,22 @@ class ExpirationDateAdapter(
         colorWhite = ContextCompat.getColor(context!!, R.color.white)
         return ViewHolder(view)
     }
+
     override fun onBindViewHolder(holder: ExpirationDateAdapter.ViewHolder, position: Int) {
         val item = expirationDateIngredient[position]
-        holder.name.text = expirationDateIngredient[position].ingredient.ingredientName
-        holder.day.text = "D-" + expirationDateIngredient[position].expirydate.toString()
+        holder.name.text = expirationDateIngredient[position].ingredient.ingredientname
+        holder.day.text = expirationDateIngredient[position].expirydate.toString() + "일"
+        holder.date.text = "폐기날짜 ${SimpleDateFormat("yyyy.MM.dd").format(expirationDateIngredient[position].discard.time)}"
         holder.itemView.setOnLongClickListener {
             Toast.makeText(this.context, "${holder.name.text}",Toast.LENGTH_LONG).show()
             return@setOnLongClickListener true
         }
 
         // 아이템 삭제
-
-        holder.check.visibility = View.GONE
+        holder.layout.apply {
+            setPadding(5,5,5,5)
+            background = ContextCompat.getDrawable(context, R.color.white)
+        }
         // Check 모드로 진입. (그냥 첫 아이템 Check를 통해 isEnable을 true로 바꿈)
         holder.itemView.setOnLongClickListener {
             selectItem(holder, item, position)
@@ -55,7 +61,10 @@ class ExpirationDateAdapter(
             // Check 표시가 있는 아이템을 클릭
             if(itemSelectedList.contains(position)) {
                 itemSelectedList.remove(position)
-                holder.check.visibility = View.GONE
+                holder.layout.apply {
+                    setPadding(5,5,5,5)
+                    background = ContextCompat.getDrawable(context, R.color.white)
+                }
                 // 아마 의미 없을듯
                 item.selected = false
                 // 모든 Check를 없앴을 때
@@ -72,7 +81,7 @@ class ExpirationDateAdapter(
 
         // 이미지 로드
         Glide.with(holder.itemView)
-            .load(expirationDateIngredient[position].ingredient.ingredientIcon)
+            .load(expirationDateIngredient[position].ingredient.ingredienticon)
             .into(holder.icon)
     }
 
@@ -82,7 +91,9 @@ class ExpirationDateAdapter(
         item.selected = true
         showBtnDelete(true)
         // Check 이벤트
-        holder.check.visibility = View.VISIBLE
+        holder.layout.apply {
+            background = ContextCompat.getDrawable(context, R.color.orange_300)
+        }
     }
 
     override fun getItemCount(): Int {
@@ -92,12 +103,14 @@ class ExpirationDateAdapter(
         internal var icon: ImageView
         internal var name: TextView
         internal var day: TextView
-        internal var check:ImageView
+        internal var layout: LinearLayout
+        internal var date: TextView
         init {
-            icon = view.findViewById(R.id.expirydate_ingredient_icon)
-            name = view.findViewById(R.id.expirydate_ingredient_name)
-            day = view.findViewById(R.id.expirydate_ingredient_day)
-            check = view.findViewById(R.id.expirydate_ingredient_check)
+            icon = view.findViewById(R.id.expirydate_ing_icon)
+            name = view.findViewById(R.id.expirydate_ing_name)
+            day = view.findViewById(R.id.expirydate_ing_dday)
+            layout = view.findViewById(R.id.expiry_ing_item_layout)
+            date = view.findViewById(R.id.expirydate_ing_expirydate)
         }
     }
     fun ExpiryDateSubmitList(expirationDateIngredient:ArrayList<ExpiryDateIngredient>) {
@@ -108,7 +121,7 @@ class ExpirationDateAdapter(
     fun deleteSelectedItem(userID:String) {
         // 삭제할 유통기한 리스트(이름)
         var removeList = itemSelectedList.map {
-            expirationDateIngredient[it].ingredient.ingredientName
+            expirationDateIngredient[it].ingredient.ingredientname
         }
         // 리스트 속 유통기한 재료 삭제
         FirebaseFirestore.getInstance()

@@ -9,5 +9,6 @@ data class ExpiryDateIngredient(
     var ingredientstatus:Int,
     var storagestatus:Int,
     var selected:Boolean,
-    var addedDate: LocalDate
+    var addedDate: Date,
+    var discard: Date
 )

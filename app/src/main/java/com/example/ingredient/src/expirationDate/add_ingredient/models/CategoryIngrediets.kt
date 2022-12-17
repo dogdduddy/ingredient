@@ -6,11 +6,11 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class CategoryIngrediets(
-    @SerializedName("ingredientCategoryIdx")
-    var ingredientCategoryIdx:Int,
-    @SerializedName("ingredientCategoryName")
-    var ingredientCategoryName: String,
-    @SerializedName("ingredientList")
-    var ingredientList: List<Ingredient>?
+    @SerializedName("categoryid")
+    var categoryid:Int = 0,
+    @SerializedName("categoryname")
+    var categoryname: String = "",
+    @SerializedName("ingredientlist")
+    var ingredientlist: List<Ingredient>? = null
 ): Parcelable
 

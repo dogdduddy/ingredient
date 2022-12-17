@@ -5,9 +5,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <RadioButton
         android:id="@+id/addgroup_radio_btn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="364dp"
+        android:layout_height="42dp"
+        android:textSize="16sp"
         android:text="test"
+        android:paddingLeft="15dp"
+        android:textColor="@drawable/selector_radio_text"
+        android:background="@drawable/selector_radio_button_basket"
+        android:button="@null"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
-
 </androidx.constraintlayout.widget.ConstraintLayout>

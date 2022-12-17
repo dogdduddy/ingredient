@@ -16,7 +16,7 @@ class SessionCallback(val context : LoginActivity): ISessionCallback {
     private val TAG : String = "로그/SessionCallback"
 
     override fun onSessionOpened() {
-        Toast.makeText(App.appContext, "Successfully logged in to Kakao. Now creating or updating a Firebase User.", Toast.LENGTH_LONG).show()
+        toast("Successfully logged in to Kakao. Now creating or updating a Firebase User.")
         UserManagement.getInstance().me(object : MeV2ResponseCallback(){
             override fun onSuccess(result: MeV2Response?) {
                 if(result != null){
@@ -32,12 +32,10 @@ class SessionCallback(val context : LoginActivity): ISessionCallback {
                     }.addOnCompleteListener { task ->
                         if (task.isSuccessful) {
                             Log.d(TAG, "Successfully created a Firebase user")
-                            context.startMainActivity()
+                            context.startMainActivity(task.result.user!!)
                         }
                         else {
-                            Toast.makeText(
-                                App.instance,"Failed to create a Firebase user.",
-                                Toast.LENGTH_LONG).show()
+                            toast("Failed to create a Firebase user.")
                             if (task.exception != null) {
                                 Log.e(TAG, task.exception.toString())
                             }
@@ -62,6 +60,9 @@ class SessionCallback(val context : LoginActivity): ISessionCallback {
                 }
             }
         })
+    }
+    fun toast(sentence:String) {
+        //Toast.makeText(App.appContext,sentence, Toast.LENGTH_SHORT).show()
     }
 
     override fun onSessionOpenFailed(exception: KakaoException?) {

@@ -6,28 +6,42 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".src.basket.group.GroupIngredientsFragment">
 
-    <TextView
-        android:id="@+id/groupText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:text="Test!!"/>
-
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/groupRecyclerView"
+        android:id="@+id/group_inner_recycler"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/groupText" />
-
+        android:paddingBottom="60dp"
+        app:layout_constraintTop_toTopOf="parent"/>
     <Button
-        android:id="@+id/groupAddBtn"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintWidth_percent="0.95"
-        android:text="그룹 및 재료 추가"
+        android:id="@+id/group_inner_btn_origin"
+        android:visibility="visible"
+        android:layout_width="364dp"
+        android:layout_height="52dp"
+        android:background="@drawable/selector_grey_shape"
+        android:drawableLeft="@drawable/ic_plus"
+        android:elevation="4dp"
+        android:scaleType="matrix"
+        android:paddingLeft="100dp"
+        android:paddingRight="100dp"
+        android:layout_marginBottom="15dp"
+        android:textColor="@color/grey_600"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="재료 및 그룹 추가"/>
 
+    <ImageButton
+        android:id="@+id/group_inner_btn_other"
+        android:visibility="gone"
+        android:layout_width="71.5dp"
+        android:layout_height="71.5dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:src="@drawable/ic_plus"
+        android:padding="26dp"
+        android:scaleType="fitXY"
+        android:background="@drawable/selector_grey_shape"
+        android:elevation="8dp"
+        android:layout_marginEnd="17dp"
+        android:layout_marginBottom="17dp"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
