@@ -130,7 +130,7 @@ class LoginActivity : AppCompatActivity() {
             .registerCallback(callbackManager, object : FacebookCallback<LoginResult> {
                 override fun onSuccess(result: LoginResult) {
                     //페이스북 로그인 성공
-                    handleFacebookAccessToken(result?.accessToken)
+                    firebaseAuthWithGoogle(result?.accessToken)
                     Log.d("FaceBookLogin", "Login Success")
                 }
                 override fun onCancel() {
@@ -146,7 +146,7 @@ class LoginActivity : AppCompatActivity() {
             })
     }
 
-    private fun handleFacebookAccessToken(token: AccessToken?) {
+    private fun firebaseAuthWithGoogle(token: AccessToken?) {
         if (token != null) {
             val credential = FacebookAuthProvider
                 .getCredential(token.token)
