@@ -89,9 +89,6 @@ class MainActivity : AppCompatActivity() {
                 R.id.food_book -> setFoodBookFragment()
             }
         }
-        Log.d("LoginTest", "name : ${intent.extras?.get("user").toString()}")
-        Log.d("LoginTest", "email : ${intent.extras?.get("email").toString()}")
-        Log.d("LoginTest", "photo : ${intent.extras?.get("photo").toString()}")
         var navi_header = binding.navigationView.getHeaderView(0)
         navi_header.findViewById<ImageView>(R.id.nav_setting).setOnClickListener {
             Toast.makeText(this,"설정", Toast.LENGTH_SHORT).show()
@@ -110,7 +107,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         // 이미지 로드
-        if(!intent.extras?.get("photo").toString().isNullOrBlank()) {
+        if(intent.extras?.get("photo").toString() != "null" && !intent.extras?.get("photo").toString().isNullOrBlank()) {
             Log.d("LoginTest", "photo notNull : ${intent.extras?.get("photo").toString()}")
             Glide.with(this).load(intent.extras?.get("photo")).into(navi_header.findViewById<ImageView>(R.id.nav_profile_image))
         }else {

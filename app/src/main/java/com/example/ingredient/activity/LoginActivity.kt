@@ -243,8 +243,6 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         callbackManager?.onActivityResult(requestCode, resultCode, data)
-        //onActivityResult에서는 callbackManager에 로그인 결과를 넘겨줍니다
-        //여기에 callbackManager?.onAcitivyResult가 있어야 onSuccess를 호출할 수 있습니다.
         if(Session.getCurrentSession().handleActivityResult(requestCode, resultCode, data)){
             Log.i(TAG, "Session get current session")
             return
@@ -265,11 +263,14 @@ class LoginActivity : AppCompatActivity() {
     }
     private fun firebaseAuthWithGoogle(acct: GoogleSignInAccount) {
         Log.w("signinTest", "authwith")
+
         val credential = GoogleAuthProvider.getCredential(acct.idToken, null)
         auth.signInWithCredential(credential)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
                     Log.d(TAG, "signInWithCredential:success")
+                    // providerData는 리스트 데이터가 2개 있다. 0번은 email이 null, 1번은 모두 들어있다. 개발일지 22.12.18 참고
+                    // https://www.notion.so/dogdduddy/22-12-18-a70164743ebb458f84e8b6dae393fcb5#c93d428521894b48b4f4437a5215f3a7
                     val user = auth.currentUser
                     updateUI(user)
                 } else {
@@ -283,16 +284,21 @@ class LoginActivity : AppCompatActivity() {
             .document(userid)
     }
 
-
     fun startMainActivity(user: FirebaseUser) {
+        // providerData에는 리스트 데이터가 두개가 있다. 0번은 email이 null이고, 1번은 모두 들어있다.
+        var userData: UserInfo? = null
+        if(user.providerData.size < 2)
+            userData = user.providerData.get(0)
+        else
+            userData = user.providerData.get(1)
+
+
         Log.d(TAG, "LoginActivity - startMainActivity() called")
         val intent = Intent(this, MainActivity::class.java)
-        intent.putExtra("user", user.displayName.toString())
-        intent.putExtra("email",user.email.toString())
-        intent.putExtra("photo",user.photoUrl.toString())
+        intent.putExtra("user", userData!!.displayName.toString())
+        intent.putExtra("email",userData!!.email.toString())
+        intent.putExtra("photo",userData!!.photoUrl)
         startActivity(intent)
-        //val intent2 = Intent(this, MainActivity2::class.java)
-        //startActivity(intent2)
         finish()
     }
     override fun onDestroy() {
@@ -302,7 +308,6 @@ class LoginActivity : AppCompatActivity() {
     companion object {
         private const val RC_SIGN_IN = 9001
     }
-
 
     fun toast(sentence:String) {
         Toast.makeText(this.applicationContext,sentence, Toast.LENGTH_SHORT).show()
