@@ -1,12 +1,16 @@
 package com.example.ingredient.activity
 
+import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.Toast
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import com.android.volley.DefaultRetryPolicy
 import com.android.volley.Request
 import com.android.volley.Response
@@ -85,7 +89,6 @@ class LoginActivity : AppCompatActivity() {
                     .build())
             .setAutoSelectEnabled(true)
             .build()
-
         setContentView(R.layout.activity_login)
 
         // 자동 로그인
@@ -115,19 +118,17 @@ class LoginActivity : AppCompatActivity() {
     private fun kakaoLogin() {
     // 카카오톡이 설치되어 있으면 카카오톡으로 로그인, 아니면 카카오계정으로 로그인
         Log.d(TAG, "LoginActivity - kakaoLoginStart() called")
-
         val keyHash = Utility.getKeyHash(this) // keyHash 발급
-        Log.d(TAG, "KEY_HASH : $keyHash")
-
         Session.getCurrentSession().addCallback(callback)
         Session.getCurrentSession().open(AuthType.KAKAO_LOGIN_ALL, this)
     }
     private fun facebookLogin() {
-        LoginManager.getInstance()
-            .logInWithReadPermissions(this, Arrays.asList("public_profile", "email"))
+        LoginManager.getInstance().logInWithReadPermissions(this,
+                 callbackManager,
+                Arrays.asList("public_profile", "email"))
         LoginManager.getInstance()
             .registerCallback(callbackManager, object : FacebookCallback<LoginResult> {
-                override fun onSuccess(result: LoginResult?) {
+                override fun onSuccess(result: LoginResult) {
                     //페이스북 로그인 성공
                     handleFacebookAccessToken(result?.accessToken)
                     Log.d("FaceBookLogin", "Login Success")
@@ -137,8 +138,7 @@ class LoginActivity : AppCompatActivity() {
                     Log.d("FaceBookLogin", "Login Cancle")
                     updateUI(null)
                 }
-
-                override fun onError(error: FacebookException?) {
+                override fun onError(error: FacebookException) {
                     //페이스북 로그인 실패
                     Log.d("FaceBookLogin", "Login Fail : $error")
                     updateUI(null)
@@ -147,7 +147,6 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun handleFacebookAccessToken(token: AccessToken?) {
-        Log.d("MainActivity", "handleFacebookAccessToken:$token")
         if (token != null) {
             val credential = FacebookAuthProvider
                 .getCredential(token.token)
@@ -155,11 +154,11 @@ class LoginActivity : AppCompatActivity() {
                 .addOnCompleteListener(this) { task ->
                     if (task.isSuccessful) {
                         // Sign in success, update UI with the signed-in user's information
-                        Log.d("MainActivity", "signInWithCredential:success")
+                        Log.d(TAG, "signInWithCredential:success")
                         updateUI(task.result.user)
                     } else {
                         // If sign in fails, display a message to the user.
-                        Log.w("MainActivity", "signInWithCredential:failure", task.exception)
+                        Log.w(TAG, "signInWithCredential:failure", task.exception)
                         updateUI(null)
                     }
                 }
@@ -223,44 +222,37 @@ class LoginActivity : AppCompatActivity() {
                 )
                 return params
             }
-
-        };
+        }
         request.setRetryPolicy(
             DefaultRetryPolicy(500000,
             DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
             DefaultRetryPolicy.DEFAULT_BACKOFF_MULT)
-        );
+        )
         queue.add(request)
         return source.task // call validation server and retrieve firebase token
     }
+    val startForResult = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult(),
+        ActivityResultCallback { result: ActivityResult ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val intent = result.data
+                val task: Task<GoogleSignInAccount> =
+                    GoogleSignIn.getSignedInAccountFromIntent(intent)
+                try {
+                    val account: GoogleSignInAccount = task.getResult(ApiException::class.java)
+                    firebaseAuthWithGoogle(account)
+                } catch (e: ApiException) {
+                    Log.d(TAG, "Google Signin Exception : $e")
+                }
+            }
+        })
 
     private fun googleLogin() {
         val signInIntent = googleSignInClient.signInIntent
         Log.d("googleLogin", "googleLogin() called $signInIntent")
-        // 로그인 팝업에서의 진행 결과를 이어 받을 수 있는 startActivityForResult
-        startActivityForResult(signInIntent, RC_SIGN_IN)
+        startForResult.launch(signInIntent)
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        callbackManager?.onActivityResult(requestCode, resultCode, data)
-        if(Session.getCurrentSession().handleActivityResult(requestCode, resultCode, data)){
-            Log.i(TAG, "Session get current session")
-            return
-        }
-        super.onActivityResult(requestCode, resultCode, data)
-
-        // GoogleSignInApi.getSignInIntent(...)의 결과를 받음.
-        if (requestCode === RC_SIGN_IN) {
-            val task: Task<GoogleSignInAccount> =
-                GoogleSignIn.getSignedInAccountFromIntent(data)
-            try {
-                val account: GoogleSignInAccount = task.getResult(ApiException::class.java)
-                firebaseAuthWithGoogle(account)
-            } catch (e: ApiException) {
-                Log.d(TAG, "Google Signin Exception : $e")
-            }
-        }
-    }
     private fun firebaseAuthWithGoogle(acct: GoogleSignInAccount) {
         Log.w("signinTest", "authwith")
 
