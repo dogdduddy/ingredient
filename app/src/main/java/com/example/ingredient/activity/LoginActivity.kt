@@ -5,10 +5,8 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.widget.Button
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
-import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import com.android.volley.DefaultRetryPolicy
@@ -30,23 +28,17 @@ import com.google.android.gms.auth.api.identity.Identity
 import com.google.android.gms.auth.api.identity.SignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.*
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.kakao.auth.AuthType
 import com.kakao.auth.Session
 import com.kakao.util.helper.Utility
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
 import org.json.JSONObject
 import java.util.*
 
@@ -112,7 +104,6 @@ class LoginActivity : AppCompatActivity() {
                     .build())
             .setAutoSelectEnabled(true)
             .build()
-
 
         // 자동 로그인
         val currentUser = auth.currentUser
@@ -256,15 +247,11 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun firebaseAuthWithGoogle(acct: GoogleSignInAccount) {
-        Log.w("signinTest", "authwith")
-
         val credential = GoogleAuthProvider.getCredential(acct.idToken, null)
         auth.signInWithCredential(credential)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
                     Log.d(TAG, "signInWithCredential:success")
-                    // providerData는 리스트 데이터가 2개 있다. 0번은 email이 null, 1번은 모두 들어있다. 개발일지 22.12.18 참고
-                    // https://www.notion.so/dogdduddy/22-12-18-a70164743ebb458f84e8b6dae393fcb5#c93d428521894b48b4f4437a5215f3a7
                     val user = auth.currentUser
                     updateUI(user)
                 } else {
@@ -279,19 +266,10 @@ class LoginActivity : AppCompatActivity() {
     }
 
     fun startMainActivity(user: FirebaseUser) {
-        // providerData에는 리스트 데이터가 두개가 있다. 0번은 email이 null이고, 1번은 모두 들어있다.
+        // providerData는 리스트 데이터가 2개 있다. 0번은 email이 null, 1번은 모두 들어있다. 개발일지 22.12.18 참고
         var userData: UserInfo? = null
-        if(user.providerData.size < 2)
-            userData = user.providerData.get(0)
-        else
-            userData = user.providerData.get(1)
-
-	    user.providerData.forEachIndexed { index, v ->
-            Log.d("logintest", "userData $index : ${v.email}")
-            Log.d("logintest", "userData $index : ${v.displayName}")
-            Log.d("logintest", "userData $index : ${v.photoUrl}")
-        }
-
+        if(user.providerData.size < 2) userData = user.providerData.get(0)
+        else userData = user.providerData.get(1)
 
         Log.d(TAG, "LoginActivity - startMainActivity() called")
         val intent = Intent(this, MainActivity::class.java)
@@ -304,9 +282,6 @@ class LoginActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         Session.getCurrentSession().removeCallback(callback)
-    }
-    companion object {
-        private const val RC_SIGN_IN = 9001
     }
 
     fun toast(sentence:String) {
