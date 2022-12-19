@@ -4,11 +4,11 @@ import java.time.LocalDate
 import java.util.*
 
 data class ExpiryDateIngredient(
-    var ingredient:Ingredient,
-    var expirydate:Int,
-    var ingredientstatus:Int,
-    var storagestatus:Int,
-    var selected:Boolean,
-    var addedDate: Date,
-    var discard: Date
+    var ingredient:Ingredient? = null,
+    var expirydate:Int = 0,
+    var ingredientstatus:Int = 0,
+    var storagestatus:Int = 0,
+    var selected:Boolean = false,
+    var addedDate: Date? = null,
+    var discard: Date? = null
 )

@@ -68,14 +68,18 @@ class MainActivity : AppCompatActivity() {
             when(intent.getStringExtra("fragment")) {
                 "main" -> setMainFragment()
                 "expiry" -> {
-                    setExpirationDateFragment()
-                    binding.menuBottom.setItemSelected(R.id.expiration_date, true)
+                    setReplaceToolBar(expirationdateFragment, "유통기한")
+                    setMenuBottomItemSelect(R.id.expiration_date)
                 }
                 "basket" -> {
-                    setBasketFragment()
-                    binding.menuBottom.setItemSelected(R.id.basket, true)
+                    setReplaceToolBar(basketFragment, "장바구니")
+                    setMenuBottomItemSelect(R.id.basket)
+
                 }
-                "foodbook" -> setFoodBookFragment()
+                "foodbook" -> {
+                    setReplaceToolBar(foodbookFragment, "레시피사전")
+                    setMenuBottomItemSelect(R.id.food_book)
+                }
             }
         }
 
@@ -84,14 +88,11 @@ class MainActivity : AppCompatActivity() {
             when (id) {
                 // Navigation : 프래그먼트 객체를 변수에 저장하고, 필요시 호출 => State 유지
                 R.id.search -> setMainFragment()
-                R.id.expiration_date -> setExpirationDateFragment()
-                R.id.basket -> setBasketFragment()
-                R.id.food_book -> setFoodBookFragment()
+                R.id.expiration_date -> setReplaceToolBar(expirationdateFragment, "유통기한")
+                R.id.basket -> setReplaceToolBar(basketFragment, "장바구니")
+                R.id.food_book -> setReplaceToolBar(foodbookFragment, "레시피사전")
             }
         }
-        Log.d("LoginTest", "name : ${intent.extras?.get("user").toString()}")
-        Log.d("LoginTest", "email : ${intent.extras?.get("email").toString()}")
-        Log.d("LoginTest", "photo : ${intent.extras?.get("photo").toString()}")
         var navi_header = binding.navigationView.getHeaderView(0)
         navi_header.findViewById<ImageView>(R.id.nav_setting).setOnClickListener {
             Toast.makeText(this,"설정", Toast.LENGTH_SHORT).show()
@@ -110,7 +111,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         // 이미지 로드
-        if(!intent.extras?.get("photo").toString().isNullOrBlank()) {
+        if(intent.extras?.get("photo").toString() != "null" && !intent.extras?.get("photo").toString().isNullOrBlank()) {
             Log.d("LoginTest", "photo notNull : ${intent.extras?.get("photo").toString()}")
             Glide.with(this).load(intent.extras?.get("photo")).into(navi_header.findViewById<ImageView>(R.id.nav_profile_image))
         }else {
@@ -163,6 +164,17 @@ class MainActivity : AppCompatActivity() {
         binding.toolbarTitle.text = "레시피사전"
         binding.toolbarTitle.visibility = View.VISIBLE
         replaceFragment(foodbookFragment)
+    }
+
+    fun setReplaceToolBar(fa: Fragment, title: String) {
+        binding.toolbarTitle.text = title
+        binding.mainAchaLogo.visibility = View.GONE
+        binding.toolbarTitle.visibility = View.VISIBLE
+        replaceFragment(fa)
+    }
+
+    fun setMenuBottomItemSelect(itemId:Int) {
+        binding.menuBottom.setItemSelected(itemId, true)
     }
 
     fun InitFragment() {
