@@ -108,5 +108,4 @@
         app:layout_constraintTop_toBottomOf="@id/googleLoginBtn"
         app:layout_constraintStart_toStartOf="@+id/googleLoginBtn"
         app:layout_constraintEnd_toEndOf="@+id/googleLoginBtn"/>
-
 </androidx.constraintlayout.widget.ConstraintLayout>

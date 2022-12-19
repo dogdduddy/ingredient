@@ -17,6 +17,7 @@ import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.example.ingredient.R
+import com.example.ingredient.databinding.ActivityLoginBinding
 import com.example.ingredient.network.SessionCallback
 import com.facebook.AccessToken
 import com.facebook.CallbackManager
@@ -52,29 +53,51 @@ import java.util.*
 class LoginActivity : AppCompatActivity() {
     private val TAG = "LoginActivity"
     private lateinit var auth: FirebaseAuth
+    private lateinit var binding: ActivityLoginBinding
     // Kakao
     private lateinit var callbackManager: CallbackManager
     private lateinit var callback: SessionCallback
     // Google
     private lateinit var signInRequest: BeginSignInRequest
     private lateinit var oneTapClient: SignInClient
-    private lateinit var googleSignInClient: GoogleSignInClient
     // Can be any integer unique to the Activity
     private val REQ_ONE_TAP = 2
     private var showOneTapUI = true
     private lateinit var getResultText:ActivityResultLauncher<Intent>
 
+    private val googleSignInClient by lazy {
+        GoogleSignIn.getClient(
+            this,
+            GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.my_web_client_id))
+                .requestEmail()
+                .requestProfile()
+                .build())
+    }
+
+    // 구글 로그인 결과 받을 런처
+    private val startForResult: ActivityResultLauncher<Intent> =
+        registerForActivityResult( ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val task: Task<GoogleSignInAccount> =
+                    GoogleSignIn.getSignedInAccountFromIntent(result.data)
+                try {
+                    val account: GoogleSignInAccount = task.getResult(ApiException::class.java)
+                    firebaseAuthWithGoogle(account)
+                } catch (e: ApiException) {
+                    Log.d(TAG, "Google Signin Exception : $e")
+                }
+            }
+        }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        binding = ActivityLoginBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
         auth = Firebase.auth
-
-
-        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(getString(R.string.my_web_client_id))
-            .requestEmail()
-            .build()
-
-        googleSignInClient = GoogleSignIn.getClient(this, gso)
+        callback = SessionCallback(this)
+        callbackManager = CallbackManager.Factory.create()
 
         // setGoogleIdTokenRequestOptions에 서버 Client ID를 전달
         oneTapClient = Identity.getSignInClient(this)
@@ -89,29 +112,23 @@ class LoginActivity : AppCompatActivity() {
                     .build())
             .setAutoSelectEnabled(true)
             .build()
-        setContentView(R.layout.activity_login)
+
 
         // 자동 로그인
         val currentUser = auth.currentUser
         //updateUI(currentUser)
+        initView()
+    }
 
-        //facebook
-        val facebookLoginBtn = findViewById<Button>(R.id.facebookLoginBtn)
-        val kakaoLoginBtn = findViewById<Button>(R.id.kakaoLoginBtn)
-        val googleBtnbtn = findViewById<Button>(R.id.googleLoginBtn)
-
-        callback = SessionCallback(this)
-        callbackManager = CallbackManager.Factory.create()
-
-        facebookLoginBtn.setOnClickListener {
+    fun initView() {
+        binding.facebookLoginBtn.setOnClickListener {
             facebookLogin()
         }
-        kakaoLoginBtn.setOnClickListener {
+        binding.kakaoLoginBtn.setOnClickListener {
             kakaoLogin()
         }
-        googleBtnbtn.setOnClickListener {
+        binding.googleLoginBtn.setOnClickListener {
             googleLogin()
-            //googleSignIn()
         }
     }
 
@@ -231,21 +248,6 @@ class LoginActivity : AppCompatActivity() {
         queue.add(request)
         return source.task // call validation server and retrieve firebase token
     }
-    val startForResult = registerForActivityResult(
-        ActivityResultContracts.StartActivityForResult(),
-        ActivityResultCallback { result: ActivityResult ->
-            if (result.resultCode == Activity.RESULT_OK) {
-                val intent = result.data
-                val task: Task<GoogleSignInAccount> =
-                    GoogleSignIn.getSignedInAccountFromIntent(intent)
-                try {
-                    val account: GoogleSignInAccount = task.getResult(ApiException::class.java)
-                    firebaseAuthWithGoogle(account)
-                } catch (e: ApiException) {
-                    Log.d(TAG, "Google Signin Exception : $e")
-                }
-            }
-        })
 
     private fun googleLogin() {
         val signInIntent = googleSignInClient.signInIntent
@@ -283,6 +285,12 @@ class LoginActivity : AppCompatActivity() {
             userData = user.providerData.get(0)
         else
             userData = user.providerData.get(1)
+
+	    user.providerData.forEachIndexed { index, v ->
+            Log.d("logintest", "userData $index : ${v.email}")
+            Log.d("logintest", "userData $index : ${v.displayName}")
+            Log.d("logintest", "userData $index : ${v.photoUrl}")
+        }
 
 
         Log.d(TAG, "LoginActivity - startMainActivity() called")
