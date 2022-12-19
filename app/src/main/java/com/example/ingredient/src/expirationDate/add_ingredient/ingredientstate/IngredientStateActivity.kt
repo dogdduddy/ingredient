@@ -12,6 +12,7 @@ import com.example.ingredient.src.expirationDate.add_ingredient.models.ExpiryDat
 import com.example.ingredient.src.expirationDate.add_ingredient.models.Ingredient
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import java.util.*
 import kotlin.collections.ArrayList
 
 class IngredientStateActivity : AppCompatActivity() {
@@ -40,11 +41,12 @@ class IngredientStateActivity : AppCompatActivity() {
             Log.d("ExpiryList", "1 : ${ExpiryList[ExpiryList.size-1]}")
             if(!ExpiryList.isNullOrEmpty()) {
                 Log.d("ExpiryList", ExpiryList.toString())
+                /*
                 for(i in 0 until ExpiryList.size) {
                     var hashData = hashMapOf(
-                        "ingredienticon" to ExpiryList[i]!!.ingredient.ingredienticon,
-                        "ingredientidx" to ExpiryList[i]!!.ingredient.ingredientidx,
-                        "ingredientname" to ExpiryList[i]!!.ingredient.ingredientname,
+                        "ingredienticon" to ExpiryList[i]!!.ingredient!!.ingredienticon,
+                        "ingredientidx" to ExpiryList[i]!!.ingredient!!.ingredientidx,
+                        "ingredientname" to ExpiryList[i]!!.ingredient!!.ingredientname,
                         "expirydate" to ExpiryList[i]!!.expirydate,
                         "ingredientstatus" to ExpiryList[i]!!.ingredientstatus,
                         "storagestatus" to ExpiryList[i]!!.storagestatus,
@@ -58,6 +60,30 @@ class IngredientStateActivity : AppCompatActivity() {
                         .document()
                         .set(hashData)
                 }
+
+                 */
+
+                for(i in 0 until ExpiryList.size) {
+                    val randomN: Int = (5..10).random()
+                    var hashData = hashMapOf(
+                        "ingredienticon" to ExpiryList[i]!!.ingredient!!.ingredienticon,
+                        "ingredientidx" to ExpiryList[i]!!.ingredient!!.ingredientidx,
+                        "ingredientname" to ExpiryList[i]!!.ingredient!!.ingredientname,
+                        "expirydate" to randomN,
+                        "ingredientstatus" to ExpiryList[i]!!.ingredientstatus,
+                        "storagestatus" to ExpiryList[i]!!.storagestatus,
+                        "localdate" to Date(),
+                        "discard" to Calendar.getInstance().apply { add(Calendar.DATE,randomN)}.time
+                    )
+                    ExpiryList[i] = null
+                    database.collection("ListData")
+                        .document(userid)
+                        .collection("Refrigerator")
+                        .document()
+                        .set(hashData)
+                }
+
+                /////
                 val intent = Intent(this, MainActivity::class.java)
                 intent.putExtra("fragment", "expiry")
                 startActivity(intent)
@@ -70,6 +96,14 @@ class IngredientStateActivity : AppCompatActivity() {
     }
     fun expiryListSubmit(position:Int, value:ExpiryDateIngredient) {
         ExpiryList[position] = value
+    }
+
+    fun itemIngredientStatusChange(position:Int, status:Int) {
+        ExpiryList[position]!!.ingredientstatus = status
+    }
+
+    fun itemStorageStatusChange(position:Int, status:Int) {
+        ExpiryList[position]!!.storagestatus = status
     }
 
 }

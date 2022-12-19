@@ -21,6 +21,22 @@ import kotlin.collections.ArrayList
 class IngredientStateAdapter(val ingredients:ArrayList<Ingredient>, val activity:IngredientStateActivity) : RecyclerView.Adapter<IngredientStateAdapter.ViewHolder>() {
     private var context: Context? = null
     private val cal = Calendar.getInstance()
+    private var ingredientstatus: (Int) -> Int = fun(checkedId:Int): Int {
+        return when (checkedId) {
+            R.id.state_ing_r1 -> 0
+            R.id.state_ing_r2 -> 1
+            R.id.state_ing_r3 -> 2
+            else -> -1
+        }
+    }
+    private var storagestatus: (Int) -> Int = fun(checkedId:Int): Int {
+        return when (checkedId) {
+            R.id.state_sto_r1 -> 0
+            R.id.state_sto_r2 -> 1
+            R.id.state_sto_r3 -> 2
+            else -> -1
+        }
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view =
@@ -36,63 +52,30 @@ class IngredientStateAdapter(val ingredients:ArrayList<Ingredient>, val activity
         Glide.with(holder.itemView)
             .load(ingredients[position].ingredienticon)
             .into(holder.ingredientIcon)
-        holder.ingredientGroup.setOnCheckedChangeListener { group, checkedId ->
-            if(holder.storageGroup.checkedRadioButtonId != -1) {
-                val ingredientstatus:Int = when(checkedId) {
-                    R.id.state_ing_r1 -> 0
-                    R.id.state_ing_r2 -> 1
-                    R.id.state_ing_r3 -> 2
-                    else -> -1
-                }
-                val storagestatus:Int = when(holder.storageGroup.checkedRadioButtonId) {
-                    R.id.state_sto_r1 -> 0
-                    R.id.state_sto_r2 -> 1
-                    R.id.state_sto_r3 -> 2
-                    else -> -1
-                }
 
-                var randomN = (5 .. 10).random()
-                activity.expiryListSubmit(
-                    position,
-                    ExpiryDateIngredient(
-                        ingredients[position],
-                        randomN,
-                        ingredientstatus,
-                        storagestatus,
-                        false,
-                        Date(),
-                        cal.apply {add(Calendar.DATE,randomN)}.time)
-                )
-            }
+        initExpiryData(position, ingredientstatus(holder.ingredientGroup.checkedRadioButtonId), storagestatus(holder.storageGroup.checkedRadioButtonId))
+
+        holder.ingredientGroup.setOnCheckedChangeListener { group, checkedId ->
+            activity.itemIngredientStatusChange(position, ingredientstatus(checkedId))
         }
         holder.storageGroup.setOnCheckedChangeListener { group, checkedId ->
-            if(holder.ingredientGroup.checkedRadioButtonId != -1) {
-                val storagestatus:Int = when(checkedId) {
-                    R.id.state_sto_r1 -> 0
-                    R.id.state_sto_r2 -> 1
-                    R.id.state_sto_r3 -> 2
-                    else -> -1
-                }
-                val ingredientstatus:Int = when(holder.ingredientGroup.checkedRadioButtonId) {
-                    R.id.state_ing_r1 -> 0
-                    R.id.state_ing_r2 -> 1
-                    R.id.state_ing_r3 -> 2
-                    else -> -1
-                }
-                var randomN = (5 .. 10).random()
-                activity.expiryListSubmit(
-                    position,
-                    ExpiryDateIngredient(
-                        ingredients[position],
-                        randomN,
-                        ingredientstatus,
-                        storagestatus,
-                        false,
-                        Date(),
-                        cal.apply {add(Calendar.DATE,randomN)}.time)
-                )
-            }
+            activity.itemStorageStatusChange(position, storagestatus(checkedId))
         }
+    }
+    // Activity ExpiryList 초기화
+    fun initExpiryData(position: Int, defaultIngredientStatusCheckedId: Int, defaultStorageStatusCheckedId: Int) {
+        var randomN = (5 .. 10).random()
+        activity.expiryListSubmit(
+            position,
+            ExpiryDateIngredient(
+                ingredients[position],
+                randomN,
+                defaultIngredientStatusCheckedId,
+                defaultStorageStatusCheckedId,
+                false,
+                Date(),
+                cal.apply {add(Calendar.DATE,randomN)}.time)
+        )
     }
     override fun getItemCount(): Int {
         return ingredients.size
