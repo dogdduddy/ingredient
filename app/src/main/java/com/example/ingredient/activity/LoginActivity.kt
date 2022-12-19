@@ -116,7 +116,7 @@ class LoginActivity : AppCompatActivity() {
 
         // 자동 로그인
         val currentUser = auth.currentUser
-        //updateUI(currentUser)
+        updateUI(currentUser)
         initView()
     }
 
@@ -185,7 +185,7 @@ class LoginActivity : AppCompatActivity() {
     public override fun onStart() {
         super.onStart()
         val currentUser = auth.currentUser
-        //updateUI(currentUser)
+        updateUI(currentUser)
     }
 
     // 자동 로그인
