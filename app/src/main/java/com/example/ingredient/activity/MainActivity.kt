@@ -4,8 +4,6 @@ import android.content.Intent
 import android.graphics.Rect
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import android.view.MenuItem
 import android.view.MotionEvent
@@ -15,9 +13,7 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
-import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.GravityCompat
-import androidx.core.view.get
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
@@ -28,18 +24,10 @@ import com.example.ingredient.R
 import com.example.ingredient.src.expirationDate.ExpirationDateFragment
 import com.example.ingredient.src.basket.BasketFragment
 import com.example.ingredient.databinding.ActivityMainBinding
-import com.example.ingredient.src.expirationDate.add_ingredient.models.CategoryIngrediets
 import com.example.ingredient.src.foodbook.FoodBookMainFragment
 import com.example.ingredient.src.search.SearchMainFragment
-import com.facebook.login.LoginManager
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.Query
-import com.google.firebase.firestore.QuerySnapshot
-import com.kakao.usermgmt.UserManagement
-import com.kakao.usermgmt.callback.LogoutResponseCallback
-import kotlinx.coroutines.*
-import kotlinx.coroutines.tasks.await
 
 class MainActivity : AppCompatActivity() {
     private lateinit var mainFragment: SearchMainFragment
@@ -147,24 +135,6 @@ class MainActivity : AppCompatActivity() {
         binding.mainAchaLogo.visibility = View.VISIBLE
         replaceFragment(mainFragment)
     }
-    fun setExpirationDateFragment(){
-        binding.mainAchaLogo.visibility = View.GONE
-        binding.toolbarTitle.text = "유통기한"
-        binding.toolbarTitle.visibility = View.VISIBLE
-        replaceFragment(expirationdateFragment)
-    }
-    fun setBasketFragment(){
-        binding.mainAchaLogo.visibility = View.GONE
-        binding.toolbarTitle.text = "장바구니"
-        binding.toolbarTitle.visibility = View.VISIBLE
-        replaceFragment(basketFragment)
-    }
-    fun setFoodBookFragment(){
-        binding.mainAchaLogo.visibility = View.GONE
-        binding.toolbarTitle.text = "레시피사전"
-        binding.toolbarTitle.visibility = View.VISIBLE
-        replaceFragment(foodbookFragment)
-    }
 
     fun setReplaceToolBar(fa: Fragment, title: String) {
         binding.toolbarTitle.text = title
@@ -257,15 +227,6 @@ class MainActivity : AppCompatActivity() {
     }
     fun logout() {
         FirebaseAuth.getInstance().signOut()
-        /*
-        LoginManager.getInstance().logOut()
-        UserManagement.getInstance().requestLogout(object : LogoutResponseCallback() {
-            override fun onCompleteLogout() {
-                FirebaseAuth.getInstance().signOut()
-            }
-        })
-
-         */
         val intent = Intent(this, LoginActivity::class.java)
         startActivity(intent)
         finish()
