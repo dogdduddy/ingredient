@@ -6,8 +6,7 @@ import android.os.Parcelable
 import android.util.Log
 import android.widget.Button
 import com.example.ingredient.R
-import com.example.ingredient.src.expirationDate.add_ingredient.models.CategoryIngrediets
-import com.example.ingredient.src.expirationDate.add_ingredient.models.Ingredient
+import com.example.ingredient.src.expirationDate.add_ingredient.models.RecipeTemp
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.toObject
@@ -17,17 +16,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 
-data class CategoryIngrediets2(
-	var categoryid:Int= 0,
-	var categoryname: String ="",
-	var ingredientlist: List<Ingredient2>? = null
-)
-data class Ingredient2(
-	val ingredienticon: String? = null,
-	val ingredientidx: Int? = null,
-	val ingredientname: String? = null,
-	val ingredientcategory: String?= null
-)
 class MainActivity2 : AppCompatActivity() {
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
@@ -55,16 +43,27 @@ class MainActivity2 : AppCompatActivity() {
 			}
 		}
 
-		 */
 
+		// FoodCategory 레시피 데이터 Preference to Recipe::Class.java
 		val db = FirebaseFirestore.getInstance()
-		db.collection("Category")
-			.get()
-			.addOnSuccessListener { documents ->
-				documents.documents.forEach { doc ->
-					var temp = doc.toObject<CategoryIngrediets>()
-					Log.d("test", temp.toString())
+		CoroutineScope(Dispatchers.IO).launch {
+			var temp = db.collection("FoodCategory")
+				.get()
+				.await()
+				.toList()
+
+			temp.forEachIndexed { index, queryDocumentSnapshot ->
+				var listRef = queryDocumentSnapshot.data?.get("recipes") as List<DocumentReference>
+				var recipeList = mutableListOf<RecipeTemp>()
+
+				listRef.forEach { documentReference ->
+					var recipe = documentReference.get().await().toObject(RecipeTemp::class.java)
+					recipeList.add(recipe!!)
 				}
+				queryDocumentSnapshot.reference.update(mapOf("recipes" to recipeList))
 			}
+		}
+		 */
 	}
+
 }

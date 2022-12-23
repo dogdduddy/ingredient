@@ -19,8 +19,10 @@ import com.example.ingredient.R
 import com.example.ingredient.activity.MainActivity
 import com.example.ingredient.databinding.FragmentSearchBinding
 import com.example.ingredient.common.RecipeDialogActivity
+import com.example.ingredient.src.foodbook.models.Recipe
 import com.google.android.material.chip.Chip
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.toObject
 import android.view.inputmethod.InputMethodManager as InputMethodManager
 
 class SearchFragment : Fragment(), MainActivity.onBackPressListener {
@@ -28,7 +30,7 @@ class SearchFragment : Fragment(), MainActivity.onBackPressListener {
     private lateinit var database: FirebaseFirestore
 
     private var strList = mutableListOf<String>()
-    private var recipeList: ArrayList<MutableMap<String, String>> = ArrayList()
+    private var recipeList: ArrayList<Recipe>? = null
     private var _binding : FragmentSearchBinding? = null
     private val binding get()  = _binding!!
     private var imm:InputMethodManager? = null
@@ -52,7 +54,7 @@ class SearchFragment : Fragment(), MainActivity.onBackPressListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         //Toast.makeText(context, "onViewCreated : "+recipeList,Toast.LENGTH_LONG).show()
-        adapterConnect(recipeList)
+        adapterConnect(recipeList!!)
     }
 
     override fun onStart() {
@@ -64,7 +66,7 @@ class SearchFragment : Fragment(), MainActivity.onBackPressListener {
         binding.chipGroupDelAllBtn.setOnClickListener {
             binding.chipGroup.removeAllViews()
             strList.clear()
-            for(i in 0 until recipeList.size) adapter.nullItem()
+            for(i in 0 until recipeList!!.size) adapter.nullItem()
         }
 
         binding.searchCancleBtn.setOnClickListener {
@@ -120,7 +122,7 @@ class SearchFragment : Fragment(), MainActivity.onBackPressListener {
                                 strList.remove(text)
                                 // chip 삭제 반영
                                 if (strList.isNullOrEmpty()) {
-                                    for (i in 0 until recipeList.size) adapter.nullItem()
+                                    for (i in 0 until recipeList!!.size) adapter.nullItem()
                                     // 동적 버튼 / 검색어 없을시 서치바 위치가 내려가도록
                                     //setSearchBarMargin(down)
                                 }
@@ -137,7 +139,7 @@ class SearchFragment : Fragment(), MainActivity.onBackPressListener {
     fun SearchQuery(database:FirebaseFirestore, strList:MutableList<String>):Unit {
         val refs = database.collection("Recipes")
         // 검색 통해 나온 레시피명을 담는 리스트
-        recipeList.clear()
+        recipeList!!.clear()
 
         refs.whereArrayContainsAny("ingredient", strList).get()
             .addOnSuccessListener { documents ->
@@ -150,15 +152,10 @@ class SearchFragment : Fragment(), MainActivity.onBackPressListener {
                         else
                             ing_str += " / $element"
                     }
-                    recipeList.add(
-                        mutableMapOf("name" to document.get("name").toString(),
-                            "ingredient" to ing_str,
-                            "like" to document.get("like").toString(),
-                            "subscribe" to document.get("subscribe").toString(),
-                            "icon" to document.get("icon").toString(),
-                        ))
+
+                    recipeList!!.add(document.toObject<Recipe>())
                 }
-                adapterConnect(recipeList)
+                adapterConnect(recipeList!!)
             }
     }
 
@@ -167,13 +164,13 @@ class SearchFragment : Fragment(), MainActivity.onBackPressListener {
     // interface 타입의 변수를 갖고 있는 setItemClickListener 메서드 생성
     // fragment에서 setItemClickListener 메서드를 실행 후 onClick 메서드를 재정의
 
-    private fun adapterConnect(recipeList: ArrayList<MutableMap<String, String>>){
+    private fun adapterConnect(recipeList: ArrayList<Recipe>){
         adapter.submitList(recipeList)
         adapter.setItemClickListener(object: SearchAdapter.OnItemClickListener {
             override fun onClick(view: View, position: Int) {
                 val intent = Intent(context, RecipeDialogActivity::class.java)
-                intent.putExtra("name", recipeList[position]["name"].toString())
-                (activity as MainActivity).addRecentRecipe(recipeList[position]["name"].toString(), recipeList[position]["icon"].toString())
+                intent.putExtra("name", recipeList[position].name)
+                (activity as MainActivity).addRecentRecipe(recipeList[position].name, recipeList[position].icon)
                 startActivity(intent)
             }
         })
