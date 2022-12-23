@@ -152,8 +152,8 @@ class SearchMainFragment : Fragment() {
             var sortedResult = result.sortedBy { it[1] }.reversed()
             middle = mutableListOf<ArrayList<String>>(
                 arrayListOf(responseR[sortedResult[0][0]].get("name").toString(), responseR[sortedResult[0][0]].get("icon").toString(),responseR[sortedResult[0][0]].get("title").toString(), responseR[sortedResult[0][0]].get("description").toString()),
-                arrayListOf(responseR[sortedResult[1][0]].get("name").toString(), responseR[sortedResult[1][0]].get("icon").toString(),responseR[sortedResult[1][0]].get("title").toString(), responseR[sortedResult[0][0]].get("description").toString()),
-                arrayListOf(responseR[sortedResult[2][0]].get("name").toString(), responseR[sortedResult[2][0]].get("icon").toString(),responseR[sortedResult[2][0]].get("title").toString(), responseR[sortedResult[0][0]].get("description").toString()))
+                arrayListOf(responseR[sortedResult[1][0]].get("name").toString(), responseR[sortedResult[1][0]].get("icon").toString(),responseR[sortedResult[1][0]].get("title").toString(), responseR[sortedResult[1][0]].get("description").toString()),
+                arrayListOf(responseR[sortedResult[2][0]].get("name").toString(), responseR[sortedResult[2][0]].get("icon").toString(),responseR[sortedResult[2][0]].get("title").toString(), responseR[sortedResult[2][0]].get("description").toString()))
         }.await()
         return middle
     }
