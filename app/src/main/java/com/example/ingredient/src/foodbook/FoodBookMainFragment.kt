@@ -157,8 +157,8 @@ class FoodBookMainFragment : Fragment() {
     }
     fun tabsInit(temp : ArrayList<FoodCategory>) {
         categoryList.clear()
-        categoryList.addAll(temp)
-        temp.forEach {
+        categoryList.addAll(temp.sortedBy { it.categoryid })
+        categoryList.forEach {
             tabs.addTab(tabs.newTab().setText(it.categoryname))
         }
     }
