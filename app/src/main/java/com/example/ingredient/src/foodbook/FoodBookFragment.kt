@@ -37,7 +37,7 @@ class FoodBookFragment : Fragment() {
     private var strList = mutableListOf<String>()
     private var maxStrListSize = 8
 
-    private lateinit var recipeList: ArrayList<Recipe>
+    private var recipeList: ArrayList<Recipe> = arrayListOf()
     private var _binding: FragmentFoodBookBinding? = null
     private val binding get() = _binding!!
     private var imm: InputMethodManager? = null

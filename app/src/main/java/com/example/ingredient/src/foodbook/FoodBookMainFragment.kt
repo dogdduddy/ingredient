@@ -28,7 +28,7 @@ class FoodBookMainFragment : Fragment() {
     private var adapter = SearchAdapter()
     private lateinit var database: FirebaseFirestore
     private var _binding : FragmentFoodbookMainBinding? = null
-    private var recipeList: ArrayList<MutableMap<String, String>> = ArrayList()
+    private var recipeList: ArrayList<Recipe> = arrayListOf()
     private val binding get()  = _binding!!
     private var imm: InputMethodManager? = null
     private var categoryList = arrayListOf<FoodCategory>()
@@ -38,9 +38,13 @@ class FoodBookMainFragment : Fragment() {
         super.onCreate(savedInstanceState)
         imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
         database = FirebaseFirestore.getInstance()
+        initAdapter()
 
     }
 
+    fun initAdapter() {
+
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -72,11 +76,11 @@ class FoodBookMainFragment : Fragment() {
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab?) {
-                //query("김치볶음밥")
+                TODO()
             }
 
             override fun onTabReselected(tab: TabLayout.Tab?) {
-                //
+                TODO()
             }
         })
 
@@ -99,62 +103,6 @@ class FoodBookMainFragment : Fragment() {
         binding.FindrecyclerView.adapter = adapter
     }
 
-    /*
-    fun query(position:Int) {
-        val refs = database.collection("Recipes")
-        recipeList.clear()
-
-        refs.whereIn("name", categoryList[position][1] as List<Any>)
-            .get()
-            .addOnSuccessListener { documents ->
-                for (document in documents) {
-                    var ing_str: String = ""
-                    (document.get("ingredient") as ArrayList<String>).forEachIndexed { index, element ->
-                        if(index == 0)
-                            ing_str = element
-                        else
-                            ing_str += " / $element"
-                    }
-                    recipeList.add(
-                        mutableMapOf("name" to document.get("name").toString(),
-                            "ingredient" to ing_str,
-                            "like" to document.get("like").toString(),
-                            "subscribe" to document.get("subscribe").toString(),
-                            "icon" to document.get("icon").toString(),
-                        ))
-                }
-                adapterConnect(recipeList)
-            }
-    }
-
-     */
-
-    fun tabClickEvent(position:Int) {
-        val refs = database.collection("Recipes")
-        recipeList.clear()
-        /*
-        for (document in documents) {
-            var ing_str: String = ""
-            (document.get("ingredient") as ArrayList<String>).forEachIndexed { index, element ->
-                if(index == 0)
-                    ing_str = element
-                else
-                    ing_str += " / $element"
-            }
-            recipeList.add(
-                mutableMapOf("name" to document.get("name").toString(),
-                    "ingredient" to ing_str,
-                    "like" to document.get("like").toString(),
-                    "subscribe" to document.get("subscribe").toString(),
-                    "icon" to document.get("icon").toString(),
-                ))
-        }
-                adapterConnect(recipeList)
-
-         */
-        categoryList[position]
-
-    }
     fun tabsInit(temp : ArrayList<FoodCategory>) {
         categoryList.clear()
         categoryList.addAll(temp.sortedBy { it.categoryid })

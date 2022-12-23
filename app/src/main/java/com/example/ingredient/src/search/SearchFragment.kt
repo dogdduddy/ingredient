@@ -30,7 +30,7 @@ class SearchFragment : Fragment(), MainActivity.onBackPressListener {
     private lateinit var database: FirebaseFirestore
 
     private var strList = mutableListOf<String>()
-    private var recipeList: ArrayList<Recipe>? = null
+    private var recipeList: ArrayList<Recipe>? = arrayListOf()
     private var _binding : FragmentSearchBinding? = null
     private val binding get()  = _binding!!
     private var imm:InputMethodManager? = null
