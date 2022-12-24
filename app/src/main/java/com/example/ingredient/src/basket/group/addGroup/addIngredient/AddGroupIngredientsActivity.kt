@@ -62,6 +62,7 @@ class AddGroupIngredientsActivity : AppCompatActivity(), AddIngredientView {
         binding.groupAddPickingredientsave.setOnClickListener {
             if(pickingredients.isNotEmpty()) {
                 var group = intent.extras!!.get("groupName").toString()
+                Log.d("basketTest", "groupName : $group")
                 IngredientService(this).PostIngredients(group, pickingredients)
             }
         }

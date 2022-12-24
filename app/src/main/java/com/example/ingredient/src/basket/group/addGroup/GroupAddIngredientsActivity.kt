@@ -48,7 +48,7 @@ class GroupAddIngredientsActivity : AppCompatActivity(), BasketView {
                 Toast.makeText(context, "그룹을 추가해주세요.", Toast.LENGTH_SHORT).show()
             } else {
                 var intent = Intent(context, AddGroupIngredientsActivity::class.java)
-                intent.putStringArrayListExtra("groupList", groupList)
+                intent.putExtra("groupName", groupList[adapter.selecCheck()])
                 startActivity(intent)
             }
         }
