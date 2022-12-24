@@ -38,13 +38,8 @@ class FoodBookMainFragment : Fragment() {
         super.onCreate(savedInstanceState)
         imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
         database = FirebaseFirestore.getInstance()
-        initAdapter()
-
     }
 
-    fun initAdapter() {
-
-    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -69,16 +64,13 @@ class FoodBookMainFragment : Fragment() {
             transaction?.add(R.id.fragment_container, foodBookFragment)
             transaction?.commit()
         }
-
         tabs.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 adapterConnect(categoryList[tab?.position!!].recipes!!)
             }
-
             override fun onTabUnselected(tab: TabLayout.Tab?) {
                 TODO()
             }
-
             override fun onTabReselected(tab: TabLayout.Tab?) {
                 TODO()
             }
@@ -88,11 +80,11 @@ class FoodBookMainFragment : Fragment() {
 
     private fun adapterConnect(recipeList: List<Recipe>) {
         adapter.submitList(recipeList)
-
         // Fragment
         adapter.setItemClickListener(object: SearchAdapter.OnItemClickListener {
             override fun onClick(view: View, position: Int) {
                 val intent = Intent(context, RecipeDialogActivity::class.java)
+                Log.d("searchTest", "${recipeList[position].name}  : ${recipeList[position].ingredient}")
                 intent.putExtra("name", recipeList[position].name)
                 (activity as MainActivity).addRecentRecipe(recipeList[position].name, recipeList[position].icon)
                 startActivity(intent)

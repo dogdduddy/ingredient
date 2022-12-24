@@ -100,8 +100,6 @@ class FoodBookFragment : Fragment() {
                 SearchQuery(database)
             }
         }
-
-
     }
 
     // 단순쿼리문 (전체 출력)
@@ -127,8 +125,8 @@ class FoodBookFragment : Fragment() {
                 }
                 adapterConnect(recipeList)
             }
-
     }
+
 
     // Full Text 형태로 검색 구현
     fun SearchFullTextQuery(database: FirebaseFirestore, str: String, chipClick:Boolean): Unit {
