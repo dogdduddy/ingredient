@@ -19,6 +19,7 @@ import android.widget.TextView
 import com.bumptech.glide.Glide
 import com.example.ingredient.R
 import com.example.ingredient.activity.MainActivity
+import com.example.ingredient.src.basket.models.BasketIngredient
 import com.example.ingredient.src.expirationDate.add_ingredient.models.Ingredient
 import com.example.ingredient.src.foodbook.models.Recipe
 import com.google.firebase.auth.FirebaseAuth
@@ -63,21 +64,21 @@ class RecipeDialogActivity : Activity() {
                         .get()
                         .addOnSuccessListener {  documents ->
                             if(!documents.documents.isNullOrEmpty()) {
-                                var data = documents.documents[0].data
-                                var hash = hashMapOf(
-                                    "ingredienticon" to data!!.get("ingredienticon").toString(),
-                                    "ingredientidx" to data!!.get("ingredientidx").toString(),
-                                    "ingredientname" to data!!.get("ingredientname").toString(),
-                                    "ingredientcategory" to data!!.get("ingredientcategory")
-                                        .toString(),
-                                    "groupName" to recipeName,
-                                    "ingredientquantity" to 1
-                                )
-                                database.collection("ListData")
-                                    .document(FirebaseAuth.getInstance().uid!!)
-                                    .collection("Basket")
-                                    .document()
-                                    .set(hash)
+                                documents.documents[0].data.run {
+                                    var hash = hashMapOf(
+                                        "ingredienticon" to ("ingredienticon").toString(),
+                                        "ingredientidx" to ("ingredientidx").toString().toInt(),
+                                        "ingredientname" to ("ingredientname").toString(),
+                                        "ingredientcategory" to ("ingredientcategory").toString(),
+                                        "groupName" to recipeName,
+                                        "ingredientquantity" to 1
+                                    )
+                                    database.collection("ListData")
+                                        .document(FirebaseAuth.getInstance().uid!!)
+                                        .collection("Basket")
+                                        .document()
+                                        .set(hash)
+                                }
                             }
                         }
                 }

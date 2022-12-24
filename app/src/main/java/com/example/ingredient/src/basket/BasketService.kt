@@ -4,43 +4,51 @@ import android.util.Log
 import com.example.ingredient.src.basket.models.BasketIngredient
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.toObject
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 
 class BasketService(val view:BasketView) {
 	private val database = FirebaseFirestore.getInstance()
 	private val userid = FirebaseAuth.getInstance().currentUser?.uid
 	fun getBasket() {
-		var basketData = ArrayList<BasketIngredient>()
-		database.collection("ListData")
-			.document(userid!!)
-			.collection("Basket")
-			.get()
-			.addOnSuccessListener { documents ->
-				for(document in documents) {
-					basketData.add(
-						BasketIngredient(
-						document.get("ingredienticon").toString(),
-						document.get("ingredientidx").toString().toInt(),
-						document.get("ingredientname").toString(),
-						document.get("ingredientcategory").toString(),
-						document.get("groupName").toString(),
-						document.get("ingredientquantity").toString().toInt()
+		CoroutineScope(Dispatchers.IO).launch {
+			var response:ArrayList<BasketIngredient> = arrayListOf<BasketIngredient>()
+			var basketData = ArrayList<BasketIngredient>()
+			database.collection("ListData")
+				.document(userid!!)
+				.collection("Basket")
+				.get()
+				.addOnSuccessListener { documents ->
+					for(document in documents) {
+						basketData.add(
+							BasketIngredient(
+								document.get("ingredienticon").toString(),
+								document.get("ingredientidx").toString().toInt(),
+								document.get("ingredientname").toString(),
+								document.get("ingredientcategory").toString(),
+								document.get("groupName").toString(),
+								document.get("ingredientquantity").toString().toInt()
+							)
 						)
-					)
+					}
+					view.onGetBasketSuccess(basketData)
 				}
-				view.onGetBasketSuccess(basketData)
-			}
-			.addOnFailureListener {
-				view.onGetBasketFailure(it.message ?: "통신 오류")
-			}
+				.addOnFailureListener {
+					view.onGetBasketFailure(it.message ?: "통신 오류")
+				}
+		}
 	}
 
 	fun getBasketGroup() {
-		var basketGroup = ArrayList<String>()
 		database.collection("ListData")
 			.document(userid!!)
 			.collection("BasketList")
 			.get()
 			.addOnSuccessListener { documents ->
+				var basketGroup = ArrayList<String>()
 				for(document in documents) {
 					basketGroup.add(document.get("groupName").toString())
 				}

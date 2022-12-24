@@ -29,12 +29,12 @@ class GroupAdapter: RecyclerView.Adapter<GroupAdapter.ViewHolder>() {
     override fun getItemCount() = DataList.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.ingName.text = DataList[position].ingredientName
-        holder.ingCnt.text = DataList[position].quantity.toString() + category(DataList[position].categoryName, DataList[position].ingredientName)
-        holder.ingCategory.text = DataList[position].categoryName
+        holder.ingName.text = DataList[position].ingredientname
+        holder.ingCnt.text = DataList[position].ingredientquantity.toString() + category(DataList[position].ingredientcategory, DataList[position].ingredientname)
+        holder.ingCategory.text = DataList[position].ingredientcategory
 
         Glide.with(holder.itemView)
-            .load(DataList[position].ingredientIcon)
+            .load(DataList[position].ingredienticon)
             .into(holder.ingIcon)
         // 마이너스 버튼 클릭
         holder.ingMinus.setOnClickListener {
@@ -46,14 +46,14 @@ class GroupAdapter: RecyclerView.Adapter<GroupAdapter.ViewHolder>() {
                 .collection("ListData")
                 .document(FirebaseAuth.getInstance().uid.toString())
                 .collection("Basket")
-                .whereEqualTo("ingredientname", DataList[position].ingredientName)
+                .whereEqualTo("ingredientname", DataList[position].ingredientname)
                 .whereEqualTo("groupName", DataList[position].groupName)
                 .get()
                 .addOnSuccessListener {
                     for (document in it) {
                         if(number < 1) {
                             document.reference.delete()
-                            DataList.map { it.ingredientName }.indexOf(DataList[position].ingredientName).let { it1 ->
+                            DataList.map { it.ingredientname }.indexOf(DataList[position].ingredientname).let { it1 ->
                                 DataList.removeAt(it1)
                             }
                             notifyItemRemoved(position)
@@ -77,7 +77,7 @@ class GroupAdapter: RecyclerView.Adapter<GroupAdapter.ViewHolder>() {
                 .collection("ListData")
                 .document(FirebaseAuth.getInstance().uid.toString())
                 .collection("Basket")
-                .whereEqualTo("ingredientname", DataList[position].ingredientName)
+                .whereEqualTo("ingredientname", DataList[position].ingredientname)
                 .whereEqualTo("groupName", DataList[position].groupName)
                 .get()
                 .addOnSuccessListener {

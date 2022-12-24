@@ -92,7 +92,7 @@ class AddGroupIngredientsActivity : AppCompatActivity(), AddIngredientView {
                             i, v -> if(v.ingredientname == this.text) {
                         ingredientNum = i
                         return@run
-                    }
+                        }
                     }}
                     pickingredients.removeAt(ingredientNum)
                     binding.groupAddPickingredientChip.removeView(this)
