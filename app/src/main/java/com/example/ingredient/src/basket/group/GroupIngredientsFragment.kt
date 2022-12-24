@@ -3,6 +3,7 @@ package com.example.ingredient.src.basket.group
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,7 +18,7 @@ import com.example.ingredient.src.basket.models.BasketIngredient
 import kotlinx.coroutines.*
 
 class GroupIngredientsFragment: Fragment(), GroupIngredientsAdapter.onGroupDrawClickListener, BasketView {
-    private var basketData: ArrayList<BasketIngredient>? = null
+    private var basketData: ArrayList<BasketIngredient> = arrayListOf()
     private var basketList = arrayListOf<String>()
     private var _binding : FragmentGroupingredientsBinding? = null
     private val binding get()  = _binding!!
@@ -93,7 +94,9 @@ class GroupIngredientsFragment: Fragment(), GroupIngredientsAdapter.onGroupDrawC
 
     override fun onGetBasketGroupSuccess(response: ArrayList<String>) {
         basketList = response
-        adapter.submitList(basketData!!, response)
+        Log.d("basketTest", "response : $response")
+        Log.d("basketTest", "basketData : $basketData")
+        adapter.submitList(basketData, response)
     }
 
     override fun onGetBasketGroupFailure(message: String) {

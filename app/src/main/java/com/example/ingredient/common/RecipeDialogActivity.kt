@@ -66,10 +66,11 @@ class RecipeDialogActivity : Activity() {
                             if(!documents.documents.isNullOrEmpty()) {
                                 documents.documents[0].data.run {
                                     var hash = hashMapOf(
-                                        "ingredienticon" to ("ingredienticon").toString(),
-                                        "ingredientidx" to ("ingredientidx").toString().toInt(),
-                                        "ingredientname" to ("ingredientname").toString(),
-                                        "ingredientcategory" to ("ingredientcategory").toString(),
+
+                                        "ingredienticon" to this?.get("ingredienticon").toString(),
+                                        "ingredientidx" to this?.get("ingredientidx").toString().toInt(),
+                                        "ingredientname" to this?.get("ingredientname").toString(),
+                                        "ingredientcategory" to this?.get("ingredientcategory").toString(),
                                         "groupName" to recipeName,
                                         "ingredientquantity" to 1
                                     )

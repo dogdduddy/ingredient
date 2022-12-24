@@ -14,32 +14,31 @@ class BasketService(val view:BasketView) {
 	private val database = FirebaseFirestore.getInstance()
 	private val userid = FirebaseAuth.getInstance().currentUser?.uid
 	fun getBasket() {
-		CoroutineScope(Dispatchers.IO).launch {
-			var response:ArrayList<BasketIngredient> = arrayListOf<BasketIngredient>()
-			var basketData = ArrayList<BasketIngredient>()
-			database.collection("ListData")
-				.document(userid!!)
-				.collection("Basket")
-				.get()
-				.addOnSuccessListener { documents ->
-					for(document in documents) {
-						basketData.add(
-							BasketIngredient(
-								document.get("ingredienticon").toString(),
-								document.get("ingredientidx").toString().toInt(),
-								document.get("ingredientname").toString(),
-								document.get("ingredientcategory").toString(),
-								document.get("groupName").toString(),
-								document.get("ingredientquantity").toString().toInt()
-							)
+		var basketData = ArrayList<BasketIngredient>()
+		database.collection("ListData")
+			.document(userid!!)
+			.collection("Basket")
+			.get()
+			.addOnSuccessListener { documents ->
+				for(document in documents) {
+					Log.d("basketTest", "Basket : ${document.get("ingredientidx")}")
+					basketData.add(
+						BasketIngredient(
+							document.get("ingredienticon").toString(),
+							document.get("ingredientidx").toString().toInt(),
+							document.get("ingredientname").toString(),
+							document.get("ingredientcategory").toString(),
+							document.get("groupName").toString(),
+							document.get("ingredientquantity").toString().toInt()
 						)
-					}
-					view.onGetBasketSuccess(basketData)
+					)
 				}
-				.addOnFailureListener {
-					view.onGetBasketFailure(it.message ?: "통신 오류")
-				}
-		}
+				view.onGetBasketSuccess(basketData)
+			}
+			.addOnFailureListener {
+				view.onGetBasketFailure(it.message ?: "통신 오류")
+			}
+
 	}
 
 	fun getBasketGroup() {
@@ -52,6 +51,7 @@ class BasketService(val view:BasketView) {
 				for(document in documents) {
 					basketGroup.add(document.get("groupName").toString())
 				}
+				Log.d("basketTest", "basketGroup : $basketGroup")
 				view.onGetBasketGroupSuccess(basketGroup)
 			}
 			.addOnFailureListener {
