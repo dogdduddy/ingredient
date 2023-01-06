@@ -10,6 +10,7 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -26,6 +27,7 @@ import com.example.ingredient.src.basket.BasketFragment
 import com.example.ingredient.databinding.ActivityMainBinding
 import com.example.ingredient.src.foodbook.FoodBookMainFragment
 import com.example.ingredient.src.search.SearchMainFragment
+import com.example.ingredient.src.setting.SettingActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
@@ -83,7 +85,8 @@ class MainActivity : AppCompatActivity() {
         }
         var navi_header = binding.navigationView.getHeaderView(0)
         navi_header.findViewById<ImageView>(R.id.nav_setting).setOnClickListener {
-            Toast.makeText(this,"설정", Toast.LENGTH_SHORT).show()
+            val intent = Intent(this, SettingActivity::class.java)
+            startActivity(intent)
         }
         navi_header.findViewById<Button>(R.id.nav_logout).setOnClickListener { logout() }
         if(!intent.extras?.get("user").toString().isNullOrBlank()) {
@@ -111,6 +114,7 @@ class MainActivity : AppCompatActivity() {
         var recent_recyclerview = navi_header.findViewById<RecyclerView>(R.id.nav_recent_recipe)
         recent_recyclerview.layoutManager = GridLayoutManager(this, 3)
         recent_recyclerview.adapter = nav_adapter
+
     }
 
     fun addRecentRecipe(name:String, icon:String) {

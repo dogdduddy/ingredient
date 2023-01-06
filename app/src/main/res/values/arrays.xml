@@ -1,0 +1,13 @@
+<resources>
+    <string-array name="fontsize_entries">
+        <item>작게</item>
+        <item>중간</item>
+        <item>크게</item>
+    </string-array>
+
+    <string-array name="fontsize_values">
+        <item>small</item>
+        <item>middle</item>
+        <item>big</item>
+    </string-array>
+</resources>

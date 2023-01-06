@@ -1,0 +1,49 @@
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory
+        app:key="test"
+        app:iconSpaceReserved="false">
+        <Preference
+            app:key="@string/notice"
+            app:title="@string/Notice_title"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        app:key="test2"
+        app:iconSpaceReserved="false">
+        <Preference
+            app:key="@string/profileedit"
+            app:title="@string/ProfileEdit_title" />
+
+        <SwitchPreference
+            app:key="notify"
+            app:title="@string/Notify_title"/>
+
+        <ListPreference
+            app:key="@string/fontsize"
+            app:title="@string/FontSize_title"
+            app:entries="@array/fontsize_entries"
+            app:entryValues="@array/fontsize_values"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        app:key="test3"
+        app:iconSpaceReserved="false">
+        <Preference
+            app:key="@string/privacypolicy"
+            app:title="@string/PrivacyPolicy_title"/>
+
+        <Preference
+            app:key="@string/inquiry"
+            app:title="@string/Inquiry_title"/>
+
+        <Preference
+            app:key="@string/faq"
+            app:title="@string/FAQ_title"/>
+
+        <Preference
+            app:key="@string/secession"
+            app:title="@string/Secession_title"/>
+    </PreferenceCategory>
+
+</PreferenceScreen>

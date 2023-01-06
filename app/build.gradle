@@ -68,6 +68,7 @@ dependencies {
 
     //Room
     implementation 'androidx.room:room-ktx:2.4.2'
+    implementation 'androidx.preference:preference:1.2.0'
     kapt 'androidx.room:room-compiler:2.4.2'
 
     //Coroutines
@@ -88,6 +89,8 @@ dependencies {
 
     //ViewPager2
     implementation "androidx.viewpager2:viewpager2:1.0.0"
+    //Preference
+    implementation "androidx.preference:preference-ktx:1.2.0"
 
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'androidx.appcompat:appcompat:1.4.0'

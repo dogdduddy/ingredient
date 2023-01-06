@@ -9,9 +9,33 @@
 
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="order_confirmation">Test Massage</string>
     <string name="ok">PopUp</string>
     <string name="documentID">%s</string>
+
+    <!-- Preference Key -->
+    <string name="notice">notice</string>
+    <string name="profileedit">profileedit</string>
+    <string name="notify">notify</string>
+    <string name="fontsize">fontsize</string>
+    <string name="privacypolicy">privacypolicy</string>
+    <string name="inquiry">inquiry</string>
+    <string name="faq">faq</string>
+    <string name="secession">secession</string>
+
+    <!-- Preferences Title-->
+    <string name="Notice_title">공지사항</string>
+    <string name="ProfileEdit_title">개인정보 수정</string>
+    <string name="Notify_title">알림 설정</string>
+    <string name="FontSize_title">글씨 크기</string>
+    <string name="PrivacyPolicy_title">개인정보처리방침</string>
+    <string name="Inquiry_title">문의하기 / 의견보내기</string>
+    <string name="FAQ_title">FAQ</string>
+    <string name="Secession_title">탈퇴</string>
+
+    <!-- Preferences Summary-->
+
 </resources>
