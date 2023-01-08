@@ -6,15 +6,6 @@ import android.os.Parcelable
 import android.util.Log
 import android.widget.Button
 import com.example.ingredient.R
-import com.example.ingredient.src.expirationDate.add_ingredient.models.RecipeTemp
-import com.google.firebase.firestore.DocumentReference
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.ktx.toObject
-import com.google.gson.annotations.SerializedName
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.tasks.await
 
 class MainActivity2 : AppCompatActivity() {
 	override fun onCreate(savedInstanceState: Bundle?) {

@@ -13,12 +13,14 @@ import android.text.style.ForegroundColorSpan
 import android.util.AttributeSet
 import android.util.Log
 import android.view.View
+import android.webkit.WebView
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
 import com.example.ingredient.R
 import com.example.ingredient.activity.MainActivity
+import com.example.ingredient.src.WebViewActivity
 import com.example.ingredient.src.basket.models.BasketIngredient
 import com.example.ingredient.src.expirationDate.add_ingredient.models.Ingredient
 import com.example.ingredient.src.foodbook.models.Recipe
@@ -50,7 +52,8 @@ class RecipeDialogActivity : Activity() {
     override fun onStart() {
         super.onStart()
         var database = Firebase.firestore
-        var addBasket: Button = findViewById<Button>(R.id.recipe_dialog_pass_basket_btn)
+        var addBasket: Button = findViewById(R.id.recipe_dialog_pass_basket_btn)
+        var linkSite: Button = findViewById(R.id.recipe_dialog_pass_link_btn)
 
         recipeName = intent.extras!!.get("name").toString()
         initRecipe(recipeName!!)
@@ -88,10 +91,16 @@ class RecipeDialogActivity : Activity() {
                     .collection("BasketList")
                     .document()
                     .set(hashMapOf("groupName" to recipeName))
-                intent = Intent(this, MainActivity::class.java)
+                var intent = Intent(this, MainActivity::class.java)
                 intent.putExtra("fragment", "basket")
                 startActivity(intent)
             }
+        }
+        linkSite.setOnClickListener {
+            // 레시피 WebView 링크로 이동
+            var intent = Intent(this, WebViewActivity::class.java)
+            intent.putExtra("link", recipe.link)
+            startActivity(intent)
         }
     }
 
