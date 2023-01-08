@@ -88,7 +88,8 @@ class RecipeDialogActivity : Activity() {
                     .collection("BasketList")
                     .document()
                     .set(hashMapOf("groupName" to recipeName))
-                intent = Intent(this, MainActivity::class.java)
+
+                val intent = Intent(this, MainActivity::class.java)
                 intent.putExtra("fragment", "basket")
                 startActivity(intent)
             }
