@@ -1,16 +1,16 @@
 <PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <PreferenceCategory
-        app:key="test"
-        app:iconSpaceReserved="false">
+        app:key="Notice"
+        app:title="Notice">
         <Preference
             app:key="@string/notice"
             app:title="@string/Notice_title"/>
     </PreferenceCategory>
 
     <PreferenceCategory
-        app:key="test2"
-        app:iconSpaceReserved="false">
+        app:key="Option"
+        app:title="Option">
         <Preference
             app:key="@string/profileedit"
             app:title="@string/ProfileEdit_title" />
@@ -27,8 +27,8 @@
     </PreferenceCategory>
 
     <PreferenceCategory
-        app:key="test3"
-        app:iconSpaceReserved="false">
+        app:key="What"
+        app:title="What">
         <Preference
             app:key="@string/privacypolicy"
             app:title="@string/PrivacyPolicy_title"/>
