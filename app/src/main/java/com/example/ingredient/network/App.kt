@@ -15,6 +15,7 @@ class App:Application() {
         super.onCreate()
         appContext = this
         instance = this
+
         if(KakaoSDK.getAdapter() == null) {
             KakaoSDK.init(KakaoSDKAdapter(getAppContext()))
         }
