@@ -22,13 +22,6 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".activity.MainActivity2"
-            android:exported="true">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
-        <activity
             android:name=".common.RecipeDialogActivity"
             android:exported="false"
             android:theme="@style/MyPopupMenu">
@@ -97,6 +90,13 @@
             android:exported="true"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustNothing">
+        </activity>
+        <activity
+            android:name=".activity.MainActivity2"
+            android:exported="true">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
         </activity>
     </application>
 

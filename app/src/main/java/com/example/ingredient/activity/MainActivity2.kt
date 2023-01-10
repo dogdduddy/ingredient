@@ -6,6 +6,12 @@ import android.os.Parcelable
 import android.util.Log
 import android.widget.Button
 import com.example.ingredient.R
+import com.example.ingredient.src.foodbook.models.Recipe
+import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 
 class MainActivity2 : AppCompatActivity() {
 	override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,6 +61,46 @@ class MainActivity2 : AppCompatActivity() {
 			}
 		}
 		 */
-	}
 
+
+		/*
+		// Event 콜렉션에 데이터 넣기
+//		title
+//		effectcolor
+//		effectrange
+//		effectstyle
+//		eventidx
+//		recipelist
+
+		var insertBtn = findViewById<Button>(R.id.insertBtn)
+		var transBtn = findViewById<Button>(R.id.transBtn)
+		transBtn.setOnClickListener {
+			CoroutineScope(Dispatchers.IO).launch {
+				var seachRecipe = listOf<String>("두부전골", "호떡", "칼국수")
+				var recipeList = FirebaseFirestore.getInstance().collection("Recipes")
+					.whereIn("name", seachRecipe)
+					.get().await().toMutableList()
+				var temp = recipeList[0]
+			}
+		}
+		insertBtn.setOnClickListener {
+			CoroutineScope(Dispatchers.IO).launch {
+				var seachRecipe = listOf<String>("두부전골", "호떡", "칼국수")
+				var recipeList = FirebaseFirestore.getInstance().collection("Recipes")
+					.whereIn("name", seachRecipe)
+					.get().await().toMutableList().map { it.data }
+				var mapof = mapOf(
+					"title" to "추운 겨울을 따뜻하게 보낼 레시피",
+					"effectcolor" to "#3366FF",
+					"effectstyle" to "bold",
+					"effectrange" to "0,5",
+					"eventidx" to "2",
+					"recipelist" to recipeList
+				)
+				FirebaseFirestore.getInstance().collection("Event").document()
+					.set(mapof)
+			}
+		}
+		 */
+	}
 }

@@ -1,6 +1,7 @@
 package com.example.ingredient.src.search
 
 import android.content.Intent
+import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Bundle
 import android.text.Spannable
@@ -20,7 +21,9 @@ import com.example.ingredient.common.RecipeDialogActivity
 import com.example.ingredient.databinding.FragmentMainBinding
 import com.example.ingredient.src.expirationDate.add_ingredient.models.CategoryIngrediets
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.QueryDocumentSnapshot
 import kotlinx.coroutines.*
 import kotlinx.coroutines.tasks.await
 
@@ -30,16 +33,17 @@ class SearchMainFragment : Fragment() {
     private var adapter1 = SearchMainAdapter()
     private var adapter2 = SearchMainAdapter()
     private var adapter3 = SearchMainAdapter()
-    private var temp1 = mutableListOf<ArrayList<String>>(
-        arrayListOf("김치볶음밥", "https://firebasestorage.googleapis.com/v0/b/ingredient-7f334.appspot.com/o/%E1%84%80%E1%85%B5%E1%86%B7%E1%84%8E%E1%85%B5%E1%84%87%E1%85%A9%E1%86%A9%E1%84%8B%E1%85%B3%E1%86%B7%E1%84%87%E1%85%A1%E1%86%B8.jpeg?alt=media&token=ae698823-8684-4a25-8678-17f7d7d43fc0", "엄마생각 김치볶음밥", "엄마가 해주던 그"), arrayListOf("쭈꾸미볶음","https://firebasestorage.googleapis.com/v0/b/ingredient-7f334.appspot.com/o/%E1%84%8D%E1%85%AE%E1%84%81%E1%85%AE%E1%84%86%E1%85%B5%E1%84%87%E1%85%A9%E1%86%A9%E1%84%8B%E1%85%B3%E1%86%B7.jpeg?alt=media&token=9a68521b-6884-40fc-9736-2a800ed68567", "달콤화끈 쭈꾸미볶음", "매콤한 바다향을 느끼며"), arrayListOf("호박전","https://firebasestorage.googleapis.com/v0/b/ingredient-7f334.appspot.com/o/%E1%84%92%E1%85%A9%E1%84%87%E1%85%A1%E1%86%A8%E1%84%8C%E1%85%A5%E1%86%AB.jpeg?alt=media&token=12c41da9-6c5d-43aa-b48d-c2cdde29be67", "명절사랑 호박전", "명절이 그리워 지는"))
-    private var temp2 = mutableListOf<ArrayList<String>>(
-        arrayListOf("스콘", "https://firebasestorage.googleapis.com/v0/b/ingredient-7f334.appspot.com/o/%E1%84%89%E1%85%B3%E1%84%8F%E1%85%A9%E1%86%AB.jpeg?alt=media&token=383d4f57-f75c-466e-811b-f92ea2af101e", "고소담백 스콘", "커피와 함께 고소하게"), arrayListOf("마들렌","https://firebasestorage.googleapis.com/v0/b/ingredient-7f334.appspot.com/o/%E1%84%86%E1%85%A1%E1%84%83%E1%85%B3%E1%86%AF%E1%84%85%E1%85%A6%E1%86%AB.jpeg?alt=media&token=423a7633-7378-4eee-b607-79a3e58f9e36", "부드러운 마들렌", "레몬향과 부드러운 식감"), arrayListOf("땅콩버터쿠키","https://firebasestorage.googleapis.com/v0/b/ingredient-7f334.appspot.com/o/%E1%84%84%E1%85%A1%E1%86%BC%E1%84%8F%E1%85%A9%E1%86%BC%E1%84%87%E1%85%A5%E1%84%90%E1%85%A5%E1%84%8F%E1%85%AE%E1%84%8F%E1%85%B5.jpeg?alt=media&token=c5c91c4e-6214-4566-8321-dbe5d438dbca", "땅콩버터 쿠키", "향긋한 버터향의 쿠키"))
-    private var temp3 = mutableListOf<ArrayList<String>>(
-        arrayListOf("두부전골", "https://firebasestorage.googleapis.com/v0/b/ingredient-7f334.appspot.com/o/%E1%84%83%E1%85%AE%E1%84%87%E1%85%AE%E1%84%8C%E1%85%A5%E1%86%AB%E1%84%80%E1%85%A9%E1%86%AF.jpeg?alt=media&token=a16a5892-d1da-44bf-95b1-1b2aec7946e2", "담백깔끔 두부전골", "깔끔함으로 승부하는"), arrayListOf("호떡","https://firebasestorage.googleapis.com/v0/b/ingredient-7f334.appspot.com/o/%E1%84%92%E1%85%A9%E1%84%84%E1%85%A5%E1%86%A8.jpeg?alt=media&token=8d488e96-ae59-4ef7-82d7-83797d769ea6", "달콤고소 겨울호떡", "달콤함을 쫀득하게"), arrayListOf("칼국수","https://firebasestorage.googleapis.com/v0/b/ingredient-7f334.appspot.com/o/%E1%84%8F%E1%85%A1%E1%86%AF%E1%84%80%E1%85%AE%E1%86%A8%E1%84%89%E1%85%AE.jpeg?alt=media&token=6b569ce6-52df-4835-8b48-df94c7eafd98", "속이뜨끈 칼국수", "뜨끈한 국물로 시원하게"))
-
+    private lateinit var temp1:MutableList<ArrayList<String>>
+    private lateinit var temp2:MutableList<ArrayList<String>>
+    private lateinit var temp3:MutableList<ArrayList<String>>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        CoroutineScope(Dispatchers.Main).launch {
+            temp1 = async {  persnalRecommendInit() }.await()
+            async {  recommendInit() }.await()
+            submitList()
+        }
     }
 
     override fun onCreateView(
@@ -63,28 +67,32 @@ class SearchMainFragment : Fragment() {
         recyclerView1.adapter = adapter1
         recyclerView2.adapter = adapter2
         recyclerView3.adapter = adapter3
-        CoroutineScope(Dispatchers.Main).launch {
-            async {  recommendInit() }.join()
-            submitList()
-        }
 
+        /*
         binding.mainRecommendTitle1.text = "재료로 보는 추천 레시피"
         binding.mainRecommendTitle2.text = "집이 곧 카페가 되는 홈베이킹 레시피"
+        //binding.mainRecommendTitle2.text = data.get(0).get("title").toString()
         binding.mainRecommendTitle3.text = "추운 겨울을 따뜻하게 보낼 레시피"
         var span1: Spannable = binding.mainRecommendTitle1.text as Spannable
         var span2: Spannable = binding.mainRecommendTitle2.text as Spannable
         var span3: Spannable = binding.mainRecommendTitle3.text as Spannable
 
-        span1.setSpan(ForegroundColorSpan(requireActivity().getColor(R.color.orange_300)), 7, 9, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-        span1.setSpan(StyleSpan(Typeface.BOLD), 7, 9, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        //span1.setSpan(ForegroundColorSpan(requireActivity().getColor(R.color.orange_300)), 7, 9, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        //span1.setSpan(StyleSpan(Typeface.BOLD), 7, 9, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+
         span2.setSpan(ForegroundColorSpan(requireActivity().getColor(R.color.apricot)), 12, 16, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-        span2.setSpan(StyleSpan(Typeface.BOLD), 12, 15, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        span2.setSpan(StyleSpan(Typeface.BOLD), 12, 16, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+
+        //span2.setSpan(ForegroundColorSpan(Color.parseColor(data[0].get("effectcolor").toString())), data[0].get("effectrange").toString().split(",")[0].toInt(), data[0].get("effectrange").toString().split(",")[1].toInt(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        //span2.setSpan(StyleSpan(Typeface.BOLD), data[0].get("effectrange").toString().split(",")[0].toInt(), data[0].get("effectrange").toString().split(",")[1].toInt(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
         span3.setSpan(ForegroundColorSpan(requireActivity().getColor(R.color.blue)), 0, 5, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
         span3.setSpan(StyleSpan(Typeface.BOLD), 0, 6, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+
+         */
        return binding.root
     }
 
-    fun submitList() {
+    suspend fun submitList() {
         adapter1.submitList(temp1!!)
         adapter2.submitList(temp2)
         adapter3.submitList(temp3)
@@ -93,7 +101,8 @@ class SearchMainFragment : Fragment() {
     override fun onStart() {
         super.onStart()
         CoroutineScope(Dispatchers.Main).launch {
-            temp1 = async {  recommendInit() }.await()
+            temp1 = async {  persnalRecommendInit() }.await()
+            async {  recommendInit() }.await()
             submitList()
         }
 
@@ -130,32 +139,64 @@ class SearchMainFragment : Fragment() {
         })
 
     }
-    suspend fun recommendInit():MutableList<ArrayList<String>> {
+    suspend fun persnalRecommendInit():MutableList<ArrayList<String>> {
         // recommend List
         var middle = mutableListOf<ArrayList<String>>()
         var database = FirebaseFirestore.getInstance()
-        CoroutineScope(Dispatchers.IO).async {
-            var result = arrayListOf<ArrayList<Int>>()
-            var responseR = database.collection("Recipes").get()
-                .await().toMutableList()
-            var responseRMap = responseR.map { it.data["ingredient"] }
+        var result = arrayListOf<ArrayList<Int>>()
+        var responseR = database.collection("Recipes").get()
+            .await().toMutableList()
+        var responseRMap = responseR.map { it.data["ingredient"] }
 
-            var responseM = database.collection("ListData")
-                .document(FirebaseAuth.getInstance().uid!!)
-                .collection("Refrigerator")
-                .get().await().toMutableList().map{it.data["ingredientname"]}
+        var responseM = database.collection("ListData")
+            .document(FirebaseAuth.getInstance().uid!!)
+            .collection("Refrigerator")
+            .get().await().toMutableList().map{it.data["ingredientname"]}
 
-            responseRMap.forEachIndexed { index, doc ->
-                var temp = (doc as List<String>) + responseM
-                result.add(arrayListOf(index, temp.groupBy { it }.filter { it.value.size > 1 }.flatMap { it.value }.distinct().size))
-            }
-            var sortedResult = result.sortedBy { it[1] }.reversed()
-            middle = mutableListOf<ArrayList<String>>(
-                arrayListOf(responseR[sortedResult[0][0]].get("name").toString(), responseR[sortedResult[0][0]].get("icon").toString(),responseR[sortedResult[0][0]].get("title").toString(), responseR[sortedResult[0][0]].get("description").toString()),
-                arrayListOf(responseR[sortedResult[1][0]].get("name").toString(), responseR[sortedResult[1][0]].get("icon").toString(),responseR[sortedResult[1][0]].get("title").toString(), responseR[sortedResult[1][0]].get("description").toString()),
-                arrayListOf(responseR[sortedResult[2][0]].get("name").toString(), responseR[sortedResult[2][0]].get("icon").toString(),responseR[sortedResult[2][0]].get("title").toString(), responseR[sortedResult[2][0]].get("description").toString()))
-        }.await()
+        responseRMap.forEachIndexed { index, doc ->
+            var temp = (doc as List<String>) + responseM
+            result.add(arrayListOf(index, temp.groupBy { it }.filter { it.value.size > 1 }.flatMap { it.value }.distinct().size))
+        }
+        var sortedResult = result.sortedBy { it[1] }.reversed()
+        middle = mutableListOf<ArrayList<String>>(
+            arrayListOf(responseR[sortedResult[0][0]].get("name").toString(), responseR[sortedResult[0][0]].get("icon").toString(),responseR[sortedResult[0][0]].get("title").toString(), responseR[sortedResult[0][0]].get("description").toString()),
+            arrayListOf(responseR[sortedResult[1][0]].get("name").toString(), responseR[sortedResult[1][0]].get("icon").toString(),responseR[sortedResult[1][0]].get("title").toString(), responseR[sortedResult[1][0]].get("description").toString()),
+            arrayListOf(responseR[sortedResult[2][0]].get("name").toString(), responseR[sortedResult[2][0]].get("icon").toString(),responseR[sortedResult[2][0]].get("title").toString(), responseR[sortedResult[2][0]].get("description").toString())
+        )
         return middle
+    }
+    suspend fun recommendInit() {
+        val response = FirebaseFirestore.getInstance().collection("Event").get()
+            .await().toMutableList().sortedBy { it.get("eventidx").toString() }
+
+        var temp2Response = response[0]
+        var temp3Response = response[1]
+
+        var temp2RecipeList = temp2Response.get("recipelist") as ArrayList<HashMap<String,Any>>
+        temp2 = mutableListOf(
+            arrayListOf(temp2RecipeList[0].get("name").toString(), temp2RecipeList[0].get("icon").toString(),temp2RecipeList[0].get("title").toString(), temp2RecipeList[0].get("description").toString()),
+            arrayListOf(temp2RecipeList[1].get("name").toString(), temp2RecipeList[1].get("icon").toString(),temp2RecipeList[1].get("title").toString(), temp2RecipeList[1].get("description").toString()),
+            arrayListOf(temp2RecipeList[2].get("name").toString(), temp2RecipeList[2].get("icon").toString(),temp2RecipeList[2].get("title").toString(), temp2RecipeList[2].get("description").toString())
+        )
+        var temp3RecipeList = temp3Response.get("recipelist") as ArrayList<HashMap<String,Any>>
+        temp3 = mutableListOf(
+            arrayListOf(temp3RecipeList[0].get("name").toString(), temp3RecipeList[0].get("icon").toString(),temp3RecipeList[0].get("title").toString(), temp3RecipeList[0].get("description").toString()),
+            arrayListOf(temp3RecipeList[1].get("name").toString(), temp3RecipeList[1].get("icon").toString(),temp3RecipeList[1].get("title").toString(), temp3RecipeList[1].get("description").toString()),
+            arrayListOf(temp3RecipeList[2].get("name").toString(), temp3RecipeList[2].get("icon").toString(),temp3RecipeList[2].get("title").toString(), temp3RecipeList[2].get("description").toString())
+        )
+
+        binding.mainRecommendTitle2.text = temp2Response.get("title").toString()
+        binding.mainRecommendTitle3.text = temp3Response.get("title").toString()
+
+
+        var span2: Spannable = binding.mainRecommendTitle2.text as Spannable
+        var span3: Spannable = binding.mainRecommendTitle3.text as Spannable
+
+
+        span2.setSpan(ForegroundColorSpan(Color.parseColor(temp2Response.get("effectcolor").toString())), temp2Response.get("effectrange").toString().split(",")[0].toInt(), temp2Response.get("effectrange").toString().split(",")[1].toInt(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        span2.setSpan(StyleSpan(Typeface.BOLD), temp2Response.get("effectrange").toString().split(",")[0].toInt(), temp2Response.get("effectrange").toString().split(",")[1].toInt(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        span3.setSpan(ForegroundColorSpan(Color.parseColor(temp3Response.get("effectcolor").toString())), temp3Response.get("effectrange").toString().split(",")[0].toInt(), temp3Response.get("effectrange").toString().split(",")[1].toInt(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        span3.setSpan(StyleSpan(Typeface.BOLD), temp3Response.get("effectrange").toString().split(",")[0].toInt(), temp3Response.get("effectrange").toString().split(",")[1].toInt(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
     }
 
     companion object {
