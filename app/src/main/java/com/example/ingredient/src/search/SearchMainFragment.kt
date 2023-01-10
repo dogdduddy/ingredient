@@ -20,10 +20,13 @@ import com.example.ingredient.activity.MainActivity
 import com.example.ingredient.common.RecipeDialogActivity
 import com.example.ingredient.databinding.FragmentMainBinding
 import com.example.ingredient.src.expirationDate.add_ingredient.models.CategoryIngrediets
+import com.example.ingredient.src.foodbook.models.EventTab
+import com.example.ingredient.src.foodbook.models.Recipe
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QueryDocumentSnapshot
+import com.google.firebase.firestore.ktx.toObjects
 import kotlinx.coroutines.*
 import kotlinx.coroutines.tasks.await
 
@@ -33,14 +36,14 @@ class SearchMainFragment : Fragment() {
     private var adapter1 = SearchMainAdapter()
     private var adapter2 = SearchMainAdapter()
     private var adapter3 = SearchMainAdapter()
-    private lateinit var temp1:MutableList<ArrayList<String>>
-    private lateinit var temp2:MutableList<ArrayList<String>>
-    private lateinit var temp3:MutableList<ArrayList<String>>
+    private lateinit var temp1:MutableList<Recipe>
+    private lateinit var temp2:MutableList<Recipe>
+    private lateinit var temp3:MutableList<Recipe>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         CoroutineScope(Dispatchers.Main).launch {
-            temp1 = async {  persnalRecommendInit() }.await()
+            async {  persnalRecommendInit() }.await()
             async {  recommendInit() }.await()
             submitList()
         }
@@ -68,31 +71,10 @@ class SearchMainFragment : Fragment() {
         recyclerView2.adapter = adapter2
         recyclerView3.adapter = adapter3
 
-        /*
-        binding.mainRecommendTitle1.text = "재료로 보는 추천 레시피"
-        binding.mainRecommendTitle2.text = "집이 곧 카페가 되는 홈베이킹 레시피"
-        //binding.mainRecommendTitle2.text = data.get(0).get("title").toString()
-        binding.mainRecommendTitle3.text = "추운 겨울을 따뜻하게 보낼 레시피"
-        var span1: Spannable = binding.mainRecommendTitle1.text as Spannable
-        var span2: Spannable = binding.mainRecommendTitle2.text as Spannable
-        var span3: Spannable = binding.mainRecommendTitle3.text as Spannable
-
-        //span1.setSpan(ForegroundColorSpan(requireActivity().getColor(R.color.orange_300)), 7, 9, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-        //span1.setSpan(StyleSpan(Typeface.BOLD), 7, 9, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-
-        span2.setSpan(ForegroundColorSpan(requireActivity().getColor(R.color.apricot)), 12, 16, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-        span2.setSpan(StyleSpan(Typeface.BOLD), 12, 16, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-
-        //span2.setSpan(ForegroundColorSpan(Color.parseColor(data[0].get("effectcolor").toString())), data[0].get("effectrange").toString().split(",")[0].toInt(), data[0].get("effectrange").toString().split(",")[1].toInt(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-        //span2.setSpan(StyleSpan(Typeface.BOLD), data[0].get("effectrange").toString().split(",")[0].toInt(), data[0].get("effectrange").toString().split(",")[1].toInt(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-        span3.setSpan(ForegroundColorSpan(requireActivity().getColor(R.color.blue)), 0, 5, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-        span3.setSpan(StyleSpan(Typeface.BOLD), 0, 6, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-
-         */
        return binding.root
     }
 
-    suspend fun submitList() {
+    fun submitList() {
         adapter1.submitList(temp1!!)
         adapter2.submitList(temp2)
         adapter3.submitList(temp3)
@@ -101,11 +83,10 @@ class SearchMainFragment : Fragment() {
     override fun onStart() {
         super.onStart()
         CoroutineScope(Dispatchers.Main).launch {
-            temp1 = async {  persnalRecommendInit() }.await()
+            async {  persnalRecommendInit() }.await()
             async {  recommendInit() }.await()
             submitList()
         }
-
 
         binding.mainSearchbar.setOnClickListener {
             val searchFragment = SearchFragment()
@@ -116,87 +97,76 @@ class SearchMainFragment : Fragment() {
         adapter1.setItemClickListener(object: SearchMainAdapter.OnItemClickListener {
             override fun onClick(view: View, position: Int) {
                 val intent = Intent(context, RecipeDialogActivity::class.java)
-                intent.putExtra("name", temp1!![position][0])
-                (activity as MainActivity).addRecentRecipe(temp1!![position][0].toString(), temp1!![position][1].toString())
+                intent.putExtra("name", temp1!![position].name)
+                (activity as MainActivity).addRecentRecipe(temp1!![position].name, temp1!![position].icon)
                 startActivity(intent)
             }
         })
         adapter2.setItemClickListener(object: SearchMainAdapter.OnItemClickListener {
             override fun onClick(view: View, position: Int) {
                 val intent = Intent(context, RecipeDialogActivity::class.java)
-                intent.putExtra("name", temp2[position][0])
-                (activity as MainActivity).addRecentRecipe(temp2[position][0].toString(), temp2[position][1].toString())
+                intent.putExtra("name", temp2[position].name)
+                (activity as MainActivity).addRecentRecipe(temp2[position].name, temp2[position].icon)
                 startActivity(intent)
             }
         })
         adapter3.setItemClickListener(object: SearchMainAdapter.OnItemClickListener {
             override fun onClick(view: View, position: Int) {
                 val intent = Intent(context, RecipeDialogActivity::class.java)
-                intent.putExtra("name", temp3[position][0])
-                (activity as MainActivity).addRecentRecipe(temp3[position][0].toString(), temp3[position][1].toString())
+                intent.putExtra("name", temp3[position].name)
+                (activity as MainActivity).addRecentRecipe(temp3[position].name, temp3[position].icon)
                 startActivity(intent)
             }
         })
 
     }
-    suspend fun persnalRecommendInit():MutableList<ArrayList<String>> {
+    suspend fun persnalRecommendInit() {
         // recommend List
-        var middle = mutableListOf<ArrayList<String>>()
+        var middle = mutableListOf<Recipe>()
         var database = FirebaseFirestore.getInstance()
         var result = arrayListOf<ArrayList<Int>>()
         var responseR = database.collection("Recipes").get()
-            .await().toMutableList()
-        var responseRMap = responseR.map { it.data["ingredient"] }
+            .await().toObjects<Recipe>()
+        var responseRMap = responseR.map { it.ingredient }
 
         var responseM = database.collection("ListData")
             .document(FirebaseAuth.getInstance().uid!!)
             .collection("Refrigerator")
-            .get().await().toMutableList().map{it.data["ingredientname"]}
+            .get().await().toMutableList().map{it.data["ingredientname"]}.toSet()
 
         responseRMap.forEachIndexed { index, doc ->
-            var temp = (doc as List<String>) + responseM
-            result.add(arrayListOf(index, temp.groupBy { it }.filter { it.value.size > 1 }.flatMap { it.value }.distinct().size))
+            result.add(arrayListOf(index, doc!!.toSet().intersect(responseM).size))
         }
+
         var sortedResult = result.sortedBy { it[1] }.reversed()
-        middle = mutableListOf<ArrayList<String>>(
-            arrayListOf(responseR[sortedResult[0][0]].get("name").toString(), responseR[sortedResult[0][0]].get("icon").toString(),responseR[sortedResult[0][0]].get("title").toString(), responseR[sortedResult[0][0]].get("description").toString()),
-            arrayListOf(responseR[sortedResult[1][0]].get("name").toString(), responseR[sortedResult[1][0]].get("icon").toString(),responseR[sortedResult[1][0]].get("title").toString(), responseR[sortedResult[1][0]].get("description").toString()),
-            arrayListOf(responseR[sortedResult[2][0]].get("name").toString(), responseR[sortedResult[2][0]].get("icon").toString(),responseR[sortedResult[2][0]].get("title").toString(), responseR[sortedResult[2][0]].get("description").toString())
-        )
-        return middle
+        temp1 = mutableListOf(responseR[sortedResult[0][0]], responseR[sortedResult[1][0]], responseR[sortedResult[2][0]])
+
+        binding.mainRecommendTitle1.text = "재료로 보는 추천 레시피"
+        var span1: Spannable = binding.mainRecommendTitle1.text as Spannable
+        span1.setSpan(ForegroundColorSpan(requireActivity().getColor(R.color.orange_300)), 7, 9, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        span1.setSpan(StyleSpan(Typeface.BOLD), 7, 9, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+
     }
     suspend fun recommendInit() {
         val response = FirebaseFirestore.getInstance().collection("Event").get()
-            .await().toMutableList().sortedBy { it.get("eventidx").toString() }
+            .await().toObjects<EventTab>().sortedBy { it.eventidx }
 
         var temp2Response = response[0]
         var temp3Response = response[1]
 
-        var temp2RecipeList = temp2Response.get("recipelist") as ArrayList<HashMap<String,Any>>
-        temp2 = mutableListOf(
-            arrayListOf(temp2RecipeList[0].get("name").toString(), temp2RecipeList[0].get("icon").toString(),temp2RecipeList[0].get("title").toString(), temp2RecipeList[0].get("description").toString()),
-            arrayListOf(temp2RecipeList[1].get("name").toString(), temp2RecipeList[1].get("icon").toString(),temp2RecipeList[1].get("title").toString(), temp2RecipeList[1].get("description").toString()),
-            arrayListOf(temp2RecipeList[2].get("name").toString(), temp2RecipeList[2].get("icon").toString(),temp2RecipeList[2].get("title").toString(), temp2RecipeList[2].get("description").toString())
-        )
-        var temp3RecipeList = temp3Response.get("recipelist") as ArrayList<HashMap<String,Any>>
-        temp3 = mutableListOf(
-            arrayListOf(temp3RecipeList[0].get("name").toString(), temp3RecipeList[0].get("icon").toString(),temp3RecipeList[0].get("title").toString(), temp3RecipeList[0].get("description").toString()),
-            arrayListOf(temp3RecipeList[1].get("name").toString(), temp3RecipeList[1].get("icon").toString(),temp3RecipeList[1].get("title").toString(), temp3RecipeList[1].get("description").toString()),
-            arrayListOf(temp3RecipeList[2].get("name").toString(), temp3RecipeList[2].get("icon").toString(),temp3RecipeList[2].get("title").toString(), temp3RecipeList[2].get("description").toString())
-        )
+        temp2 = temp2Response.recipelist
+        temp3 = temp3Response.recipelist
 
-        binding.mainRecommendTitle2.text = temp2Response.get("title").toString()
-        binding.mainRecommendTitle3.text = temp3Response.get("title").toString()
-
+        binding.mainRecommendTitle2.text = temp2Response.title
+        binding.mainRecommendTitle3.text = temp3Response.title
 
         var span2: Spannable = binding.mainRecommendTitle2.text as Spannable
         var span3: Spannable = binding.mainRecommendTitle3.text as Spannable
 
-
-        span2.setSpan(ForegroundColorSpan(Color.parseColor(temp2Response.get("effectcolor").toString())), temp2Response.get("effectrange").toString().split(",")[0].toInt(), temp2Response.get("effectrange").toString().split(",")[1].toInt(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-        span2.setSpan(StyleSpan(Typeface.BOLD), temp2Response.get("effectrange").toString().split(",")[0].toInt(), temp2Response.get("effectrange").toString().split(",")[1].toInt(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-        span3.setSpan(ForegroundColorSpan(Color.parseColor(temp3Response.get("effectcolor").toString())), temp3Response.get("effectrange").toString().split(",")[0].toInt(), temp3Response.get("effectrange").toString().split(",")[1].toInt(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-        span3.setSpan(StyleSpan(Typeface.BOLD), temp3Response.get("effectrange").toString().split(",")[0].toInt(), temp3Response.get("effectrange").toString().split(",")[1].toInt(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        span2.setSpan(ForegroundColorSpan(Color.parseColor(temp2Response.effectcolor)), temp2Response.effectrange.split(",")[0].toInt(), temp2Response.effectrange.split(",")[1].toInt(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        span2.setSpan(StyleSpan(Typeface.BOLD), temp2Response.effectrange.split(",")[0].toInt(), temp2Response.effectrange.split(",")[1].toInt(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        span3.setSpan(ForegroundColorSpan(Color.parseColor(temp3Response.effectcolor)), temp3Response.effectrange.split(",")[0].toInt(), temp3Response.effectrange.split(",")[1].toInt(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        span3.setSpan(StyleSpan(Typeface.BOLD), temp3Response.effectrange.split(",")[0].toInt(), temp3Response.effectrange.split(",")[1].toInt(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
     }
 
     companion object {

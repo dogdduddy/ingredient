@@ -13,11 +13,12 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.ingredient.R
+import com.example.ingredient.src.foodbook.models.Recipe
 
 class SearchMainAdapter ()
     : RecyclerView.Adapter<SearchMainAdapter.ViewHolder>()
 {
-    private var recommendList: MutableList<ArrayList<String>>  = mutableListOf()
+    private var recommendList: MutableList<Recipe>  = mutableListOf()
     private var context:Context? = null
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view =
@@ -30,20 +31,20 @@ class SearchMainAdapter ()
         holder.itemView.setOnClickListener { itemCLickListener.onClick(it, position) }
         holder.image.clipToOutline = true
         Glide.with(holder.itemView)
-            .load(recommendList[position][1])
+            .load(recommendList[position].icon)
             .into(holder.image)
 
-        holder.title.text = recommendList[position][2]
+        holder.title.text = recommendList[position].title
         var span:Spannable = holder.title.text as Spannable
         span.setSpan(ForegroundColorSpan(context!!.getColor(R.color.orange_300)), 0, 4, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-        holder.subtitle.text = recommendList[position][3]
+        holder.subtitle.text = recommendList[position].description
     }
 
     override fun getItemCount(): Int {
         return recommendList.size
     }
 
-    fun submitList(recommendList: MutableList<ArrayList<String>>) {
+    fun submitList(recommendList: MutableList<Recipe>) {
         this.recommendList = recommendList
         notifyDataSetChanged()
     }
