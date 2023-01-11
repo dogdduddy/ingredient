@@ -45,7 +45,6 @@ class MainActivity : AppCompatActivity() {
 
 
     private val callback = object : OnBackPressedCallback(true) {
-
         override fun handleOnBackPressed() {
             // 뒤로가기 클릭 시 실행시킬 코드 입력
             if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
@@ -70,59 +69,32 @@ class MainActivity : AppCompatActivity() {
         database = FirebaseFirestore.getInstance()
         InitFragment()
         toolBarInit()
+        setCurrentFragment()
+        setOnBottomNavigationSItemSelectedListner()
 
-        if(intent.hasExtra("fragment")) {
-            when(intent.getStringExtra("fragment")) {
-                "main" -> setMainFragment()
-                "expiry" -> {
-                    setReplaceToolBar(expirationdateFragment, "유통기한")
-                    setMenuBottomItemSelect(R.id.expiration_date)
-                }
-                "basket" -> {
-                    setReplaceToolBar(basketFragment, "장바구니")
-                    setMenuBottomItemSelect(R.id.basket)
-
-                }
-                "foodbook" -> {
-                    setReplaceToolBar(foodbookFragment, "레시피사전")
-                    setMenuBottomItemSelect(R.id.food_book)
-                }
-            }
-        }
-
-        // 하단바를 통해 화면(프래그먼트) 전환
-        binding.menuBottom.setOnItemSelectedListener { id ->
-            when (id) {
-                // Navigation : 프래그먼트 객체를 변수에 저장하고, 필요시 호출 => State 유지
-                R.id.search -> setMainFragment()
-                R.id.expiration_date -> setReplaceToolBar(expirationdateFragment, "유통기한")
-                R.id.basket -> setReplaceToolBar(basketFragment, "장바구니")
-                R.id.food_book -> setReplaceToolBar(foodbookFragment, "레시피사전")
-            }
-        }
         var navi_header = binding.navigationView.getHeaderView(0)
         navi_header.findViewById<ImageView>(R.id.nav_setting).setOnClickListener {
             Toast.makeText(this,"설정", Toast.LENGTH_SHORT).show()
         }
         navi_header.findViewById<Button>(R.id.nav_logout).setOnClickListener { logout() }
-        if(!intent.extras?.get("user").toString().isNullOrBlank()) {
-            navi_header.findViewById<TextView>(R.id.nav_profile_nickname).text = intent.extras?.get("user").toString()
+        if(!intent.getStringExtra("user").isNullOrBlank()) {
+            navi_header.findViewById<TextView>(R.id.nav_profile_nickname).text = intent.getStringExtra("user")
         } else {
             navi_header.findViewById<TextView>(R.id.nav_profile_nickname).text = "defaultName"
         }
 
-        if(intent.extras?.get("email").toString() != "null") {
-            navi_header.findViewById<TextView>(R.id.nav_profile_email).text = intent.extras?.get("email").toString()
+        if(intent.getStringExtra("email") != "null") {
+            navi_header.findViewById<TextView>(R.id.nav_profile_email).text = intent.getStringExtra("email")
         } else {
             navi_header.findViewById<TextView>(R.id.nav_profile_email).text = "defaultEmail"
         }
 
         // 이미지 로드
-        if(intent.extras?.get("photo").toString() != "null" && !intent.extras?.get("photo").toString().isNullOrBlank()) {
-            Log.d("LoginTest", "photo notNull : ${intent.extras?.get("photo").toString()}")
-            Glide.with(this).load(intent.extras?.get("photo")).into(navi_header.findViewById<ImageView>(R.id.nav_profile_image))
+        if(intent.getStringExtra("photo") != "null" && !intent.getStringExtra("photo").isNullOrBlank()) {
+            Log.d("LoginTest", "photo notNull : ${intent.getStringExtra("photo")}")
+            Glide.with(this).load(intent.getStringExtra("photo")).into(navi_header.findViewById<ImageView>(R.id.nav_profile_image))
         }else {
-            Log.d("LoginTest", "photo null : ${intent.extras?.get("photo").toString()}")
+            Log.d("LoginTest", "photo null : ${intent.getStringExtra("photo")}")
             navi_header.findViewById<ImageView>(R.id.nav_profile_image).setImageResource(R.drawable.profile_defalut_1)
         }
 
@@ -153,6 +125,19 @@ class MainActivity : AppCompatActivity() {
         binding.toolbarTitle.visibility = View.GONE
         binding.mainAchaLogo.visibility = View.VISIBLE
         replaceFragment(mainFragment)
+    }
+
+    fun setOnBottomNavigationSItemSelectedListner() {
+        // 하단바를 통해 화면(프래그먼트) 전환
+        binding.menuBottom.setOnItemSelectedListener { id ->
+            when (id) {
+                // Navigation : 프래그먼트 객체를 변수에 저장하고, 필요시 호출 => State 유지
+                R.id.search -> setMainFragment()
+                R.id.expiration_date -> setReplaceToolBar(expirationdateFragment, "유통기한")
+                R.id.basket -> setReplaceToolBar(basketFragment, "장바구니")
+                R.id.food_book -> setReplaceToolBar(foodbookFragment, "레시피사전")
+            }
+        }
     }
 
     fun setReplaceToolBar(fa: Fragment, title: String) {
@@ -213,6 +198,28 @@ class MainActivity : AppCompatActivity() {
         supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_baseline_menu_24)
 
         drawerLayout = binding.drawerlayout
+    }
+
+    fun setCurrentFragment() {
+        // Activity 등으로 이동 후 Fragment로 복귀했을 때 이전에 선택했던 Navigation Position으로 이동
+        if(intent.hasExtra("fragment")) {
+            when(intent.getStringExtra("fragment")) {
+                "main" -> setMainFragment()
+                "expiry" -> {
+                    setReplaceToolBar(expirationdateFragment, "유통기한")
+                    setMenuBottomItemSelect(R.id.expiration_date)
+                }
+                "basket" -> {
+                    setReplaceToolBar(basketFragment, "장바구니")
+                    setMenuBottomItemSelect(R.id.basket)
+
+                }
+                "foodbook" -> {
+                    setReplaceToolBar(foodbookFragment, "레시피사전")
+                    setMenuBottomItemSelect(R.id.food_book)
+                }
+            }
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
