@@ -62,10 +62,6 @@ class SearchMainFragment : Fragment() {
     }
 
     fun submitList() {
-        eventTabList.forEachIndexed { index, eventTab ->
-
-            Log.d("subTest", "test $index : ${eventTab.effectcolor}")
-        }
         adapter.submitList(eventTabList)
     }
 
@@ -114,7 +110,6 @@ class SearchMainFragment : Fragment() {
             effectstyle = "bold",
             eventidx = "0",
             recipelist = temp1))
-
     }
     suspend fun recommendInit() {
         val response = FirebaseFirestore.getInstance().collection("Event").get()
