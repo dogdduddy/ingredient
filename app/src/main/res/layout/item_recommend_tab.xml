@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="20dp"
+    android:paddingBottom="10dp"
+    android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="bottom">
+        <TextView
+            android:id="@+id/main_recommend_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:layout_marginLeft="20dp"
+            android:bufferType="spannable"
+            android:textColor="@color/grey_900"
+            android:text="#여름에 먹으면 더욱 맛좋은 레시피"/>
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/ic_acha_stand"/>
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/main_recommend_recyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="240dp"
+        android:layout_marginTop="8dp"
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp"
+        android:clipToPadding="false"/>
+
+</LinearLayout>
