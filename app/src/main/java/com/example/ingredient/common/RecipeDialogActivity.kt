@@ -3,7 +3,6 @@ package com.example.ingredient.common
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Spannable
 import android.text.TextPaint
@@ -13,7 +12,6 @@ import android.text.style.ForegroundColorSpan
 import android.util.AttributeSet
 import android.util.Log
 import android.view.View
-import android.webkit.WebView
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
@@ -21,8 +19,6 @@ import com.bumptech.glide.Glide
 import com.example.ingredient.R
 import com.example.ingredient.activity.MainActivity
 import com.example.ingredient.src.WebViewActivity
-import com.example.ingredient.src.basket.models.BasketIngredient
-import com.example.ingredient.src.expirationDate.add_ingredient.models.Ingredient
 import com.example.ingredient.src.foodbook.models.Recipe
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
@@ -30,7 +26,6 @@ import com.google.firebase.firestore.ktx.toObjects
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 
@@ -55,7 +50,7 @@ class RecipeDialogActivity : Activity() {
         var addBasket: Button = findViewById(R.id.recipe_dialog_pass_basket_btn)
         var linkSite: Button = findViewById(R.id.recipe_dialog_pass_link_btn)
 
-        recipeName = intent.extras!!.get("name").toString()
+        recipeName = intent.extras!!.getString("name")
         initRecipe(recipeName!!)
 
         // 미소지 재료 장바구니 넣기
@@ -192,9 +187,5 @@ class RecipeDialogActivity : Activity() {
             }
         }
 
-    }
-
-    override fun onBackPressed() {
-        return
     }
 }

@@ -77,6 +77,7 @@ class SearchMainFragment : Fragment() {
         binding.mainSearchbar.setOnClickListener {
             val searchFragment = SearchFragment()
             val transaction = activity?.supportFragmentManager?.beginTransaction()
+
             transaction?.add(R.id.fragment_container, searchFragment)
             transaction?.commit()
         }

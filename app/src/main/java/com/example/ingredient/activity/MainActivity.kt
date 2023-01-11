@@ -52,8 +52,10 @@ class MainActivity : AppCompatActivity() {
                 drawerLayout.closeDrawers()
             } else {
                 if (transection.backStackEntryCount > 1) {
+                    Log.d("backtest", "backcount : ${transection.backStackEntryCount}")
                     transection.popBackStack()
                 } else {
+                    Log.d("backtest", "finish : ${transection.backStackEntryCount}")
                     finish()
                 }
             }
