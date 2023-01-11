@@ -25,7 +25,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.toObject
 import android.view.inputmethod.InputMethodManager as InputMethodManager
 
-class SearchFragment : Fragment(), MainActivity.onBackPressListener {
+class SearchFragment : Fragment() {
     private var adapter = SearchAdapter()
     private lateinit var database: FirebaseFirestore
 
@@ -202,10 +202,6 @@ class SearchFragment : Fragment(), MainActivity.onBackPressListener {
     companion object {
         fun newInstance() =
             SearchFragment()
-    }
-
-    override fun onBackPressed() {
-        parentFragmentManager.beginTransaction().remove(this).commit()
     }
 
     override fun onDestroyView() {

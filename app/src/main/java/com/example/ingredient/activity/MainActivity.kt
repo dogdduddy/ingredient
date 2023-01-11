@@ -13,6 +13,7 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
@@ -42,8 +43,26 @@ class MainActivity : AppCompatActivity() {
     private var recent_recipe_list = ArrayList<MutableMap<String, String>>()
     private var transection : FragmentManager = supportFragmentManager
 
+
+    private val callback = object : OnBackPressedCallback(true) {
+
+        override fun handleOnBackPressed() {
+            // 뒤로가기 클릭 시 실행시킬 코드 입력
+            if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+                drawerLayout.closeDrawers()
+            } else {
+                if (transection.backStackEntryCount > 1) {
+                    transection.popBackStack()
+                } else {
+                    finish()
+                }
+            }
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        this.onBackPressedDispatcher.addCallback(this, callback)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -184,26 +203,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
         return super.dispatchTouchEvent(ev)
-    }
-
-    override fun onBackPressed() {
-        var fragmentList = supportFragmentManager.fragments
-        if(drawerLayout.isDrawerOpen(GravityCompat.START)) {
-            drawerLayout.closeDrawers()
-        } else if (fragmentList.size > 1) {
-            fragmentList.forEach {
-                if (it is onBackPressListener) {
-                    (it as onBackPressListener).onBackPressed()
-                    return
-                }
-            }
-        } else {
-            super.onBackPressed()
-        }
-    }
-
-    interface onBackPressListener {
-        fun onBackPressed()
     }
 
     fun toolBarInit() {
