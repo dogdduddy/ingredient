@@ -101,11 +101,9 @@ class MainActivity : AppCompatActivity() {
         }
 
         // 이미지 로드
-        if(intent.getStringExtra("photo") != "null" && !intent.getStringExtra("photo").isNullOrBlank()) {
-            Log.d("LoginTest", "photo notNull : ${intent.getStringExtra("photo")}")
+        if(!intent.getStringExtra("photo").isNullOrBlank()) {
             Glide.with(this).load(intent.getStringExtra("photo")).into(navi_header.findViewById<ImageView>(R.id.nav_profile_image))
         }else {
-            Log.d("LoginTest", "photo null : ${intent.getStringExtra("photo")}")
             navi_header.findViewById<ImageView>(R.id.nav_profile_image).setImageResource(R.drawable.profile_defalut_1)
         }
     }

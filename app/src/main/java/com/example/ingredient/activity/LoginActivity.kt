@@ -2,13 +2,13 @@ package com.example.ingredient.activity
 
 import android.app.Activity
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
 import com.android.volley.DefaultRetryPolicy
 import com.android.volley.Request
 import com.android.volley.Response
@@ -41,6 +41,7 @@ import com.kakao.auth.Session
 import com.kakao.util.helper.Utility
 import org.json.JSONObject
 import java.util.*
+
 
 class LoginActivity : AppCompatActivity() {
     private val TAG = "LoginActivity"
@@ -107,8 +108,23 @@ class LoginActivity : AppCompatActivity() {
 
         // 자동 로그인
         val currentUser = auth.currentUser
-        updateUI(currentUser)
+        remember_me(currentUser)
         initView()
+    }
+
+    public override fun onStart() {
+        super.onStart()
+    }
+
+    fun remember_me(user: FirebaseUser?) {
+        if(user != null) {
+            // 현재 사용자의 idToken을 확인하여 자동 로그인 시킬지 말지 결정
+            user.getIdToken(true).addOnCompleteListener(OnCompleteListener<GetTokenResult> { task ->
+                if (task.isSuccessful) {
+                    successLogin(user)
+                }
+            })
+        }
     }
 
     fun initView() {
@@ -144,12 +160,12 @@ class LoginActivity : AppCompatActivity() {
                 override fun onCancel() {
                     //페이스북 로그인 취소
                     Log.d("FaceBookLogin", "Login Cancle")
-                    updateUI(null)
+                    successLogin(null)
                 }
                 override fun onError(error: FacebookException) {
                     //페이스북 로그인 실패
                     Log.d("FaceBookLogin", "Login Fail : $error")
-                    updateUI(null)
+                    successLogin(null)
                 }
             })
     }
@@ -163,38 +179,22 @@ class LoginActivity : AppCompatActivity() {
                     if (task.isSuccessful) {
                         // Sign in success, update UI with the signed-in user's information
                         Log.d(TAG, "signInWithCredential:success")
-                        updateUI(task.result.user)
+                        successLogin(task.result.user)
                     } else {
                         // If sign in fails, display a message to the user.
                         Log.w(TAG, "signInWithCredential:failure", task.exception)
-                        updateUI(null)
+                        successLogin(null)
                     }
                 }
         }
     }
 
-    public override fun onStart() {
-        super.onStart()
-        val currentUser = auth.currentUser
-        updateUI(currentUser)
-    }
 
     // 자동 로그인
-    private fun updateUI(user: FirebaseUser?) {
-        if(user == null) {
-            toast("로그인에 실패했습니다.")
-        }
-        else {
-            user!!.getIdToken(true)
-                .addOnCompleteListener(object : OnCompleteListener<GetTokenResult?> {
-                    override fun onComplete(task: com.google.android.gms.tasks.Task<GetTokenResult?>) {
-                        if (task.isSuccessful()) {
-                            Log.d("userTest", "user : ${user.uid}")
-                            InsertUserData(user.uid)
-                            startMainActivity(user)
-                        }
-                    }
-                })
+    private fun successLogin(user: FirebaseUser?) {
+        if(user != null) {
+            InsertUserData(user.uid)
+            startMainActivity(user)
         }
     }
 
@@ -253,10 +253,10 @@ class LoginActivity : AppCompatActivity() {
                 if (task.isSuccessful) {
                     Log.d(TAG, "signInWithCredential:success")
                     val user = auth.currentUser
-                    updateUI(user)
+                    successLogin(user)
                 } else {
                     Log.w(TAG, "signInWithCredential:failure", task.exception)
-                    updateUI(null)
+                    successLogin(null)
                 }
             }
     }
@@ -271,11 +271,10 @@ class LoginActivity : AppCompatActivity() {
         if(user.providerData.size < 2) userData = user.providerData.get(0)
         else userData = user.providerData.get(1)
 
-        Log.d(TAG, "LoginActivity - startMainActivity() called")
         val intent = Intent(this, MainActivity::class.java)
         intent.putExtra("user", userData!!.displayName.toString())
         intent.putExtra("email",userData!!.email.toString())
-        intent.putExtra("photo",userData!!.photoUrl)
+        intent.putExtra("photo",userData!!.photoUrl.toString())
         startActivity(intent)
         finish()
     }
