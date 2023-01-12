@@ -35,9 +35,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var foodbookFragment: FoodBookMainFragment
     private lateinit var expirationdateFragment: ExpirationDateFragment
     private lateinit var basketFragment: BasketFragment
-    private lateinit var database: FirebaseFirestore
 
-    private lateinit var drawerLayout: DrawerLayout
     private lateinit var binding: ActivityMainBinding
     private var nav_adapter = RecentRecipeAdapter()
     private var recent_recipe_list = ArrayList<MutableMap<String, String>>()
@@ -47,8 +45,8 @@ class MainActivity : AppCompatActivity() {
     private val callback = object : OnBackPressedCallback(true) {
         override fun handleOnBackPressed() {
             // 뒤로가기 클릭 시 실행시킬 코드 입력
-            if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
-                drawerLayout.closeDrawers()
+            if (binding.drawerlayout.isDrawerOpen(GravityCompat.START)) {
+                binding.drawerlayout.closeDrawers()
             } else {
                 if (transection.backStackEntryCount > 0) {
                     transection.popBackStack()
@@ -66,7 +64,6 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        database = FirebaseFirestore.getInstance()
         InitFragment()
         toolBarInit()
         setCurrentFragment()
@@ -74,12 +71,14 @@ class MainActivity : AppCompatActivity() {
 
 
         var navi_header = binding.navigationView.getHeaderView(0)
+
         setSettings(navi_header)
         navi_header.findViewById<Button>(R.id.nav_logout).setOnClickListener { logout() }
         setProfile(navi_header)
         setRecentRecipe(navi_header)
 
     }
+
     fun setSettings(navi_header: View) {
         navi_header.findViewById<ImageView>(R.id.nav_setting).setOnClickListener {
             Toast.makeText(this,"설정", Toast.LENGTH_SHORT).show()
@@ -176,9 +175,9 @@ class MainActivity : AppCompatActivity() {
     // 프래그먼트 전환 메서드. State는 프래그먼트를 객체로 갖고 있기에, 뷰 단에서 저장과 복구 진행함.
     private fun replaceFragment(fragment: Fragment) {
         if (fragment != null) {
-            val transection = supportFragmentManager.beginTransaction()
-            transection.replace(R.id.fragment_container, fragment)
-            transection.commit()
+            transection.beginTransaction()
+                .replace(R.id.fragment_container, fragment)
+                .commit()
         }
     }
 
@@ -207,8 +206,6 @@ class MainActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowTitleEnabled(false)
         supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_baseline_menu_24)
-
-        drawerLayout = binding.drawerlayout
     }
 
     fun setCurrentFragment() {
@@ -236,7 +233,7 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId) {
             android.R.id.home -> {
-                drawerLayout.openDrawer(GravityCompat.START)
+                binding.drawerlayout.openDrawer(GravityCompat.START)
                 return true
             }
         }
