@@ -72,11 +72,22 @@ class MainActivity : AppCompatActivity() {
         setCurrentFragment()
         setOnBottomNavigationSItemSelectedListner()
 
+
         var navi_header = binding.navigationView.getHeaderView(0)
+        setSettings(navi_header)
+        navi_header.findViewById<Button>(R.id.nav_logout).setOnClickListener { logout() }
+        setProfile(navi_header)
+        setRecentRecipe(navi_header)
+
+    }
+    fun setSettings(navi_header: View) {
         navi_header.findViewById<ImageView>(R.id.nav_setting).setOnClickListener {
             Toast.makeText(this,"설정", Toast.LENGTH_SHORT).show()
         }
-        navi_header.findViewById<Button>(R.id.nav_logout).setOnClickListener { logout() }
+    }
+
+    fun setProfile(navi_header: View) {
+        // Profile
         if(!intent.getStringExtra("user").isNullOrBlank()) {
             navi_header.findViewById<TextView>(R.id.nav_profile_nickname).text = intent.getStringExtra("user")
         } else {
@@ -97,7 +108,9 @@ class MainActivity : AppCompatActivity() {
             Log.d("LoginTest", "photo null : ${intent.getStringExtra("photo")}")
             navi_header.findViewById<ImageView>(R.id.nav_profile_image).setImageResource(R.drawable.profile_defalut_1)
         }
+    }
 
+    fun setRecentRecipe(navi_header: View) {
         // 최근 본 레시피
         var recent_recyclerview = navi_header.findViewById<RecyclerView>(R.id.nav_recent_recipe)
         recent_recyclerview.layoutManager = GridLayoutManager(this, 3)
@@ -231,6 +244,7 @@ class MainActivity : AppCompatActivity() {
         }
         return super.onOptionsItemSelected(item)
     }
+
     fun logout() {
         FirebaseAuth.getInstance().signOut()
         val intent = Intent(this, LoginActivity::class.java)
