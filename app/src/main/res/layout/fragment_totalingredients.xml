@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".src.basket.total.TotalIngredientsFragment">
+    tools:context=".feature.basket.total.TotalIngredientsFragment">
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/total_recyclerview"
         android:layout_width="match_parent"

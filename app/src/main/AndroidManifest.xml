@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.ingredient">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
-        android:name=".network.App"
+        android:name=".global.App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -15,14 +14,14 @@
         android:theme="@style/Theme.MaterialComponents.Light.NoActionBar.Bridge"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".src.WebViewActivity"
+            android:name=".feature.common.WebViewActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".common.RecipeDialogActivity"
+            android:name=".feature.common.RecipeDialogActivity"
             android:exported="false"
             android:theme="@style/MyPopupMenu">
             <meta-data
@@ -30,24 +29,24 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".src.basket.group.addGroup.addIngredient.AddGroupIngredientsActivity"
+            android:name=".feature.basket.group.addGroup.addIngredient.AddGroupIngredientsActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".src.basket.group.addGroup.GroupAddIngredientsActivity"
+            android:name=".feature.basket.group.addGroup.GroupAddIngredientsActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".src.expirationDate.add_ingredient.ingredientstate.IngredientStateActivity"
+            android:name=".feature.expirationDate.add_ingredient.ingredientstate.IngredientStateActivity"
             android:exported="false" />
         <activity
-            android:name=".src.expirationDate.add_ingredient.AddIngredientsActivity"
+            android:name=".feature.expirationDate.add_ingredient.AddIngredientsActivity"
             android:exported="false" />
 
         <meta-data
@@ -77,23 +76,23 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity.LoginActivity"
+            android:name=".feature.activity.LoginActivity"
+            android:exported="true">
+        </activity>
+        <activity
+            android:name=".feature.activity.MainActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustNothing">
+        </activity>
+        <activity
+            android:name=".feature.activity.MainActivity2"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <activity
-            android:name=".activity.MainActivity"
-            android:exported="true"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustNothing">
-        </activity>
-        <activity
-            android:name=".activity.MainActivity2"
-            android:exported="true">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />

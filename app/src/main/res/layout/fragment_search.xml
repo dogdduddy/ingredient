@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:clickable="true"
     android:background="@color/white"
-    tools:context=".src.search.SearchFragment">
+    tools:context=".feature.search.SearchFragment">
     <LinearLayout
         android:id="@+id/findwindow_layout"
         android:layout_width="377dp"

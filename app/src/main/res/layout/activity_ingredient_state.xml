@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".src.expirationDate.add_ingredient.ingredientstate.IngredientStateActivity">
+    tools:context=".feature.expirationDate.add_ingredient.ingredientstate.IngredientStateActivity">
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/ing_state_tool_layout"
         android:layout_width="match_parent"

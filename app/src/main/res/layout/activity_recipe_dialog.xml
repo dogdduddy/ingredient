@@ -7,7 +7,7 @@
     android:layout_height="570dp"
     app:cardCornerRadius="20dp"
     android:background="@color/white"
-    tools:context=".common.RecipeDialogActivity">
+    tools:context=".feature.common.RecipeDialogActivity">
     <RelativeLayout
         android:background="@color/white"
         android:layout_width="match_parent"

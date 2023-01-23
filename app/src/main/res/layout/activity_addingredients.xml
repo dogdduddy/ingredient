@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".src.expirationDate.add_ingredient.AddIngredientsActivity"
+    tools:context=".feature.expirationDate.add_ingredient.AddIngredientsActivity"
     android:background="@color/white">
 
     <EditText
