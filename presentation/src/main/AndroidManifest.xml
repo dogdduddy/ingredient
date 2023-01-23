@@ -1,4 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <application>
+        <activity
+            android:name=".feature.common.WebViewActivity"
+            android:exported="false" >
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".feature.common.RecipeDialogActivity"
+            android:exported="false"
+            android:theme="@style/MyPopupMenu" >
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".feature.basket.group.addGroup.addIngredient.AddGroupIngredientsActivity"
+            android:exported="false" >
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".feature.basket.group.addGroup.GroupAddIngredientsActivity"
+            android:exported="false" >
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".feature.expirationDate.add_ingredient.ingredientstate.IngredientStateActivity"
+            android:exported="false" />
+        <activity
+            android:name=".feature.expirationDate.add_ingredient.AddIngredientsActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".feature.activity.LoginActivity"
+            android:exported="true" >
+        </activity>
+        <activity
+            android:name=".feature.activity.MainActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustNothing" >
+        </activity>
+        <activity
+            android:name=".feature.activity.MainActivity2"
+            android:exported="true" >
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+    </application>
 
 </manifest>
