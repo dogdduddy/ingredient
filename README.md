@@ -8,7 +8,7 @@
 - [Environment & Library](#Environment--Library)
 - [Feat](#Feat)
 - [Document](#Document)
-- [Challenge](#Future--Challenge)
+- [Future & Challenge](#Future--Challenge)
 
 ## Introduce
 보관 재료의 유통기한을 알려주고, 음식 검색을 도와줍니다.
