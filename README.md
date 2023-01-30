@@ -34,19 +34,13 @@
 <img src="https://user-images.githubusercontent.com/32217176/215421070-a78a15e8-a0db-4d1b-b45f-a825e3341c68.jpeg" width="30%" style="margin-right: 7px"> <img src="https://user-images.githubusercontent.com/32217176/215421350-c4be9ed5-4ee9-4527-b066-9f600d009a36.jpeg" width="30%;display:inline">
 
 ### 음식 추천 및 검색
-<img src="https://user-images.githubusercontent.com/32217176/215421866-6374d129-21e2-4c59-bfcf-e337cbe8391a.jpeg" width="30%" style="margin-right: 7px">
-<img src="https://user-images.githubusercontent.com/32217176/215421874-802d820b-469c-4073-ac49-2323bdc4c5db.jpeg" width="30%" style="margin-right: 7px">
-<img src="https://user-images.githubusercontent.com/32217176/215421877-457620be-5209-42c3-9298-e24bc231c01a.jpeg" width="30%" style="margin-right: 7px">
+<img src="https://user-images.githubusercontent.com/32217176/215421866-6374d129-21e2-4c59-bfcf-e337cbe8391a.jpeg" width="30%" style="margin-right: 7px"> <img src="https://user-images.githubusercontent.com/32217176/215421874-802d820b-469c-4073-ac49-2323bdc4c5db.jpeg" width="30%" style="margin-right: 7px"> <img src="https://user-images.githubusercontent.com/32217176/215421877-457620be-5209-42c3-9298-e24bc231c01a.jpeg" width="30%" style="margin-right: 7px">
 
 ### 유통기한 관리
-<img src="https://user-images.githubusercontent.com/32217176/215422401-397662f8-32bb-499f-b419-e146c0d4076c.jpeg" width="30%" style="margin-right: 7px">
-<img src="https://user-images.githubusercontent.com/32217176/215422408-0cab43ed-2047-4efa-af18-48153743147f.jpeg" width="30%" style="margin-right: 7px">
-<img src="https://user-images.githubusercontent.com/32217176/215422411-999e87ed-5143-4baf-8eeb-b65f92ed3b00.jpeg" width="30%" style="margin-right: 7px">
+<img src="https://user-images.githubusercontent.com/32217176/215422401-397662f8-32bb-499f-b419-e146c0d4076c.jpeg" width="30%" style="margin-right: 7px"> <img src="https://user-images.githubusercontent.com/32217176/215422408-0cab43ed-2047-4efa-af18-48153743147f.jpeg" width="30%" style="margin-right: 7px"> <img src="https://user-images.githubusercontent.com/32217176/215422411-999e87ed-5143-4baf-8eeb-b65f92ed3b00.jpeg" width="30%" style="margin-right: 7px">
 
 ### 장바구니
-<img src="https://user-images.githubusercontent.com/32217176/215422979-76734b2d-937a-49ab-afbb-f2f42795a333.jpeg" width="30%" style="margin-right: 7px">
-<img src="https://user-images.githubusercontent.com/32217176/215422983-1bdc994d-5b98-460c-a18d-e98c3063b443.jpeg" width="30%" style="margin-right: 7px">
-<img src="https://user-images.githubusercontent.com/32217176/215422986-85f8aaa4-1c3a-4b05-bf4b-5dc171ab54db.jpeg" width="30%" style="margin-right: 7px">
+<img src="https://user-images.githubusercontent.com/32217176/215422979-76734b2d-937a-49ab-afbb-f2f42795a333.jpeg" width="30%" style="margin-right: 7px"> <img src="https://user-images.githubusercontent.com/32217176/215422983-1bdc994d-5b98-460c-a18d-e98c3063b443.jpeg" width="30%" style="margin-right: 7px"> <img src="https://user-images.githubusercontent.com/32217176/215422986-85f8aaa4-1c3a-4b05-bf4b-5dc171ab54db.jpeg" width="30%" style="margin-right: 7px">
 
 ### 그 외
 - 유통기한 일수 차감
