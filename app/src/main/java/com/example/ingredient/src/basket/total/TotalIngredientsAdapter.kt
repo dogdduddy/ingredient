@@ -41,12 +41,12 @@ class TotalIngredientsAdapter():RecyclerView.Adapter<TotalIngredientsAdapter.Vie
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.Name.text = ingredientList[position].ingredientName
-        holder.Quantity.text = ingredientList[position].quantity.toString() + category(ingredientList[position].categoryName, ingredientList[position].ingredientName)
-        holder.ingCategory.text = ingredientList[position].categoryName
+        holder.Name.text = ingredientList[position].ingredientname
+        holder.Quantity.text = ingredientList[position].ingredientquantity.toString() + category(ingredientList[position].ingredientcategory, ingredientList[position].ingredientname)
+        holder.ingCategory.text = ingredientList[position].ingredientcategory
 
         Glide.with(holder.itemView)
-            .load(ingredientList[position].ingredientIcon)
+            .load(ingredientList[position].ingredienticon)
             .into(holder.ingImage)
 
     }
@@ -56,10 +56,10 @@ class TotalIngredientsAdapter():RecyclerView.Adapter<TotalIngredientsAdapter.Vie
     fun submitList(basketList: ArrayList<BasketIngredient>){
         ingredientList.clear()
         basketList.forEach { basket ->
-            if(ingredientList.map {it.ingredientName}.indexOf(basket.ingredientName) == -1){
-                ingredientList.add(BasketGroupIngredient(basket.ingredientIcon, basket.ingredientIdx, basket.ingredientName, basket.categoryName, basket.quantity))
+            if(ingredientList.map {it.ingredientname}.indexOf(basket.ingredientname) == -1){
+                ingredientList.add(BasketGroupIngredient(basket.ingredienticon, basket.ingredientidx, basket.ingredientname, basket.ingredientcategory, basket.ingredientquantity))
             }else{
-                ingredientList[ingredientList.map {it.ingredientName}.indexOf(basket.ingredientName)]!!.quantity += basket.quantity
+                ingredientList[ingredientList.map {it.ingredientname}.indexOf(basket.ingredientname)]!!.ingredientquantity += basket.ingredientquantity
             }
         }
         notifyDataSetChanged()

@@ -8,6 +8,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.*
 import com.google.firebase.firestore.ktx.toObject
+import com.google.firebase.firestore.ktx.toObjects
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope.coroutineContext
@@ -21,59 +22,8 @@ class IngredientService(val view: AddIngredientView) {
 	fun GetCategoryIngrediets() {
 		database.collection("Category").get().addOnSuccessListener { documents ->
 			var response = ArrayList<CategoryIngrediets>()
-			var sortedDocs = documents.sortedBy { it.get("categoryid").toString().toInt() }
-
-			var ingredientListRef = ArrayList<List<DocumentReference>>()
-			for (document in sortedDocs) {
-				var ingredientlist = arrayListOf<Ingredient>()
-				document.data.apply {
-					ingredientListRef.add(get("ingredientlist") as List<DocumentReference>)
-					var category = CategoryIngrediets(
-						get("categoryid").toString().toInt(),
-						get("categoryname").toString(),
-						ingredientlist
-					)
-					response.add(category)
-				}
-			}
-			var ingredientListDocID = ArrayList<List<String>>()
-			ingredientListRef.forEachIndexed { index, v ->
-				ingredientListDocID.add(v.map { it.id })
-			}
+			response.addAll(documents.toObjects<CategoryIngrediets>())
 			view.onGetCategoryIngredietSuccess(response)
-			CoroutineScope(Dispatchers.Main).launch {
-				launch {
-					ingredientListDocID.forEachIndexed { index, documents ->
-						var responseList = mutableListOf<QueryDocumentSnapshot>()
-						for (i in 0 until documents.size step 10) {
-							var temp = listOf<String>()
-							if (i / 10 == documents.size / 10) {
-								temp = documents.subList(i, documents.size)
-							} else {
-								temp = documents.subList(i, i + 10)
-							}
-							responseList.addAll(
-								database.collection("ingredients")
-									.whereIn(FieldPath.documentId(), temp)
-									.get().await().toMutableList()
-							)
-						}
-						var ingredientlist = arrayListOf<Ingredient>()
-						responseList.forEach { doc ->
-							ingredientlist.add(
-								Ingredient(
-									doc.get("ingredienticon").toString(),
-									doc.get("ingredientidx").toString().toInt(),
-									doc.get("ingredientname").toString(),
-									doc.get("ingredientcategory").toString()
-								)
-							)
-						}
-						response[index].ingredientlist = ingredientlist
-					}
-				}.join()
-				view.onGetCategoryIngredietListSuccess(response)
-			}
 		}
 	}
 
@@ -84,18 +34,8 @@ class IngredientService(val view: AddIngredientView) {
 			.get()
 			.addOnSuccessListener { doc ->
 				var response = ArrayList<CategoryIngrediets>()
-				var sortedDocs = doc.sortedBy { it.get("categoryid").toString().toInt() }
 				var ingredientList = mutableListOf<Ingredient>()
-				sortedDocs.forEach {
-					ingredientList.add(
-						Ingredient(
-							it.get("ingredienticon").toString(),
-							it.get("ingredientidx").toString().toInt(),
-							it.get("ingredientname").toString(),
-							it.get("ingredientcategory").toString()
-						)
-					)
-				}
+				ingredientList.addAll(doc.toObjects<Ingredient>())
 				ingredients.forEachIndexed { i, v ->
 					response.add(
 						CategoryIngrediets(

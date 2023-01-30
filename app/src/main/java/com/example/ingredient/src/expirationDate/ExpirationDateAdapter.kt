@@ -39,9 +39,9 @@ class ExpirationDateAdapter(
 
     override fun onBindViewHolder(holder: ExpirationDateAdapter.ViewHolder, position: Int) {
         val item = expirationDateIngredient[position]
-        holder.name.text = expirationDateIngredient[position].ingredient.ingredientname
+        holder.name.text = expirationDateIngredient[position].ingredient!!.ingredientname
         holder.day.text = expirationDateIngredient[position].expirydate.toString() + "일"
-        holder.date.text = "폐기날짜 ${SimpleDateFormat("yyyy.MM.dd").format(expirationDateIngredient[position].discard.time)}"
+        holder.date.text = "폐기날짜 ${SimpleDateFormat("yyyy.MM.dd").format(expirationDateIngredient[position].discard!!.time)}"
         holder.itemView.setOnLongClickListener {
             Toast.makeText(this.context, "${holder.name.text}",Toast.LENGTH_LONG).show()
             return@setOnLongClickListener true
@@ -81,7 +81,7 @@ class ExpirationDateAdapter(
 
         // 이미지 로드
         Glide.with(holder.itemView)
-            .load(expirationDateIngredient[position].ingredient.ingredienticon)
+            .load(expirationDateIngredient[position].ingredient!!.ingredienticon)
             .into(holder.icon)
     }
 
@@ -121,7 +121,7 @@ class ExpirationDateAdapter(
     fun deleteSelectedItem(userID:String) {
         // 삭제할 유통기한 리스트(이름)
         var removeList = itemSelectedList.map {
-            expirationDateIngredient[it].ingredient.ingredientname
+            expirationDateIngredient[it].ingredient!!.ingredientname
         }
         // 리스트 속 유통기한 재료 삭제
         FirebaseFirestore.getInstance()

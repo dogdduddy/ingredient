@@ -4,6 +4,11 @@ import android.util.Log
 import com.example.ingredient.src.basket.models.BasketIngredient
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.toObject
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 
 class BasketService(val view:BasketView) {
 	private val database = FirebaseFirestore.getInstance()
@@ -16,14 +21,15 @@ class BasketService(val view:BasketView) {
 			.get()
 			.addOnSuccessListener { documents ->
 				for(document in documents) {
+					Log.d("basketTest", "Basket : ${document.get("ingredientidx")}")
 					basketData.add(
 						BasketIngredient(
-						document.get("ingredienticon").toString(),
-						document.get("ingredientidx").toString().toInt(),
-						document.get("ingredientname").toString(),
-						document.get("ingredientcategory").toString(),
-						document.get("groupName").toString(),
-						document.get("ingredientquantity").toString().toInt()
+							document.get("ingredienticon").toString(),
+							document.get("ingredientidx").toString().toInt(),
+							document.get("ingredientname").toString(),
+							document.get("ingredientcategory").toString(),
+							document.get("groupName").toString(),
+							document.get("ingredientquantity").toString().toInt()
 						)
 					)
 				}
@@ -32,18 +38,20 @@ class BasketService(val view:BasketView) {
 			.addOnFailureListener {
 				view.onGetBasketFailure(it.message ?: "통신 오류")
 			}
+
 	}
 
 	fun getBasketGroup() {
-		var basketGroup = ArrayList<String>()
 		database.collection("ListData")
 			.document(userid!!)
 			.collection("BasketList")
 			.get()
 			.addOnSuccessListener { documents ->
+				var basketGroup = ArrayList<String>()
 				for(document in documents) {
 					basketGroup.add(document.get("groupName").toString())
 				}
+				Log.d("basketTest", "basketGroup : $basketGroup")
 				view.onGetBasketGroupSuccess(basketGroup)
 			}
 			.addOnFailureListener {

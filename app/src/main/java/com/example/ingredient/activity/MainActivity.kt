@@ -4,8 +4,6 @@ import android.content.Intent
 import android.graphics.Rect
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import android.view.MenuItem
 import android.view.MotionEvent
@@ -15,9 +13,8 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
-import androidx.core.content.res.ResourcesCompat
+import androidx.activity.OnBackPressedCallback
 import androidx.core.view.GravityCompat
-import androidx.core.view.get
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
@@ -28,91 +25,89 @@ import com.example.ingredient.R
 import com.example.ingredient.src.expirationDate.ExpirationDateFragment
 import com.example.ingredient.src.basket.BasketFragment
 import com.example.ingredient.databinding.ActivityMainBinding
-import com.example.ingredient.src.expirationDate.add_ingredient.models.CategoryIngrediets
 import com.example.ingredient.src.foodbook.FoodBookMainFragment
 import com.example.ingredient.src.search.SearchMainFragment
-import com.facebook.login.LoginManager
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.Query
-import com.google.firebase.firestore.QuerySnapshot
-import com.kakao.usermgmt.UserManagement
-import com.kakao.usermgmt.callback.LogoutResponseCallback
-import kotlinx.coroutines.*
-import kotlinx.coroutines.tasks.await
 
 class MainActivity : AppCompatActivity() {
     private lateinit var mainFragment: SearchMainFragment
     private lateinit var foodbookFragment: FoodBookMainFragment
     private lateinit var expirationdateFragment: ExpirationDateFragment
     private lateinit var basketFragment: BasketFragment
-    private lateinit var database: FirebaseFirestore
 
-    private lateinit var drawerLayout: DrawerLayout
     private lateinit var binding: ActivityMainBinding
     private var nav_adapter = RecentRecipeAdapter()
     private var recent_recipe_list = ArrayList<MutableMap<String, String>>()
     private var transection : FragmentManager = supportFragmentManager
 
+
+    private val callback = object : OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() {
+            // 뒤로가기 클릭 시 실행시킬 코드 입력
+            if (binding.drawerlayout.isDrawerOpen(GravityCompat.START)) {
+                binding.drawerlayout.closeDrawers()
+            } else {
+                if (transection.backStackEntryCount > 0) {
+                    transection.popBackStack()
+                } else {
+                    finish()
+                }
+            }
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        this.onBackPressedDispatcher.addCallback(this, callback)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        database = FirebaseFirestore.getInstance()
         InitFragment()
         toolBarInit()
+        setCurrentFragment()
+        setOnBottomNavigationSItemSelectedListner()
 
-        if(intent.hasExtra("fragment")) {
-            when(intent.getStringExtra("fragment")) {
-                "main" -> setMainFragment()
-                "expiry" -> {
-                    setExpirationDateFragment()
-                    binding.menuBottom.setItemSelected(R.id.expiration_date, true)
-                }
-                "basket" -> {
-                    setBasketFragment()
-                    binding.menuBottom.setItemSelected(R.id.basket, true)
-                }
-                "foodbook" -> setFoodBookFragment()
-            }
-        }
 
-        // 하단바를 통해 화면(프래그먼트) 전환
-        binding.menuBottom.setOnItemSelectedListener { id ->
-            when (id) {
-                // Navigation : 프래그먼트 객체를 변수에 저장하고, 필요시 호출 => State 유지
-                R.id.search -> setMainFragment()
-                R.id.expiration_date -> setExpirationDateFragment()
-                R.id.basket -> setBasketFragment()
-                R.id.food_book -> setFoodBookFragment()
-            }
-        }
         var navi_header = binding.navigationView.getHeaderView(0)
+
+        setSettings(navi_header)
+        navi_header.findViewById<Button>(R.id.nav_logout).setOnClickListener { logout() }
+        setProfile(navi_header)
+        setRecentRecipe(navi_header)
+
+    }
+
+    fun setSettings(navi_header: View) {
         navi_header.findViewById<ImageView>(R.id.nav_setting).setOnClickListener {
             Toast.makeText(this,"설정", Toast.LENGTH_SHORT).show()
         }
-        navi_header.findViewById<Button>(R.id.nav_logout).setOnClickListener { logout() }
-        if(!intent.extras?.get("user").toString().isNullOrBlank()) {
-            navi_header.findViewById<TextView>(R.id.nav_profile_nickname).text = intent.extras?.get("user").toString()
+    }
+
+    fun setProfile(navi_header: View) {
+        // Profile
+        if(!intent.getStringExtra("user").isNullOrBlank()) {
+            navi_header.findViewById<TextView>(R.id.nav_profile_nickname).text = intent.getStringExtra("user")
         } else {
-            navi_header.findViewById<TextView>(R.id.nav_profile_nickname).text = "귀여운 텀보"
+            navi_header.findViewById<TextView>(R.id.nav_profile_nickname).text = "defaultName"
         }
 
-        if(intent.extras?.get("email").toString() != "null") {
-            navi_header.findViewById<TextView>(R.id.nav_profile_email).text = intent.extras?.get("email").toString()
+        if(intent.getStringExtra("email") != "null") {
+            navi_header.findViewById<TextView>(R.id.nav_profile_email).text = intent.getStringExtra("email")
         } else {
-            navi_header.findViewById<TextView>(R.id.nav_profile_email).text = "dogdduddy@gmail.com"
+            navi_header.findViewById<TextView>(R.id.nav_profile_email).text = "defaultEmail"
         }
 
         // 이미지 로드
-        if(!intent.extras?.get("photo").toString().isNullOrBlank()) {
-            Glide.with(this).load(intent.extras?.get("photo")).into(navi_header.findViewById<ImageView>(R.id.nav_profile_image)).onLoadFailed(ResourcesCompat.getDrawable(resources,R.drawable.profile_defalut_1, null))
+        if(!intent.getStringExtra("photo").isNullOrBlank()) {
+            Glide.with(this).load(intent.getStringExtra("photo")).into(navi_header.findViewById<ImageView>(R.id.nav_profile_image))
         }else {
             navi_header.findViewById<ImageView>(R.id.nav_profile_image).setImageResource(R.drawable.profile_defalut_1)
         }
+    }
 
+    fun setRecentRecipe(navi_header: View) {
         // 최근 본 레시피
         var recent_recyclerview = navi_header.findViewById<RecyclerView>(R.id.nav_recent_recipe)
         recent_recyclerview.layoutManager = GridLayoutManager(this, 3)
@@ -141,23 +136,29 @@ class MainActivity : AppCompatActivity() {
         binding.mainAchaLogo.visibility = View.VISIBLE
         replaceFragment(mainFragment)
     }
-    fun setExpirationDateFragment(){
-        binding.mainAchaLogo.visibility = View.GONE
-        binding.toolbarTitle.text = "유통기한"
-        binding.toolbarTitle.visibility = View.VISIBLE
-        replaceFragment(expirationdateFragment)
+
+    fun setOnBottomNavigationSItemSelectedListner() {
+        // 하단바를 통해 화면(프래그먼트) 전환
+        binding.menuBottom.setOnItemSelectedListener { id ->
+            when (id) {
+                // Navigation : 프래그먼트 객체를 변수에 저장하고, 필요시 호출 => State 유지
+                R.id.search -> setMainFragment()
+                R.id.expiration_date -> setReplaceToolBar(expirationdateFragment, "유통기한")
+                R.id.basket -> setReplaceToolBar(basketFragment, "장바구니")
+                R.id.food_book -> setReplaceToolBar(foodbookFragment, "레시피사전")
+            }
+        }
     }
-    fun setBasketFragment(){
+
+    fun setReplaceToolBar(fa: Fragment, title: String) {
+        binding.toolbarTitle.text = title
         binding.mainAchaLogo.visibility = View.GONE
-        binding.toolbarTitle.text = "장바구니"
         binding.toolbarTitle.visibility = View.VISIBLE
-        replaceFragment(basketFragment)
+        replaceFragment(fa)
     }
-    fun setFoodBookFragment(){
-        binding.mainAchaLogo.visibility = View.GONE
-        binding.toolbarTitle.text = "레시피사전"
-        binding.toolbarTitle.visibility = View.VISIBLE
-        replaceFragment(foodbookFragment)
+
+    fun setMenuBottomItemSelect(itemId:Int) {
+        binding.menuBottom.setItemSelected(itemId, true)
     }
 
     fun InitFragment() {
@@ -174,9 +175,9 @@ class MainActivity : AppCompatActivity() {
     // 프래그먼트 전환 메서드. State는 프래그먼트를 객체로 갖고 있기에, 뷰 단에서 저장과 복구 진행함.
     private fun replaceFragment(fragment: Fragment) {
         if (fragment != null) {
-            val transection = supportFragmentManager.beginTransaction()
-            transection.replace(R.id.fragment_container, fragment)
-            transection.commit()
+            transection.beginTransaction()
+                .replace(R.id.fragment_container, fragment)
+                .commit()
         }
     }
 
@@ -199,52 +200,48 @@ class MainActivity : AppCompatActivity() {
         return super.dispatchTouchEvent(ev)
     }
 
-    override fun onBackPressed() {
-        var fragmentList = supportFragmentManager.fragments
-        if(drawerLayout.isDrawerOpen(GravityCompat.START)) {
-            drawerLayout.closeDrawers()
-        } else if (fragmentList.size > 1) {
-            fragmentList.forEach {
-                if (it is onBackPressListener) {
-                    (it as onBackPressListener).onBackPressed()
-                    return
-                }
-            }
-        } else {
-            super.onBackPressed()
-        }
-    }
-
-    interface onBackPressListener {
-        fun onBackPressed()
-    }
-
     fun toolBarInit() {
         setSupportActionBar(binding.toolbar)
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowTitleEnabled(false)
         supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_baseline_menu_24)
+    }
 
-        drawerLayout = binding.drawerlayout
+    fun setCurrentFragment() {
+        // Activity 등으로 이동 후 Fragment로 복귀했을 때 이전에 선택했던 Navigation Position으로 이동
+        if(intent.hasExtra("fragment")) {
+            when(intent.getStringExtra("fragment")) {
+                "main" -> setMainFragment()
+                "expiry" -> {
+                    setReplaceToolBar(expirationdateFragment, "유통기한")
+                    setMenuBottomItemSelect(R.id.expiration_date)
+                }
+                "basket" -> {
+                    setReplaceToolBar(basketFragment, "장바구니")
+                    setMenuBottomItemSelect(R.id.basket)
+
+                }
+                "foodbook" -> {
+                    setReplaceToolBar(foodbookFragment, "레시피사전")
+                    setMenuBottomItemSelect(R.id.food_book)
+                }
+            }
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId) {
             android.R.id.home -> {
-                drawerLayout.openDrawer(GravityCompat.START)
+                binding.drawerlayout.openDrawer(GravityCompat.START)
                 return true
             }
         }
         return super.onOptionsItemSelected(item)
     }
+
     fun logout() {
-        LoginManager.getInstance().logOut()
-        UserManagement.getInstance().requestLogout(object : LogoutResponseCallback() {
-            override fun onCompleteLogout() {
-                FirebaseAuth.getInstance().signOut()
-            }
-        })
+        FirebaseAuth.getInstance().signOut()
         val intent = Intent(this, LoginActivity::class.java)
         startActivity(intent)
         finish()

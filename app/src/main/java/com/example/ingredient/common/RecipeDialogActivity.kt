@@ -3,7 +3,6 @@ package com.example.ingredient.common
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Spannable
 import android.text.TextPaint
@@ -19,13 +18,14 @@ import android.widget.TextView
 import com.bumptech.glide.Glide
 import com.example.ingredient.R
 import com.example.ingredient.activity.MainActivity
-import com.example.ingredient.src.expirationDate.add_ingredient.models.Ingredient
+import com.example.ingredient.src.WebViewActivity
+import com.example.ingredient.src.foodbook.models.Recipe
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.firestore.ktx.toObjects
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 
@@ -33,6 +33,7 @@ class RecipeDialogActivity : Activity() {
     private var recipeName: String? = null
     private var ingredientList = mutableListOf<String>()
     private val activityThis = this
+    private lateinit var recipe:Recipe
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,12 +47,13 @@ class RecipeDialogActivity : Activity() {
     override fun onStart() {
         super.onStart()
         var database = Firebase.firestore
-        var addBasket: Button = findViewById<Button>(R.id.recipe_dialog_pass_basket_btn)
+        var addBasket: Button = findViewById(R.id.recipe_dialog_pass_basket_btn)
+        var linkSite: Button = findViewById(R.id.recipe_dialog_pass_link_btn)
 
-        recipeName = intent.extras!!.get("name").toString()
+        recipeName = intent.extras!!.getString("name")
         initRecipe(recipeName!!)
 
-        // 미소자 장바구니 넣기
+        // 미소지 재료 장바구니 넣기
         addBasket.setOnClickListener {
             if(ingredientList.isNotEmpty()) {
                 ingredientList.forEach {
@@ -59,26 +61,24 @@ class RecipeDialogActivity : Activity() {
                         .whereEqualTo("ingredientname", it)
                         .get()
                         .addOnSuccessListener {  documents ->
-                            Log.d("testtest", "docs : ${it}")
-                            Log.d("testtest", "docs : ${documents.documents}")
                             if(!documents.documents.isNullOrEmpty()) {
-                                var data = documents.documents[0].data
-                                var hash = hashMapOf(
-                                    "ingredienticon" to data!!.get("ingredienticon").toString(),
-                                    "ingredientidx" to data!!.get("ingredientidx").toString(),
-                                    "ingredientname" to data!!.get("ingredientname").toString(),
-                                    "ingredientcategory" to data!!.get("ingredientcategory")
-                                        .toString(),
-                                    "groupName" to recipeName,
-                                    "ingredientquantity" to 1
-                                )
-                                database.collection("ListData")
-                                    .document(FirebaseAuth.getInstance().uid!!)
-                                    .collection("Basket")
-                                    .document()
-                                    .set(hash)
-                            }
+                                documents.documents[0].data.run {
+                                    var hash = hashMapOf(
 
+                                        "ingredienticon" to this?.get("ingredienticon").toString(),
+                                        "ingredientidx" to this?.get("ingredientidx").toString().toInt(),
+                                        "ingredientname" to this?.get("ingredientname").toString(),
+                                        "ingredientcategory" to this?.get("ingredientcategory").toString(),
+                                        "groupName" to recipeName,
+                                        "ingredientquantity" to 1
+                                    )
+                                    database.collection("ListData")
+                                        .document(FirebaseAuth.getInstance().uid!!)
+                                        .collection("Basket")
+                                        .document()
+                                        .set(hash)
+                                }
+                            }
                         }
                 }
                 database.collection("ListData")
@@ -86,10 +86,17 @@ class RecipeDialogActivity : Activity() {
                     .collection("BasketList")
                     .document()
                     .set(hashMapOf("groupName" to recipeName))
-                intent = Intent(this, MainActivity::class.java)
+
+                var intent = Intent(this, MainActivity::class.java)
                 intent.putExtra("fragment", "basket")
                 startActivity(intent)
             }
+        }
+        linkSite.setOnClickListener {
+            // 레시피 WebView 링크로 이동
+            var intent = Intent(this, WebViewActivity::class.java)
+            intent.putExtra("link", recipe.link)
+            startActivity(intent)
         }
     }
 
@@ -101,12 +108,12 @@ class RecipeDialogActivity : Activity() {
         var level = findViewById<TextView>(R.id.recipe_dialog_content_box_level_text)
         var ingredients = findViewById<TextView>(R.id.recipe_dialog_ing_box_ingredients)
 
-        var recipe = mutableMapOf<String,Any>()
+
         var refs = Firebase.firestore
         CoroutineScope(Dispatchers.Main).launch {
             val responseRecipe = refs.collection("Recipes").whereEqualTo("name", name)
                 .get()
-                .await().toMutableList()
+                .await().toObjects<Recipe>()
 
             val responseIngredients = refs.collection("ListData")
                 .document(FirebaseAuth.getInstance().uid!!)
@@ -116,31 +123,20 @@ class RecipeDialogActivity : Activity() {
                 .toMutableList()
                 .map { it.get("ingredientname") }
 
-            var data = responseRecipe.get(0).data
-            data!!.get("name")
-            recipe["name"] = data.get("name").toString()
-            recipe["icon"] = data.get("icon").toString()
-            recipe["ingredients"] = data.get("ingredient") as ArrayList<String>
-            recipe["like"] = data.get("like").toString()
-            recipe["subscribe"] = data.get("subscribe").toString()
-            recipe["time"] = data.get("time").toString()
-            recipe["level"] = data.get("level").toString()
-            recipe["link"] = data.get("link").toString()
+            recipe = responseRecipe[0]
 
-            //
-            title.text = recipe["name"].toString()
-            time.text = recipe["time"].toString() + "분"
-            level.text = recipe["level"].toString()
-            count.text = (recipe["ingredients"] as ArrayList<String>).size.toString() + "가지"
-            Glide.with(activityThis)
-                .load(recipe["icon"])
-                .into(image)
-
+            recipe.apply {
+                title.text = this.name
+                time.text = this.time + "분"
+                level.text = this.level
+                count.text = (ingredient as List<String>).size.toString() + "가지"
+                Glide.with(activityThis).load(icon).into(image)
+            }
             var str = ""
             ingredientList.clear()
 
             var setUserIng:Set<String> = responseIngredients.toSet() as Set<String>
-            var setRecipeIng = (recipe["ingredients"] as MutableList<String>).toSet()
+            var setRecipeIng = (recipe.ingredient as MutableList<String>).toSet()
             var textPosition = arrayListOf<ArrayList<Int>>()
             ingredientList = (setRecipeIng - setUserIng).toMutableList()
             val intersectSize = setUserIng.intersect(setRecipeIng).size
@@ -191,9 +187,5 @@ class RecipeDialogActivity : Activity() {
             }
         }
 
-    }
-
-    override fun onBackPressed() {
-        return
     }
 }

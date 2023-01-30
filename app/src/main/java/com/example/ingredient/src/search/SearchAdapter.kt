@@ -10,11 +10,12 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.ingredient.R
+import com.example.ingredient.src.foodbook.models.Recipe
 
 class SearchAdapter ()
     : RecyclerView.Adapter<SearchAdapter.ViewHolder>()
     {
-        private val recipeList: ArrayList<MutableMap<String, String>>  = arrayListOf()
+        private val recipeList: ArrayList<Recipe> = arrayListOf()
         private var context:Context? = null
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
             val view =
@@ -24,26 +25,26 @@ class SearchAdapter ()
         }
 
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-            val recipe = recipeList[position]
+            val recipe = recipeList?.get(position)
             holder.itemView.setOnClickListener { itemCLickListener.onClick(it, position) }
-            holder.like.text = recipe["like"]
-            holder.subscribe.text = recipe["subscribe"]
-            holder.title.text = recipe["name"]
+            holder.like.text = recipe!!.like
+            holder.subscribe.text = recipe!!.subscribe
+            holder.title.text = recipe!!.name
 
             // 이미지 로드
             holder.food.clipToOutline = true
             Glide.with(holder.itemView)
-                .load(recipe["icon"])
+                .load(recipe!!.icon)
                 .into(holder.food)
         }
 
         override fun getItemCount(): Int {
-            return recipeList.size
+            return recipeList!!.size
         }
 
-        fun submitList(recipeList: ArrayList<MutableMap<String, String>>) {
-            this.recipeList.clear()
-            this.recipeList.addAll(recipeList)
+        fun submitList(recipeList: List<Recipe>) {
+            this.recipeList!!.clear()
+            this.recipeList!!.addAll(recipeList)
             notifyDataSetChanged()
         }
 
@@ -64,7 +65,7 @@ class SearchAdapter ()
         }
         // 마지막 chip 삭제했을 때는 값이 없으므로 쿼리가 불가능 => recyclerview 아이템 직접 삭제
         fun nullItem() {
-            recipeList.removeAt((0))
+            recipeList!!.removeAt((0))
             notifyItemRemoved(0)
             notifyDataSetChanged()
         }

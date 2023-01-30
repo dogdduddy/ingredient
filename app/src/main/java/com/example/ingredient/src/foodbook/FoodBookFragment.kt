@@ -21,9 +21,11 @@ import com.example.ingredient.activity.MainActivity
 import com.example.ingredient.common.RecipeDialogActivity
 import com.example.ingredient.database.ExpirationDateDatabase
 import com.example.ingredient.databinding.FragmentFoodBookBinding
+import com.example.ingredient.src.foodbook.models.Recipe
 import com.example.ingredient.src.search.SearchAdapter
 import com.google.android.material.chip.Chip
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.toObject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
@@ -35,7 +37,7 @@ class FoodBookFragment : Fragment() {
     private var strList = mutableListOf<String>()
     private var maxStrListSize = 8
 
-    private var recipeList: ArrayList<MutableMap<String, String>> = arrayListOf<MutableMap<String, String>>()
+    private var recipeList: ArrayList<Recipe> = arrayListOf()
     private var _binding: FragmentFoodBookBinding? = null
     private val binding get() = _binding!!
     private var imm: InputMethodManager? = null
@@ -98,8 +100,6 @@ class FoodBookFragment : Fragment() {
                 SearchQuery(database)
             }
         }
-
-
     }
 
     // 단순쿼리문 (전체 출력)
@@ -121,18 +121,12 @@ class FoodBookFragment : Fragment() {
                         else
                             ing_str += " / $element"
                     }
-                    recipeList.add(
-                        mutableMapOf("name" to document.get("name").toString(),
-                            "ingredient" to ing_str,
-                            "like" to document.get("like").toString(),
-                            "subscribe" to document.get("subscribe").toString(),
-                            "icon" to document.get("icon").toString(),
-                        ))
+                    recipeList.add(document.toObject<Recipe>())
                 }
                 adapterConnect(recipeList)
             }
-
     }
+
 
     // Full Text 형태로 검색 구현
     fun SearchFullTextQuery(database: FirebaseFirestore, str: String, chipClick:Boolean): Unit {
@@ -156,13 +150,7 @@ class FoodBookFragment : Fragment() {
                             else
                                 ing_str += " / $element"
                         }
-                        recipeList.add(
-                            mutableMapOf("name" to document.get("name").toString(),
-                                "ingredient" to ing_str,
-                                "like" to document.get("like").toString(),
-                                "subscribe" to document.get("subscribe").toString(),
-                                "icon" to document.get("icon").toString(),
-                            ))
+                        recipeList.add(document.toObject<Recipe>())
                     }
                     if(!chipClick) {
                         addChip(str)
@@ -191,27 +179,21 @@ class FoodBookFragment : Fragment() {
                         else
                             ing_str += " / $element"
                     }
-                    recipeList.add(
-                        mutableMapOf("name" to document.get("name").toString(),
-                            "ingredient" to ing_str,
-                            "like" to document.get("like").toString(),
-                            "subscribe" to document.get("subscribe").toString(),
-                            "icon" to document.get("icon").toString(),
-                        ))
+                    recipeList.add(document.toObject<Recipe>())
                 }
                 adapterConnect(recipeList)
             }
     }
 
-    private fun adapterConnect(recipeList: ArrayList<MutableMap<String, String>> = arrayListOf<MutableMap<String, String>>()) {
+    private fun adapterConnect(recipeList: ArrayList<Recipe>) {
         adapter.submitList(recipeList)
 
         // Fragment
         adapter.setItemClickListener(object: SearchAdapter.OnItemClickListener {
             override fun onClick(view: View, position: Int) {
                 val intent = Intent(context, RecipeDialogActivity::class.java)
-                intent.putExtra("name", recipeList[position]["name"].toString())
-                (activity as MainActivity).addRecentRecipe(recipeList[position]["name"].toString(), recipeList[position]["icon"].toString())
+                intent.putExtra("name", recipeList[position].name)
+                (activity as MainActivity).addRecentRecipe(recipeList[position].name, recipeList[position].icon)
                 startActivity(intent)
             }
         })
