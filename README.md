@@ -12,7 +12,7 @@
 
 ## Introduce
 보관 재료의 유통기한을 알려주고, 음식 검색을 도와줍니다.
-<img src="https://user-images.githubusercontent.com/32217176/215462374-a27478d8-0e09-4ffe-9dff-6ced7c5f83e4.png" width="550" height="350">
+<p align="left"><img src="https://user-images.githubusercontent.com/32217176/215462374-a27478d8-0e09-4ffe-9dff-6ced7c5f83e4.png" width="550" height="350"></p>
 
 ## Environment & Library
 - min SDK : 26
