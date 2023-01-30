@@ -43,7 +43,8 @@ import org.json.JSONObject
 import java.util.*
 
 
-class LoginActivity : AppCompatActivity() {
+class
+LoginActivity : AppCompatActivity() {
     private val TAG = "LoginActivity"
     private lateinit var auth: FirebaseAuth
     private lateinit var binding: ActivityLoginBinding
