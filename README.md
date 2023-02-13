@@ -31,8 +31,7 @@
 ## Feat
 ### 소셜 로그인
 
-<img src="https://user-images.githubusercontent.com/32217176/215421070-a78a15e8-a0db-4d1b-b45f-a825e3341c68.jpeg" width="30%" style="margin-right: 7px">
-<img src="https://user-images.githubusercontent.com/32217176/215421350-c4be9ed5-4ee9-4527-b066-9f600d009a36.jpeg" width="30%">
+<img src="https://user-images.githubusercontent.com/32217176/215421070-a78a15e8-a0db-4d1b-b45f-a825e3341c68.jpeg" width="30%" style="margin-right: 7px"> <img src="https://user-images.githubusercontent.com/32217176/215421350-c4be9ed5-4ee9-4527-b066-9f600d009a36.jpeg" width="30%">
 
 ### 음식 추천 및 검색
 <img src="https://user-images.githubusercontent.com/32217176/215421866-6374d129-21e2-4c59-bfcf-e337cbe8391a.jpeg" width="30%" style="margin-right: 7px">
