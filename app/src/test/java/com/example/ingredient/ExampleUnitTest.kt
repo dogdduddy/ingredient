@@ -1,4 +1,4 @@
-package com.example.ingredient
+package com.dogdduddy.ingredient
 
 import org.junit.Test
 

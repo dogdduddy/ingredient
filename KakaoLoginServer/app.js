@@ -19,12 +19,6 @@ firebaseAdmin.initializeApp({
     databaseURL : "https://ingredient-7f334-default-rtdb.firebaseio.com/"
 });
 
-/**
- * requestMe - Returns user profile from Kakao API
- *
- * @param  {String} kakaoAccessToken Access token retrieved by Kakao Login API
- * @return {Promiise<Response>}      User profile response in a promise
- */
 function requestMe(kakaoAccessToken) {
     console.log('Requesting user profile from Kakao API server.');
     return request({
@@ -34,17 +28,6 @@ function requestMe(kakaoAccessToken) {
     });
 };
 
-
-/**
- * updateOrCreateUser - Update Firebase user with the give email, create if
- * none exists.
- *
- * @param  {String} userId        user id per app
- * @param  {String} email         user's email address
- * @param  {String} displayName   user
- * @param  {String} photoURL      profile photo url
- * @return {Prommise<UserRecord>} Firebase user record in a promise
- */
 function updateOrCreateUser(userId, email, displayName, photoURL) {
     console.log('updating or creating a firebase user');
     const updateParams = {
@@ -73,13 +56,6 @@ function updateOrCreateUser(userId, email, displayName, photoURL) {
         });
 };
 
-
-/**
- * createFirebaseToken - returns Firebase token using Firebase Admin SDK
- *
- * @param  {String} kakaoAccessToken access token from Kakao Login API
- * @return {Promise<String>}                  Firebase token in a promise
- */
 function createFirebaseToken(kakaoAccessToken) {
     return requestMe(kakaoAccessToken).then((response) => {
         const body = JSON.parse(response);
