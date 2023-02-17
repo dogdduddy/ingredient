@@ -109,7 +109,7 @@ LoginActivity : AppCompatActivity() {
 
         // 자동 로그인
         val currentUser = auth.currentUser
-        remember_me(currentUser)
+        //remember_me(currentUser)
         initView()
     }
 
@@ -194,6 +194,7 @@ LoginActivity : AppCompatActivity() {
     // 자동 로그인
     private fun successLogin(user: FirebaseUser?) {
         if(user != null) {
+
             InsertUserData(user.uid)
             startMainActivity(user)
         }
@@ -274,7 +275,8 @@ LoginActivity : AppCompatActivity() {
         if(user.providerData.size < 2) userData = user.providerData.get(0)
         else userData = user.providerData.get(1)
 
-        val intent = Intent(this, com.dogdduddy.ingredient.activity.MainActivity::class.java)
+
+        val intent = Intent(this, MainActivity::class.java)
         intent.putExtra("user", userData!!.displayName.toString())
         intent.putExtra("email",userData!!.email.toString())
         intent.putExtra("photo",userData!!.photoUrl.toString())

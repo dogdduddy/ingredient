@@ -17,6 +17,17 @@ class MainActivity2 : AppCompatActivity() {
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 		setContentView(R.layout.activity_main2)
+		val db = FirebaseFirestore.getInstance()
+		db.collection("Test")
+			.get()
+			.addOnSuccessListener { result ->
+				for (document in result) {
+					Log.d("releaseT", "${document.id} => ${document.data}")
+				}
+			}
+			.addOnFailureListener { exception ->
+				Log.w("releaseT", "Error getting documents.", exception)
+			}
 
 		/*
 		val db = FirebaseFirestore.getInstance()

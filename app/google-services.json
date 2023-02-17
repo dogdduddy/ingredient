@@ -52,6 +52,14 @@
           }
         },
         {
+          "client_id": "221860815641-cun2l57ctbghmouhk4qql2mulhv64953.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.dogdduddy.ingredient",
+            "certificate_hash": "01e09e9f24640609e9c876ce582e5cce549bef5d"
+          }
+        },
+        {
           "client_id": "221860815641-utd89uhese6ipk9tkn35hp84p90mv3sr.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
@@ -117,6 +125,14 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "221860815641-5qpam8iak223kbninaalkeaar7kbrg3n.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.ingredient",
+            "certificate_hash": "01e09e9f24640609e9c876ce582e5cce549bef5d"
+          }
+        },
         {
           "client_id": "221860815641-bfdcu28fmji7r7mqd4emnfl5414tctb8.apps.googleusercontent.com",
           "client_type": 1,

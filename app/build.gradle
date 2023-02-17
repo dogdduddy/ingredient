@@ -4,6 +4,7 @@ plugins {
     id 'kotlin-kapt'
     id 'kotlin-parcelize'
     id 'com.google.gms.google-services'
+    id 'com.google.firebase.crashlytics'
     //id 'kotlin-android-extensions' // findviewbyid를 사용 안함
 }
 Properties properties = new Properties()
@@ -13,10 +14,10 @@ android {
 
     defaultConfig {
         applicationId "com.dogdduddy.ingredient"
-        minSdk 26
+        minSdk 23
         targetSdk 31
-        versionCode 7
-        versionName "1.7"
+        versionCode 8
+        versionName "1.8"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -33,15 +34,13 @@ android {
             resValue("string", "kakao_app_key", properties['KakaoAppKey'])
         }
         release {
-            minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-
             resValue("string", "my_web_client_id", properties['WebClientID'])
             resValue("string", "facebook_app_id", properties['FaceBookAppID'])
             resValue("string", "fb_login_protocol_scheme", properties['FaceBookSchema'])
             resValue("string", "facebook_client_token", properties['FacebookClientToken'])
             resValue("string", "ipconfig", properties['Ipconfig'])
             resValue("string", "kakao_app_key", properties['KakaoAppKey'])
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
     compileOptions {
@@ -55,6 +54,7 @@ android {
 
 dependencies {
     //Firebase
+    implementation 'com.google.firebase:firebase-crashlytics-ktx'
     implementation 'com.google.firebase:firebase-analytics-ktx'
     implementation 'com.google.firebase:firebase-auth-ktx:21.0.5'
     implementation 'com.google.firebase:firebase-firestore:24.1.2'
