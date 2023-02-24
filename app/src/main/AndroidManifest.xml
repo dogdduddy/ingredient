@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.dogdduddy.ingredient">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -73,7 +72,7 @@
 
                 <data
                     android:host="oauth"
-                    android:scheme="{kakao_app_key}" />
+                    android:scheme="{kakao_redirection_key}" />
                 <data android:scheme="{fb_login_protocol_scheme}" />
             </intent-filter>
         </activity>

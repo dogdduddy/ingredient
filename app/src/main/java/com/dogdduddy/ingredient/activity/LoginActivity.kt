@@ -16,7 +16,6 @@ import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.dogdduddy.ingredient.R
 import com.dogdduddy.ingredient.databinding.ActivityLoginBinding
-import com.dogdduddy.ingredient.network.SessionCallback
 import com.facebook.AccessToken
 import com.facebook.CallbackManager
 import com.facebook.FacebookCallback
@@ -36,9 +35,7 @@ import com.google.firebase.auth.*
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import com.kakao.auth.AuthType
-import com.kakao.auth.Session
-import com.kakao.util.helper.Utility
+import com.kakao.sdk.user.UserApiClient
 import org.json.JSONObject
 import java.util.*
 
@@ -48,16 +45,11 @@ LoginActivity : AppCompatActivity() {
     private val TAG = "LoginActivity"
     private lateinit var auth: FirebaseAuth
     private lateinit var binding: ActivityLoginBinding
-    // Kakao
+    // FaceBook
     private lateinit var callbackManager: CallbackManager
-    private lateinit var callback: SessionCallback
     // Google
     private lateinit var signInRequest: BeginSignInRequest
     private lateinit var oneTapClient: SignInClient
-    // Can be any integer unique to the Activity
-    private val REQ_ONE_TAP = 2
-    private var showOneTapUI = true
-    private lateinit var getResultText:ActivityResultLauncher<Intent>
 
     private val googleSignInClient by lazy {
         GoogleSignIn.getClient(
@@ -83,19 +75,20 @@ LoginActivity : AppCompatActivity() {
                 }
             }
         }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         auth = Firebase.auth
-        callback = SessionCallback(this)
         callbackManager = CallbackManager.Factory.create()
 
         // setGoogleIdTokenRequestOptions에 서버 Client ID를 전달
         oneTapClient = Identity.getSignInClient(this)
         signInRequest = BeginSignInRequest.builder()
+            .setPasswordRequestOptions(BeginSignInRequest.PasswordRequestOptions.builder()
+                .setSupported(true)
+                .build())
             .setGoogleIdTokenRequestOptions(
                 BeginSignInRequest.GoogleIdTokenRequestOptions.builder()
                     .setSupported(true)
@@ -109,7 +102,7 @@ LoginActivity : AppCompatActivity() {
 
         // 자동 로그인
         val currentUser = auth.currentUser
-        //remember_me(currentUser)
+        remember_me(currentUser)
         initView()
     }
 
@@ -130,7 +123,8 @@ LoginActivity : AppCompatActivity() {
 
     fun initView() {
         binding.facebookLoginBtn.setOnClickListener {
-            facebookLogin()
+            toast("준비 중")
+            //facebookLogin()
         }
         binding.kakaoLoginBtn.setOnClickListener {
             kakaoLogin()
@@ -141,11 +135,37 @@ LoginActivity : AppCompatActivity() {
     }
 
     private fun kakaoLogin() {
-    // 카카오톡이 설치되어 있으면 카카오톡으로 로그인, 아니면 카카오계정으로 로그인
-        Log.d(TAG, "LoginActivity - kakaoLoginStart() called")
-        val keyHash = Utility.getKeyHash(this) // keyHash 발급
-        Session.getCurrentSession().addCallback(callback)
-        Session.getCurrentSession().open(AuthType.KAKAO_LOGIN_ALL, this)
+        // 카카오톡이 설치되어 있으면 카카오톡으로 로그인, 아니면 카카오계정으로 로그인
+        // 카카오톡 설치 확인
+        if (UserApiClient.instance.isKakaoTalkLoginAvailable(this)) {
+            UserApiClient.instance.loginWithKakaoTalk(this) { token, error ->
+                Log.d(TAG, "In Method")
+                if (error != null) {
+                    Log.e(TAG, "로그인 실패", error)
+                }
+                else if (token != null) {
+                    Log.i(TAG, "로그인 성공 ${token.accessToken}")
+                    getFirebaseJwt(token.accessToken).continueWithTask { task ->
+                        val firebaseToken = task.result
+                        val auth = FirebaseAuth.getInstance()
+                        Log.d(TAG, "FirebaseJwt Method In")
+                        auth.signInWithCustomToken(firebaseToken!!)
+                    }.addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            Log.d(TAG, "Successfully created a Firebase user")
+                            successLogin(task.result.user!!)
+                        }
+                        else {
+                            toast("Failed to create a Firebase user.")
+                            if (task.exception != null) {
+                                Log.e(TAG, task.exception.toString())
+                            }
+                            //context.updateUI()
+                        }
+                    }
+                }
+            }
+        }
     }
     private fun facebookLogin() {
         LoginManager.getInstance().logInWithReadPermissions(this,
@@ -172,6 +192,7 @@ LoginActivity : AppCompatActivity() {
     }
 
     private fun firebaseAuthWithGoogle(token: AccessToken?) {
+        Log.d(TAG, "firebaseAuthWithGoogle")
         if (token != null) {
             val credential = FacebookAuthProvider
                 .getCredential(token.token)
@@ -194,7 +215,6 @@ LoginActivity : AppCompatActivity() {
     // 자동 로그인
     private fun successLogin(user: FirebaseUser?) {
         if(user != null) {
-
             InsertUserData(user.uid)
             startMainActivity(user)
         }
@@ -285,7 +305,6 @@ LoginActivity : AppCompatActivity() {
     }
     override fun onDestroy() {
         super.onDestroy()
-        Session.getCurrentSession().removeCallback(callback)
     }
 
     fun toast(sentence:String) {
