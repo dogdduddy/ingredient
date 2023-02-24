@@ -10,19 +10,27 @@ plugins {
 Properties properties = new Properties()
 properties.load(project.rootProject.file('local.properties').newDataInputStream())
 android {
-    compileSdk 31
+    compileSdk 33
 
     defaultConfig {
         applicationId "com.dogdduddy.ingredient"
         minSdk 23
-        targetSdk 31
-        versionCode 8
-        versionName "1.8"
+        targetSdk 33
+        versionCode 9
+        versionName "1.9"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildFeatures {
         viewBinding = true
+    }
+    signingConfigs {
+        release {
+            storeFile file('/Users/jeonbyeongseo/AndroidStudioProjects/TestKey/ingredientKey/Untitled')
+            storePassword '20171512'
+            keyAlias 'ingredientKey'
+            keyPassword '20171512'
+        }
     }
     buildTypes {
         debug {
@@ -32,6 +40,7 @@ android {
             resValue("string", "facebook_client_token", properties['FacebookClientToken'])
             resValue("string", "ipconfig", properties['Ipconfig'])
             resValue("string", "kakao_app_key", properties['KakaoAppKey'])
+            resValue("string", "kakao_redirection_key", properties['KakaoRedirection'])
         }
         release {
             resValue("string", "my_web_client_id", properties['WebClientID'])
@@ -40,6 +49,8 @@ android {
             resValue("string", "facebook_client_token", properties['FacebookClientToken'])
             resValue("string", "ipconfig", properties['Ipconfig'])
             resValue("string", "kakao_app_key", properties['KakaoAppKey'])
+            debuggable false
+            signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -50,6 +61,7 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+    namespace 'com.dogdduddy.ingredient'
 }
 
 dependencies {
@@ -68,7 +80,6 @@ dependencies {
     implementation 'com.facebook.android:facebook-login:12.0.0'
 
     //Kakao
-    implementation group: 'com.kakao.sdk', name: 'usermgmt', version: '1.27.0'
     implementation "com.kakao.sdk:v2-user:2.10.0"
     //Volley
     implementation 'com.android.volley:volley:1.2.0'

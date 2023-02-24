@@ -2,8 +2,9 @@ package com.dogdduddy.ingredient.network
 
 import android.app.Application
 import android.content.Context
+import com.dogdduddy.ingredient.R
 import com.facebook.appevents.AppEventsLogger
-import com.kakao.auth.KakaoSDK
+import com.kakao.sdk.common.KakaoSdk
 
 class App:Application() {
     companion object {
@@ -16,16 +17,11 @@ class App:Application() {
         appContext = this
         instance = this
 
-        /*
-        FacebookSdk.sdkInitialize(getApplicationContext());
         AppEventsLogger.activateApp(this);
 
-         */
-        if(KakaoSDK.getAdapter() == null) {
-            KakaoSDK.init(KakaoSDKAdapter(getAppContext()))
-        }
-        AppEventsLogger.activateApp(this);
-
+        // Kakao SDK 초기화
+        KakaoSdk.init(this, getString(R.string.kakao_app_key))
+        // var keyHash = Utility.getKeyHash(this)
     }
     override fun onTerminate() {
         super.onTerminate()
